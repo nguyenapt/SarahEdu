@@ -1919,3 +1919,80 @@ INFO  2020-12-01 21:57:50,468 [22   ] Microsoft.AspNetCore.Hosting.Diagnostics -
 DEBUG 2020-12-01 21:57:58,772 [22   ] Abp.AspNetCore.SignalR.Hubs.AbpCommonHub - A client is disconnected: 3SDWwzZcaTNqrg2F9sW2yg
 INFO  2020-12-01 21:57:58,827 [4    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint '/signalr'
 INFO  2020-12-01 21:57:58,839 [4    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished in 36877.0784ms 101 
+DEBUG 2020-12-13 12:10:02,202 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2020-12-13 12:10:02,628 [1    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2020-12-13 12:10:02,665 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: SarahEducation.Web.Host.Startup.SarahEducationWebHostModule, SarahEducation.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,668 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: SarahEducation.SarahEducationWebCoreModule, SarahEducation.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,670 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: SarahEducation.SarahEducationApplicationModule, SarahEducation.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,671 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: SarahEducation.SarahEducationCoreModule, SarahEducation.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,672 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,683 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,684 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,684 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,685 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: SarahEducation.EntityFrameworkCore.SarahEducationEntityFrameworkModule, SarahEducation.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,686 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,686 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,686 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,687 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,687 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,688 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=5.13.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:02,692 [1    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2020-12-13 12:10:03,016 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2020-12-13 12:10:03,016 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2020-12-13 12:10:03,016 [1    ] o.Configuration.LanguageManagementConfig - Converted SarahEducation (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2020-12-13 12:10:03,016 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2020-12-13 12:10:03,988 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: SarahEducation.EntityFrameworkCore.SarahEducationDbContext, SarahEducation.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2020-12-13 12:10:06,455 [1    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2020-12-13 12:10:06,521 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2020-12-13 12:10:06,537 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2020-12-13 12:10:06,540 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: SarahEducation
+DEBUG 2020-12-13 12:10:06,546 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2020-12-13 12:10:06,896 [1    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Castle.Proxies.BackgroundJobManagerProxy
+DEBUG 2020-12-13 12:10:07,087 [1    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[SarahEducation.MultiTenancy.Tenant, SarahEducation.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[SarahEducation.Authorization.Users.User, SarahEducation.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2020-12-13 12:10:07,178 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 26 classes define auto mapping attributes
+DEBUG 2020-12-13 12:10:07,178 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Models.TokenAuth.ExternalLoginProviderInfoModel
+DEBUG 2020-12-13 12:10:07,186 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Users.Dto.CreateUserDto
+DEBUG 2020-12-13 12:10:07,186 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Users.Dto.UserDto
+DEBUG 2020-12-13 12:10:07,187 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.TimeSheetEntries.Dto.CreateTimeSheetEntryDto
+DEBUG 2020-12-13 12:10:07,187 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.TimeSheetEntries.Dto.TimeSheetEntryDto
+DEBUG 2020-12-13 12:10:07,187 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Teachers.Dto.CreateTeacherDto
+DEBUG 2020-12-13 12:10:07,187 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Teachers.Dto.TeacherDto
+DEBUG 2020-12-13 12:10:07,187 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Subjects.Dto.CreateSubjectDto
+DEBUG 2020-12-13 12:10:07,187 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Subjects.Dto.SubjectDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Students.Dto.CreateStudentDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Students.Dto.StudentDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Sessions.Dto.UserLoginInfoDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Rooms.Dto.CreateRoomDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Rooms.Dto.RoomDto
+DEBUG 2020-12-13 12:10:07,188 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Roles.Dto.PermissionDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Protectors.Dto.CreateProtectorDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Protectors.Dto.ProtectorDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.MultiTenancy.Dto.TenantDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Courses.Dto.CourseDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.Courses.Dto.CreateCourseDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.CourseFees.Dto.CourseFeeDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.CourseFees.Dto.CreateCourseFeeDto
+DEBUG 2020-12-13 12:10:07,189 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.ClassCentrals.Dto.ClassCentralDto
+DEBUG 2020-12-13 12:10:07,190 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - SarahEducation.ClassCentrals.Dto.CreateClassCentralDto
+INFO  2020-12-13 12:10:12,591 [1    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,ja,zh-Hans
+INFO  2020-12-13 12:10:14,192 [1    ] taProtection.KeyManagement.XmlKeyManager - User profile is available. Using 'C:\Users\MienThanh\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+INFO  2020-12-13 12:10:14,352 [4    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/1.1 GET http://localhost:21021/  
+INFO  2020-12-13 12:10:14,785 [4    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'SarahEducation.Web.Host.Controllers.HomeController.Index (SarahEducation.Web.Host)'
+INFO  2020-12-13 12:10:20,477 [4    ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller SarahEducation.Web.Host.Controllers.HomeController (SarahEducation.Web.Host).
+INFO  2020-12-13 12:10:22,397 [8    ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2020-12-13 12:10:22,409 [8    ] c.Infrastructure.ControllerActionInvoker - Executed action SarahEducation.Web.Host.Controllers.HomeController.Index (SarahEducation.Web.Host) in 1922.8403ms
+INFO  2020-12-13 12:10:22,412 [8    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'SarahEducation.Web.Host.Controllers.HomeController.Index (SarahEducation.Web.Host)'
+INFO  2020-12-13 12:10:22,438 [5    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/1.1 GET http://localhost:21021/swagger/index.html  
+INFO  2020-12-13 12:10:22,441 [8    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished in 8087.4039ms 302 
+INFO  2020-12-13 12:10:22,577 [5    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished in 138.1683ms 200 text/html;charset=utf-8
+INFO  2020-12-13 12:10:23,024 [4    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/1.1 GET http://localhost:21021/AntiForgery/SetCookie  
+INFO  2020-12-13 12:10:23,041 [4    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'SarahEducation.Web.Host.Controllers.AntiForgeryController.SetCookie (SarahEducation.Web.Host)'
+INFO  2020-12-13 12:10:23,083 [4    ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller SarahEducation.Web.Host.Controllers.AntiForgeryController (SarahEducation.Web.Host).
+INFO  2020-12-13 12:10:23,111 [5    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/1.1 GET http://localhost:21021/swagger/v1/swagger.json  
+INFO  2020-12-13 12:10:23,301 [4    ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2020-12-13 12:10:23,600 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished in 494.3991ms 200 application/json;charset=utf-8
+INFO  2020-12-13 12:10:23,688 [4    ] c.Infrastructure.ControllerActionInvoker - Executed action SarahEducation.Web.Host.Controllers.AntiForgeryController.SetCookie (SarahEducation.Web.Host) in 581.9282ms
+INFO  2020-12-13 12:10:23,697 [4    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'SarahEducation.Web.Host.Controllers.AntiForgeryController.SetCookie (SarahEducation.Web.Host)'
+INFO  2020-12-13 12:10:23,702 [4    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished in 718.6104ms 200 application/json; charset=utf-8

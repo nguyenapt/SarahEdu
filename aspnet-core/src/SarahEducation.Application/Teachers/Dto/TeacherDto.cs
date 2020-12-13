@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
+using SarahEducation.Entities;
+
+namespace SarahEducation.Teachers.Dto
+{
+    [AutoMapFrom(typeof(Teacher))]
+    [AutoMapTo(typeof(Teacher))]
+    public class TeacherDto : EntityDto<Guid>
+    {
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public double Salary { get; set; }
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }        
+        public bool IsActive { get; set; }
+        
+    }
+}

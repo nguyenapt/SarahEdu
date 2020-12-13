@@ -1,10 +1,10 @@
-import { AbpProjectNameTemplatePage } from './app.po';
+import { EducationTemplatePage } from './app.po';
 
-describe('AbpProjectName App', function() {
-  let page: AbpProjectNameTemplatePage;
+describe('Education App', function() {
+  let page: EducationTemplatePage;
 
   beforeEach(() => {
-    page = new AbpProjectNameTemplatePage();
+    page = new EducationTemplatePage();
   });
 
   it('should display message saying app works', () => {

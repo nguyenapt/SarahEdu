@@ -2,12 +2,12 @@
 $OutputEncoding = [Text.UTF8Encoding]::UTF8
 
 # company name placeholder 
-$oldCompanyName="AbpCompanyName"
+$oldCompanyName="Sarah"
 # your company name
 $newCompanyName="YourCompanyName"
 
 # project name placeholder
-$oldProjectName="AbpProjectName"
+$oldProjectName="Education"
 # your project name
 $newProjectName="YourProjectName"
 

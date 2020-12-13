@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class AbpProjectNameTemplatePage {
+export class EducationTemplatePage {
   navigateTo() {
     return browser.get('/');
   }

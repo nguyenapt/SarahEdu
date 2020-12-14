@@ -3,11 +3,11 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 
 @Component({
-  templateUrl: './about.component.html',
+  templateUrl: './timesheet.component.html',
   animations: [appModuleAnimation()],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AboutComponent extends AppComponentBase {
+export class TimeSheetComponent extends AppComponentBase {
   constructor(injector: Injector) {
     super(injector);
   }

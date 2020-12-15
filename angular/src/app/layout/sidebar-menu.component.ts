@@ -66,7 +66,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
       new MenuItem(this.l('Configuration'), '', 'fas fa-cogs', '', [
         new MenuItem(
           'Room',
-          '/app/rooms',
+          '/app/room',
           'far fa-circle'
         ),
         new MenuItem(
@@ -76,27 +76,27 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         ),
         new MenuItem(
           'Class',
-          '/app/classes',
+          '/app/class',
           'far fa-circle'
         ),
         new MenuItem(
           'Course',
-          '/app/courses',
+          '/app/course',
           'far fa-circle'
         ),
         new MenuItem(
           'Subject',
-          '/app/subjects',
+          '/app/subject',
           'far fa-circle'
         ),
         new MenuItem(
           'Student',
-          '/app/students',
+          '/app/student',
           'far fa-circle'
         ),
         new MenuItem(
           'Protector',
-          '/app/protectors',
+          '/app/protector',
           'far fa-circle'
         ),
       ])

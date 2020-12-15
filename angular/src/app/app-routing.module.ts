@@ -8,6 +8,13 @@ import { UsersComponent } from './users/users.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
+import { RoomComponent } from './room/room.component';
+import { TeacherComponent } from './teacher/teacher.component';
+import { ClassComponent } from './class/class.component';
+import { CourseComponent } from './course/course.component';
+import { SubjectComponent } from './subject/subject.component';
+import { StudentComponent } from './student/student.component';
+import { ProtectorComponent } from './protector/protector.component';
 
 @NgModule({
     imports: [
@@ -21,6 +28,13 @@ import { ChangePasswordComponent } from './users/change-password/change-password
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'timesheet', component: TimeSheetComponent },
+                    { path: 'room', component: RoomComponent },
+                    { path: 'teacher', component: TeacherComponent },
+                    { path: 'class', component: ClassComponent },
+                    { path: 'course', component: CourseComponent },
+                    { path: 'subject', component: SubjectComponent },
+                    { path: 'student', component: StudentComponent },
+                    { path: 'protector', component: ProtectorComponent },
                     { path: 'update-password', component: ChangePasswordComponent }
                 ]
             }

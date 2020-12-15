@@ -38,6 +38,13 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
+import { RoomComponent } from './room/room.component';
+import { TeacherComponent } from './teacher/teacher.component';
+import { ClassComponent } from './class/class.component';
+import { CourseComponent } from './course/course.component';
+import { SubjectComponent } from './subject/subject.component';
+import { StudentComponent } from './student/student.component';
+import { ProtectorComponent } from './protector/protector.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +74,14 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
     SidebarComponent,
     SidebarLogoComponent,
     SidebarUserPanelComponent,
-    SidebarMenuComponent
+    SidebarMenuComponent,
+    RoomComponent,
+    TeacherComponent,
+    ClassComponent,
+    CourseComponent,
+    SubjectComponent,
+    StudentComponent,
+    ProtectorComponent
   ],
   imports: [
     CommonModule,

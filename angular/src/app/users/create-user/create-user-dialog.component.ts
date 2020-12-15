@@ -11,9 +11,11 @@ import { forEach as _forEach, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
 import {
   UserServiceProxy,
-  CreateUserDto,
-  RoleDto
+  CreateUserDto
 } from '@shared/service-proxies/service-proxies';
+
+import { RoleDto } from '@shared/service-proxies/role/dto/role-dto';
+
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
 
 @Component({

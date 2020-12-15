@@ -4,9 +4,11 @@ import { AbpHttpInterceptor } from 'abp-ng2-module';
 
 import * as ApiServiceProxies from './service-proxies';
 
+import { RoleServiceProxy } from './role/role.service.proxy'
+
 @NgModule({
     providers: [
-        ApiServiceProxies.RoleServiceProxy,
+        RoleServiceProxy,
         ApiServiceProxies.SessionServiceProxy,
         ApiServiceProxies.TenantServiceProxy,
         ApiServiceProxies.UserServiceProxy,

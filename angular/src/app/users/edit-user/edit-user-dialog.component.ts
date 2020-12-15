@@ -9,11 +9,13 @@ import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
+
 import {
   UserServiceProxy,
-  UserDto,
-  RoleDto
+  UserDto
 } from '@shared/service-proxies/service-proxies';
+
+import { RoleDto } from '@shared/service-proxies/role/dto/role-dto';
 
 @Component({
   templateUrl: './edit-user-dialog.component.html'

@@ -9,14 +9,17 @@ import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
+import { RoleServiceProxy ,GetRoleForEditOutput } from '@shared/service-proxies/role/role.service.proxy'
+
 import {
-  RoleServiceProxy,
-  GetRoleForEditOutput,
   RoleDto,
+  RoleEditDto  
+} from '@shared/service-proxies/role/dto/role-dto';
+
+import {
   PermissionDto,
-  RoleEditDto,
   FlatPermissionDto
-} from '@shared/service-proxies/service-proxies';
+} from '@shared/service-proxies/permission/dto/permission-dto';
 
 @Component({
   templateUrl: 'edit-role-dialog.component.html'

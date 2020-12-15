@@ -6,11 +6,11 @@ import {
   PagedListingComponentBase,
   PagedRequestDto
 } from '@shared/paged-listing-component-base';
+import { RoleServiceProxy ,GetRoleForEditOutput } from '@shared/service-proxies/role/role.service.proxy'
 import {
-  RoleServiceProxy,
   RoleDto,
   RoleDtoPagedResultDto
-} from '@shared/service-proxies/service-proxies';
+} from '@shared/service-proxies/role/dto/role-dto';
 import { CreateRoleDialogComponent } from './create-role/create-role-dialog.component';
 import { EditRoleDialogComponent } from './edit-role/edit-role-dialog.component';
 

@@ -9,10 +9,8 @@ import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
-import {
-  UserServiceProxy,
-  CreateUserDto
-} from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy } from '@shared/service-proxies/user/user.service.proxy';
+import { CreateUserDto } from '@shared/service-proxies/user/dto/user-dto';
 
 import { RoleDto } from '@shared/service-proxies/role/dto/role-dto';
 

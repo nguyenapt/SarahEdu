@@ -10,7 +10,7 @@ import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.prox
 import { RoomDto, RoomDtoPagedResultDto } from '@shared/service-proxies/room/dto/room-dto';
 
 import { CreateRoomDialogComponent } from './create-room/create-room-dialog.component';
-//import { EditUserDialogComponent } from './edit-user/edit-user-dialog.component';
+import { EditRoomDialogComponent } from './edit-room/edit-room-dialog.component';
 
 class PagedUsersRequestDto extends PagedRequestDto {
   keyword: string;
@@ -37,9 +37,9 @@ export class RoomComponent extends PagedListingComponentBase<RoomDto> {
     this.showCreateOrEditUserDialog();
   }
 
-  // editUser(user: RoomDto): void {
-  //   this.showCreateOrEditUserDialog(user.id);
-  // }
+  editRoom(room: RoomDto): void {
+    this.showCreateOrEditUserDialog(room.id);
+  }
 
   clearFilters(): void {
     this.keyword = '';
@@ -85,7 +85,7 @@ export class RoomComponent extends PagedListingComponentBase<RoomDto> {
     );
   }
 
-  private showCreateOrEditUserDialog(id?: number): void {
+  private showCreateOrEditUserDialog(id?: string): void {
     let createOrEditUserDialog: BsModalRef;
     if (!id) {
       createOrEditUserDialog = this._modalService.show(
@@ -95,17 +95,17 @@ export class RoomComponent extends PagedListingComponentBase<RoomDto> {
         }
       );
     } 
-    // else {
-    //   createOrEditUserDialog = this._modalService.show(
-    //     EditUserDialogComponent,
-    //     {
-    //       class: 'modal-lg',
-    //       initialState: {
-    //         id: id,
-    //       },
-    //     }
-    //   );
-    // }
+    else {
+      createOrEditUserDialog = this._modalService.show(
+        EditRoomDialogComponent,
+        {
+          class: 'modal-lg',
+          initialState: {
+            id: id,
+          },
+        }
+      );
+    }
 
     createOrEditUserDialog.content.onSave.subscribe(() => {
       this.refresh();

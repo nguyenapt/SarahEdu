@@ -41,7 +41,7 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 //room
 import { RoomComponent } from './room/room.component';
 import { CreateRoomDialogComponent } from './room/create-room/create-room-dialog.component';
-
+import { EditRoomDialogComponent } from './room/edit-room/edit-room-dialog.component';
 
 import { TeacherComponent } from './teacher/teacher.component';
 import { ClassComponent } from './class/class.component';
@@ -82,6 +82,7 @@ import { ProtectorComponent } from './protector/protector.component';
     //Room
     RoomComponent,
     CreateRoomDialogComponent,
+    EditRoomDialogComponent,
     TeacherComponent,
     ClassComponent,
     CourseComponent,
@@ -117,7 +118,8 @@ import { ProtectorComponent } from './protector/protector.component';
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
     //rooms
-    CreateRoomDialogComponent
+    CreateRoomDialogComponent,
+    EditRoomDialogComponent
   ],
 })
 export class AppModule {}

@@ -50,7 +50,7 @@ export interface ICreateRoomDto {
 export class RoomDto implements IRoomDto {
     name: string | undefined;
     description: string | undefined;  
-    id: number;
+    id: string;
 
     constructor(data?: IRoomDto) {
         if (data) {
@@ -95,7 +95,7 @@ export class RoomDto implements IRoomDto {
 export interface IRoomDto {
     name: string | undefined;
     description: string | undefined;    
-    id: number;
+    id: string;
 }
 
 export class RoomDtoPagedResultDto implements IRoomDtoPagedResultDto {

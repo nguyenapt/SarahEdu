@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
+using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Sarah.Education.Entities;
@@ -10,6 +11,8 @@ using Sarah.Education.Subjects;
 using Sarah.Education.Subjects.Dto;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
+using Abp.Extensions;
+using Abp.Linq.Extensions;
 
 namespace Sarah.Education.Subjects
 {
@@ -23,6 +26,16 @@ namespace Sarah.Education.Subjects
             _unitOfWorkManager = unitOfWorkManager;
         }
 
+        protected override IQueryable<Subject> ApplySorting(IQueryable<Subject> query, SubjectResultRequestDto input)
+        {
+            return query.OrderBy(r => r.Name);
+        }
+
+        protected override IQueryable<Subject> CreateFilteredQuery(SubjectResultRequestDto input)
+        {
+            return Repository.GetAllIncluding()
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
+        }
     }
 }
 

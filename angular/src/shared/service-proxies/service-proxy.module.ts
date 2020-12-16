@@ -7,6 +7,8 @@ import * as ApiServiceProxies from './service-proxies';
 import { RoleServiceProxy } from './role/role.service.proxy'
 import { UserServiceProxy } from './user/user.service.proxy'
 import { RoomServiceProxy } from './room/room.service.proxy'
+import { SubjectServiceProxy } from './subject/subject.service.proxy'
+import { ClassServiceProxy } from './class/class.service.proxy'
 
 @NgModule({
     providers: [
@@ -17,7 +19,9 @@ import { RoomServiceProxy } from './room/room.service.proxy'
         ApiServiceProxies.TokenAuthServiceProxy,
         ApiServiceProxies.AccountServiceProxy,
         ApiServiceProxies.ConfigurationServiceProxy,
+        SubjectServiceProxy,
         RoomServiceProxy,
+        ClassServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

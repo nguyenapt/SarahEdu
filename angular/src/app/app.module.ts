@@ -38,7 +38,11 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
+//room
 import { RoomComponent } from './room/room.component';
+import { CreateRoomDialogComponent } from './room/create-room/create-room-dialog.component';
+
+
 import { TeacherComponent } from './teacher/teacher.component';
 import { ClassComponent } from './class/class.component';
 import { CourseComponent } from './course/course.component';
@@ -75,7 +79,9 @@ import { ProtectorComponent } from './protector/protector.component';
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
+    //Room
     RoomComponent,
+    CreateRoomDialogComponent,
     TeacherComponent,
     ClassComponent,
     CourseComponent,
@@ -110,6 +116,8 @@ import { ProtectorComponent } from './protector/protector.component';
     CreateUserDialogComponent,
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
+    //rooms
+    CreateRoomDialogComponent
   ],
 })
 export class AppModule {}

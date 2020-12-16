@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
+using Abp.Application.Services.Dto;
+using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
-using Abp.Domain.Uow;
+using Abp.Extensions;
+using Abp.Linq.Extensions;
 using Sarah.Education.Entities;
 using Sarah.Education.Rooms;
 using Sarah.Education.Rooms.Dto;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
+using Abp.Extensions;
+using Abp.Collections.Extensions;
+using Abp.Domain.Uow;
 
 namespace ET.Resources
 {
@@ -46,6 +52,17 @@ namespace ET.Resources
             {
                 return _roomRepository.GetAllList();
             }
+        }
+
+        protected override IQueryable<Room> ApplySorting(IQueryable<Room> query, RoomResultRequestDto input)
+        {
+            return query.OrderBy(r => r.Name);
+        }
+
+        protected override IQueryable<Room> CreateFilteredQuery(RoomResultRequestDto input)
+        {
+            return Repository.GetAllIncluding()
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
         }
     }
 }

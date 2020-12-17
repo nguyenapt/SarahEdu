@@ -48,6 +48,26 @@ namespace Sarah.Education.Courses
             return MapToEntityDto(course);
         }
 
+        public async override Task<CourseDto> UpdateAsync(CourseDto input)
+        {
+            CheckUpdatePermission();
+
+            var course = _courseRepository.FirstOrDefault(x=>x.Id == input.Id);
+
+            MapToEntity(input, course);
+
+            await _courseRepository.UpdateAsync(course);
+
+            if (input.Subjects != null)
+            {
+                CreateCourseSubject(course.Id, input.Subjects);
+            }
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return await GetAsync(input);
+        }
+
         public async Task<ListResultDto<SubjectDto>> GetSubjects()
         {
             var subjects = await _subjectRepository.GetAllListAsync();
@@ -56,7 +76,15 @@ namespace Sarah.Education.Courses
 
         public async void CreateCourseSubject(Guid courseId, string[] subjectNames)
         {
-            foreach(var subjectName in subjectNames)
+            var courseSubjects = _courseSubjectRepository.GetAll().Where(x => x.CourseId == courseId);
+            if(courseSubjects != null && courseSubjects.Any())
+            {
+                foreach(var courseSubject in courseSubjects)
+                {
+                    _courseSubjectRepository.Delete(courseSubject);
+                }                
+            }
+            foreach (var subjectName in subjectNames)
             {
                 var subject = _subjectRepository.FirstOrDefault(x => x.Name == subjectName);
                 if(subject != null)

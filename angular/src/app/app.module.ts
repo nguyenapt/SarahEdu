@@ -50,9 +50,10 @@ import { EditTeacherDialogComponent } from './teacher/edit-teacher/edit-teacher-
 import { ClassComponent } from './class/class.component';
 import { CreateClassDialogComponent } from './class/create-class/create-class-dialog.component';
 import { EditClassDialogComponent } from './class/edit-class/edit-class-dialog.component';
-
+//course
 import { CourseComponent } from './course/course.component';
-
+import { CreateCourseDialogComponent } from './course/create-course/create-course-dialog.component';
+import { EditCourseDialogComponent } from './course/edit-course/edit-course-dialog.component';
 //subject
 import { SubjectComponent } from './subject/subject.component';
 import { CreateSubjectDialogComponent } from './subject/create-subject/create-subject-dialog.component';
@@ -102,7 +103,10 @@ import { ProtectorComponent } from './protector/protector.component';
     ClassComponent,
     CreateClassDialogComponent,
     EditClassDialogComponent,
+    //course
     CourseComponent,
+    CreateCourseDialogComponent,
+    EditCourseDialogComponent,
     //subject
     SubjectComponent,
     CreateSubjectDialogComponent,
@@ -148,7 +152,10 @@ import { ProtectorComponent } from './protector/protector.component';
     EditClassDialogComponent,
     //teacher
     CreateTeacherDialogComponent,
-    EditTeacherDialogComponent
+    EditTeacherDialogComponent,
+    //course
+    CreateCourseDialogComponent,
+    EditCourseDialogComponent
   ],
 })
 export class AppModule {}

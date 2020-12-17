@@ -10,6 +10,9 @@ namespace Sarah.Education.Courses.Dto
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public string[] Subjects { get; set; }
+
     }
 
 }

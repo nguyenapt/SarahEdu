@@ -10,6 +10,7 @@ import { RoomServiceProxy } from './room/room.service.proxy'
 import { SubjectServiceProxy } from './subject/subject.service.proxy'
 import { ClassServiceProxy } from './class/class.service.proxy'
 import { TeacherServiceProxy } from './teacher/teacher.service.proxy'
+import { CourseServiceProxy } from './course/course.service.proxy'
 
 @NgModule({
     providers: [
@@ -24,6 +25,7 @@ import { TeacherServiceProxy } from './teacher/teacher.service.proxy'
         RoomServiceProxy,
         ClassServiceProxy,
         TeacherServiceProxy,
+        CourseServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

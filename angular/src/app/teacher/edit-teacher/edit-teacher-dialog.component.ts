@@ -13,6 +13,8 @@ import { TeacherServiceProxy } from '@shared/service-proxies/teacher/teacher.ser
 
 import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 
+import * as moment from 'moment';
+
 @Component({
   templateUrl: 'edit-teacher-dialog.component.html'
 })
@@ -21,7 +23,9 @@ export class EditTeacherDialogComponent extends AppComponentBase
   saving = false;
   teacher: TeacherDto = new TeacherDto();
   id: string;
-
+  dateOfBirth :string;
+  startDate:string;
+  endDate:string;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -35,11 +39,18 @@ export class EditTeacherDialogComponent extends AppComponentBase
   ngOnInit(): void {
     this._teacherService.get(this.id).subscribe((result: TeacherDto) => {
       this.teacher = result;
+      this.dateOfBirth = this.teacher.dateOfBirth ? this.teacher.dateOfBirth.format().split("T")[0]:"";
+      this.startDate = this.teacher.startDate ? this.teacher.startDate.format().split("T")[0]:"";
+      this.endDate = this.teacher.endDate ? this.teacher.endDate.format().split("T")[0]:"";
     });
   }
 
   save(): void {
     this.saving = true;
+
+    this.teacher.dateOfBirth = this.dateOfBirth ? moment(this.dateOfBirth).format() : <any>undefined;
+    this.teacher.startDate =  this.startDate ? moment(this.startDate).format() : <any>undefined;
+    this.teacher.endDate = this.endDate ? moment(this.endDate).format(): <any>undefined;
 
     this._teacherService
       .update(this.teacher)

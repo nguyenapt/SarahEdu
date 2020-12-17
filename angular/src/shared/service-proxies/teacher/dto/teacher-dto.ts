@@ -50,13 +50,13 @@ export class CreateTeacherDto implements ICreateTeacherDto {
         data["firstName"] = this.firstName;
         data["middleName"] = this.middleName;
         data["lastName"] = this.lastName;
-        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
+        data["dateOfBirth"] = this.dateOfBirth ? moment.utc(this.dateOfBirth).format() : <any>undefined;
         data["email"] = this.email;
         data["phoneNumber"] = this.phoneNumber;
         data["salary"] = this.salary;
         data["description"] = this.description;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["startDate"] = this.startDate ? moment.utc(this.dateOfBirth).format() : <any>undefined;
+        data["endDate"] = this.endDate ? moment.utc(this.dateOfBirth).format(): <any>undefined;
         data["isActive"] = this.isActive;
         return data; 
     }
@@ -135,13 +135,13 @@ export class TeacherDto implements ITeacherDto {
         data["firstName"] = this.firstName;
         data["middleName"] = this.middleName;
         data["lastName"] = this.lastName;
-        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
+        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
         data["email"] = this.email;
         data["phoneNumber"] = this.phoneNumber;
         data["salary"] = this.salary;
         data["description"] = this.description;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate : <any>undefined;
         data["isActive"] = this.isActive;
         data["id"] = this.id;
         return data; 

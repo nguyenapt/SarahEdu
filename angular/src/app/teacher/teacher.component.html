@@ -79,7 +79,17 @@
                   <td>{{ teacher.description }}</td>
                   <td>{{ teacher.startDate | date}}</td>
                   <td>{{ teacher.endDate | date}}</td>
-                  <td>{{ teacher.isActive }}</td>
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        disabled
+                        [checked]="teacher.isActive"
+                      />
+                      <label class="custom-control-label"></label>
+                    </div>
+                  </td>
                   <td>
                     <button
                       type="button"

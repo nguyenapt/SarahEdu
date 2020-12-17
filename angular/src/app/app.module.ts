@@ -44,7 +44,11 @@ import { CreateRoomDialogComponent } from './room/create-room/create-room-dialog
 import { EditRoomDialogComponent } from './room/edit-room/edit-room-dialog.component';
 
 import { TeacherComponent } from './teacher/teacher.component';
+//class
 import { ClassComponent } from './class/class.component';
+import { CreateClassDialogComponent } from './class/create-class/create-class-dialog.component';
+import { EditClassDialogComponent } from './class/edit-class/edit-class-dialog.component';
+
 import { CourseComponent } from './course/course.component';
 
 //subject
@@ -90,6 +94,8 @@ import { ProtectorComponent } from './protector/protector.component';
     EditRoomDialogComponent,
     TeacherComponent,
     ClassComponent,
+    CreateClassDialogComponent,
+    EditClassDialogComponent,
     CourseComponent,
     //subject
     SubjectComponent,
@@ -129,7 +135,9 @@ import { ProtectorComponent } from './protector/protector.component';
     CreateRoomDialogComponent,
     EditRoomDialogComponent,
     CreateSubjectDialogComponent,
-    EditSubjectDialogComponent
+    EditSubjectDialogComponent,
+    CreateClassDialogComponent,
+    EditClassDialogComponent
   ],
 })
 export class AppModule {}

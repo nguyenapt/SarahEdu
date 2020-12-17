@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
+using Abp.Collections.Extensions;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Sarah.Education.Entities;
@@ -11,6 +12,8 @@ using Sarah.Education.Rooms.Dto;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
 using Sarah.Education.ClassCentrals.Dto;
+using Abp.Extensions;
+using Abp.Linq.Extensions;
 
 namespace Sarah.Education.ClassCentrals
 {
@@ -22,7 +25,18 @@ namespace Sarah.Education.ClassCentrals
         {
             _classCentralRepository = classCentralRepository;
             _unitOfWorkManager = unitOfWorkManager;
-        }       
+        }
+
+        protected override IQueryable<ClassCentral> ApplySorting(IQueryable<ClassCentral> query, ClassCentralResultRequestDto input)
+        {
+            return query.OrderBy(r => r.Name);
+        }
+
+        protected override IQueryable<ClassCentral> CreateFilteredQuery(ClassCentralResultRequestDto input)
+        {
+            return Repository.GetAllIncluding()
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
+        }
     }
 }
 

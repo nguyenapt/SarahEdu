@@ -19,7 +19,7 @@ class PagedRolesRequestDto extends PagedRequestDto {
 }
 
 @Component({
-  templateUrl: './roles.component.html',
+  templateUrl: './roles.component.html',  
   animations: [appModuleAnimation()]
 })
 export class RolesComponent extends PagedListingComponentBase<RoleDto> {

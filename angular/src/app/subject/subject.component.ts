@@ -19,6 +19,7 @@ class PagedUsersRequestDto extends PagedRequestDto {
 
 @Component({
   templateUrl: './subject.component.html',
+  styleUrls: ['./subject.component.css'],
   animations: [appModuleAnimation()]
 })
 export class SubjectComponent extends PagedListingComponentBase<SubjectDto> {

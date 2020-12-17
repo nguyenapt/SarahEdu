@@ -42,8 +42,10 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { RoomComponent } from './room/room.component';
 import { CreateRoomDialogComponent } from './room/create-room/create-room-dialog.component';
 import { EditRoomDialogComponent } from './room/edit-room/edit-room-dialog.component';
-
+//teacher
 import { TeacherComponent } from './teacher/teacher.component';
+import { CreateTeacherDialogComponent } from './teacher/create-teacher/create-teacher-dialog.component';
+import { EditTeacherDialogComponent } from './teacher/edit-teacher/edit-teacher-dialog.component';
 //class
 import { ClassComponent } from './class/class.component';
 import { CreateClassDialogComponent } from './class/create-class/create-class-dialog.component';
@@ -92,7 +94,11 @@ import { ProtectorComponent } from './protector/protector.component';
     RoomComponent,
     CreateRoomDialogComponent,
     EditRoomDialogComponent,
+    //Teacher
     TeacherComponent,
+    CreateTeacherDialogComponent,
+    EditTeacherDialogComponent,    
+    //Class
     ClassComponent,
     CreateClassDialogComponent,
     EditClassDialogComponent,
@@ -134,10 +140,15 @@ import { ProtectorComponent } from './protector/protector.component';
     //rooms
     CreateRoomDialogComponent,
     EditRoomDialogComponent,
+    //subject
     CreateSubjectDialogComponent,
     EditSubjectDialogComponent,
+    //class
     CreateClassDialogComponent,
-    EditClassDialogComponent
+    EditClassDialogComponent,
+    //teacher
+    CreateTeacherDialogComponent,
+    EditTeacherDialogComponent
   ],
 })
 export class AppModule {}

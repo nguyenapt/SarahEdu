@@ -58,8 +58,11 @@ import { EditCourseDialogComponent } from './course/edit-course/edit-course-dial
 import { SubjectComponent } from './subject/subject.component';
 import { CreateSubjectDialogComponent } from './subject/create-subject/create-subject-dialog.component';
 import { EditSubjectDialogComponent } from './subject/edit-subject/edit-subject-dialog.component';
-
+//student
 import { StudentComponent } from './student/student.component';
+import { CreateStudentDialogComponent } from './student/create-student/create-student-dialog.component';
+import { EditStudentDialogComponent } from './student/edit-student/edit-student-dialog.component';
+
 import { ProtectorComponent } from './protector/protector.component';
 
 @NgModule({
@@ -111,7 +114,10 @@ import { ProtectorComponent } from './protector/protector.component';
     SubjectComponent,
     CreateSubjectDialogComponent,
     EditSubjectDialogComponent,
+    //student
     StudentComponent,
+    CreateStudentDialogComponent,
+    EditStudentDialogComponent,
     ProtectorComponent
   ],
   imports: [
@@ -155,7 +161,9 @@ import { ProtectorComponent } from './protector/protector.component';
     EditTeacherDialogComponent,
     //course
     CreateCourseDialogComponent,
-    EditCourseDialogComponent
+    EditCourseDialogComponent,
+    CreateStudentDialogComponent,
+    EditStudentDialogComponent
   ],
 })
 export class AppModule {}

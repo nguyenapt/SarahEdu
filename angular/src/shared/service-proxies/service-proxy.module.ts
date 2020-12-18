@@ -11,6 +11,7 @@ import { SubjectServiceProxy } from './subject/subject.service.proxy'
 import { ClassServiceProxy } from './class/class.service.proxy'
 import { TeacherServiceProxy } from './teacher/teacher.service.proxy'
 import { CourseServiceProxy } from './course/course.service.proxy'
+import { StudentServiceProxy } from './student/student.service.proxy'
 
 @NgModule({
     providers: [
@@ -26,6 +27,7 @@ import { CourseServiceProxy } from './course/course.service.proxy'
         ClassServiceProxy,
         TeacherServiceProxy,
         CourseServiceProxy,
+        StudentServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

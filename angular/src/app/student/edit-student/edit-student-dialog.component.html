@@ -1,0 +1,234 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #editStudentModal="ngForm"
+  (ngSubmit)="save()"
+>
+  <abp-modal-header
+    [title]="'Edit course'"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">
+    <tabset>
+      <tab [heading]="'Student details'" class="pt-3 px-2">
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="name">
+            {{ "Name" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              required
+              maxlength="32"
+              [(ngModel)]="student.firstName"
+              #nameModel="ngModel"
+              #nameEl
+            />
+            <abp-validation-summary
+              [control]="nameModel"
+              [controlEl]="nameEl"
+            ></abp-validation-summary>
+          </div>
+        </div>      
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="middleName">
+            Middle Name
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="middleName"
+              id="middleName"
+              [(ngModel)]="student.middleName"
+            />
+          </div>
+        </div>
+  
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="lastName">
+            Last Name
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="lastName"
+              id="lastName"
+              [(ngModel)]="student.lastName"
+            />
+          </div>
+        </div>
+  
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="dateOfBirth">
+            Date of birth
+          </label>
+          <div class="col-md-9">
+            <input class="form-control" 
+              type="date" 
+              name="dateOfBirth" 
+              [(ngModel)]="student.dateOfBirth" 
+            />
+          </div>
+        </div>
+  
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="emailAddress">
+            Email
+          </label>
+          <div class="col-md-9">
+            <input
+              type="email"
+              class="form-control"
+              name="emailAddress"
+              id="emailAddress"
+              required
+              maxlength="256"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
+              [(ngModel)]="student.email"
+              #emailAddressModel="ngModel"
+              #emailAddressEl
+            />
+            <abp-validation-summary
+              [control]="emailAddressModel"
+              [controlEl]="emailAddressEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+  
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="phoneNumber">
+            Phone Number
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="phoneNumber"
+              id="phoneNumber"
+              [(ngModel)]="student.phoneNumber"
+            />
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="startDate">
+            Start Date
+          </label>
+          <div class="col-md-9">
+            <input class="form-control" 
+              type="date" 
+              name="startDate" 
+              [(ngModel)]="student.startDate" 
+            />
+          </div>
+        </div>
+  
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="endDate">
+            End Date
+          </label>
+          <div class="col-md-9">
+            <input class="form-control" 
+              type="date" 
+              name="endDate" 
+              [(ngModel)]="student.endDate" 
+            />
+          </div>
+        </div>
+
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="schoolName">
+            Last Name
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="schoolName"
+              id="schoolName"
+              [(ngModel)]="student.schoolName"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label" for="className">
+            Last Name
+          </label>
+          <div class="col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              name="className"
+              id="className"
+              [(ngModel)]="student.className"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row mb-0">
+          <label class="col-md-3 col-form-label" for="description">
+            Description
+          </label>
+          <div class="col-md-9">
+            <textarea
+              type="text"
+              class="form-control"
+              name="description"
+              id="description"
+              [(ngModel)]="student.description"
+            >
+            </textarea>
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label class="col-md-3 col-form-label">
+            Is active
+          </label>
+          <div class="col-md-9">
+            <div class="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                name="isActive"
+                id="isActive"
+                [(ngModel)]="student.isActive"
+              />
+              <label class="custom-control-label mt-2" for="isActive"></label>
+            </div>
+          </div>
+        </div>
+        
+      </tab>
+      <tab [heading]="'Subjects'" class="pt-3 px-2">
+        <div class="form-group row mb-0">
+          <ng-container *ngFor="let courseSubject of courseSubjects; let i = index">
+            <div class="col-md-6">
+              <div class="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [id]="'courseSubject_' + i"
+                  [checked]="isCourseSubjectChecked(courseSubject.courseName)"
+                  (change)="onCourseSubjectChange(courseSubject, $event)"
+                />
+                <label class="custom-control-label" [for]="'courseSubject_' + i">
+                  {{ courseSubject.courseName + courseSubject.subjectName }}
+                </label>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </tab>
+    </tabset>
+  </div>  
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!editStudentModal.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>

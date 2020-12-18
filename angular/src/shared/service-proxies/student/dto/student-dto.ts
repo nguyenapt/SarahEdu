@@ -27,6 +27,16 @@ export class CreateStudentDto implements ICreateStudentDto {
     init(data?: any) {
         if (data) {
             this.firstName = data["firstName"];
+            this.middleName = data["middleName"];
+            this.lastName = data["lastName"];
+            this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
+            this.email = data["email"];
+            this.phoneNumber = data["phoneNumber"];
+            this.schoolName = data["schoolName"];
+            this.className = data["className"];            
+            this.isActive = data["isActive"];
             this.description = data["description"];
             if (Array.isArray(data["subjects"])) {
                 this.subjects = [] as any;
@@ -46,7 +56,17 @@ export class CreateStudentDto implements ICreateStudentDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["firstName"] = this.firstName;
-        data["description"] = this.description;
+        data["middleName"] = this.middleName;
+        data["lastName"] = this.lastName;
+        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate : <any>undefined;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["schoolName"] = this.schoolName;
+        data["className"] = this.className;
+        data["description"] = this.description;            
+        data["isActive"] = this.isActive;
         if (Array.isArray(this.subjects)) {
             data["subjects"] = [];
             for (let item of this.subjects)
@@ -106,8 +126,18 @@ export class StudentDto implements IStudentDto {
 
     init(data?: any) {
         if (data) {
-            this.firstName = data["firstName"];
-            this.description = data["description"];
+            data["firstName"] = this.firstName;
+            data["middleName"] = this.middleName;
+            data["lastName"] = this.lastName;
+            data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
+            data["startDate"] = this.startDate ? this.startDate : <any>undefined;
+            data["endDate"] = this.endDate ? this.endDate : <any>undefined;
+            data["email"] = this.email;
+            data["phoneNumber"] = this.phoneNumber;
+            data["schoolName"] = this.schoolName;
+            data["className"] = this.className;
+            data["description"] = this.description;            
+            data["isActive"] = this.isActive;
             if (Array.isArray(data["subjects"])) {
                 this.subjects = [] as any;
                 for (let item of data["subjects"])
@@ -127,7 +157,17 @@ export class StudentDto implements IStudentDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["firstName"] = this.firstName;
-        data["description"] = this.description;
+        data["middleName"] = this.middleName;
+        data["lastName"] = this.lastName;
+        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate : <any>undefined;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["schoolName"] = this.schoolName;
+        data["className"] = this.className;
+        data["description"] = this.description;            
+        data["isActive"] = this.isActive;
         if (Array.isArray(this.subjects)) {
             data["subjects"] = [];
             for (let item of this.subjects)

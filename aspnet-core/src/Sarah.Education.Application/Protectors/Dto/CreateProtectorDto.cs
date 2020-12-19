@@ -15,5 +15,7 @@ namespace Sarah.Education.Protectors.Dto
         public string PhoneNumber { get; set; }
         public int ProtectorType { get; set; }
         public bool IsActive { get; set; }
+
+        public Guid[] StudentIds { get; set; }
     }
 }

@@ -1,0 +1,128 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #createProtectorForm="ngForm"
+  (ngSubmit)="save()"
+>
+  <abp-modal-header
+    [title]="'Create new protector'"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">   
+      <div class="form-group row required">
+        <label class="col-md-3 col-form-label" for="firstName">
+          First Name
+        </label>
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            name="firstName"
+            id="firstName"
+            required
+            minlength="2"
+            maxlength="32"
+            [(ngModel)]="protector.firstName"
+            #firstNameModel="ngModel"
+            #firstNameEl
+          />
+          <abp-validation-summary
+            [control]="firstNameModel"
+            [controlEl]="firstNameEl"
+          ></abp-validation-summary>
+        </div>
+      </div>
+
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="middleName">
+          Middle Name
+        </label>
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            name="middleName"
+            id="middleName"
+            [(ngModel)]="protector.middleName"
+          />
+        </div>
+      </div>
+
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="lastName">
+          Last Name
+        </label>
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            name="lastName"
+            id="lastName"
+            [(ngModel)]="protector.lastName"
+          />
+        </div>
+      </div>      
+
+      <div class="form-group row required">
+        <label class="col-md-3 col-form-label" for="emailAddress">
+          Email
+        </label>
+        <div class="col-md-9">
+          <input
+            type="email"
+            class="form-control"
+            name="emailAddress"
+            id="emailAddress"
+            required
+            maxlength="256"
+            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
+            [(ngModel)]="protector.email"
+            #emailAddressModel="ngModel"
+            #emailAddressEl
+          />
+          <abp-validation-summary
+            [control]="emailAddressModel"
+            [controlEl]="emailAddressEl"
+          ></abp-validation-summary>
+        </div>
+      </div>
+
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="phoneNumber">
+          Phone Number
+        </label>
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            name="phoneNumber"
+            id="phoneNumber"
+            [(ngModel)]="protector.phoneNumber"
+          />
+        </div>
+      </div>  
+
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label">
+          Is active
+        </label>
+        <div class="col-md-9">
+          <div class="custom-control custom-checkbox">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              name="isActive"
+              id="isActive"
+              [(ngModel)]="protector.isActive"
+            />
+            <label class="custom-control-label mt-2" for="isActive"></label>
+          </div>
+        </div>
+      </div>
+  </div>
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!createProtectorForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>

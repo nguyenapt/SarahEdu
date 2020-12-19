@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Sarah.Education.Entities;
+using Sarah.Education.Students.Dto;
 
 namespace Sarah.Education.Protectors.Dto
 {
@@ -17,5 +18,6 @@ namespace Sarah.Education.Protectors.Dto
         public string PhoneNumber { get; set; }
         public int ProtectorType { get; set; }
         public bool IsActive { get; set; }
+        public StudentDto[] Students { get; set; }
     }
 }

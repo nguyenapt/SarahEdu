@@ -62,8 +62,10 @@ import { EditSubjectDialogComponent } from './subject/edit-subject/edit-subject-
 import { StudentComponent } from './student/student.component';
 import { CreateStudentDialogComponent } from './student/create-student/create-student-dialog.component';
 import { EditStudentDialogComponent } from './student/edit-student/edit-student-dialog.component';
-
+//protector
 import { ProtectorComponent } from './protector/protector.component';
+import { CreateProtectorDialogComponent } from './protector/create-protector/create-protector-dialog.component'
+import { EditProtectorDialogComponent } from './protector/edit-protector/edit-protector-dialog.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +120,10 @@ import { ProtectorComponent } from './protector/protector.component';
     StudentComponent,
     CreateStudentDialogComponent,
     EditStudentDialogComponent,
-    ProtectorComponent
+    //protector
+    ProtectorComponent,
+    CreateProtectorDialogComponent,
+    EditProtectorDialogComponent
   ],
   imports: [
     CommonModule,
@@ -162,8 +167,12 @@ import { ProtectorComponent } from './protector/protector.component';
     //course
     CreateCourseDialogComponent,
     EditCourseDialogComponent,
+    //student
     CreateStudentDialogComponent,
-    EditStudentDialogComponent
+    EditStudentDialogComponent,
+    //protector
+    CreateProtectorDialogComponent,
+    EditProtectorDialogComponent
   ],
 })
 export class AppModule {}

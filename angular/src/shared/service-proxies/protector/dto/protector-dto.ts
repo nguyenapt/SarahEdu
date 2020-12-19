@@ -1,3 +1,4 @@
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import * as moment from 'moment';
 
 export class CreateProtectorDto implements ICreateProtectorDto {
@@ -73,6 +74,7 @@ export class ProtectorDto implements IProtectorDto {
     phoneNumber: string | undefined;
     protectorType: string | undefined;
     isActive: boolean | undefined;
+    students: StudentDto[] | undefined;
     id: string;
 
     constructor(data?: IProtectorDto) {
@@ -92,6 +94,11 @@ export class ProtectorDto implements IProtectorDto {
             this.email = data["email"];
             this.phoneNumber = data["phoneNumber"];
             this.isActive = data["isActive"];
+            if (Array.isArray(data["students"])) {
+                this.students = [] as any;
+                for (let item of data["students"])
+                    this.students.push(item);
+            }
             this.id = data["id"];
         }
     }
@@ -112,6 +119,11 @@ export class ProtectorDto implements IProtectorDto {
         data["phoneNumber"] = this.phoneNumber;
         data["isActive"] = this.isActive;
         data["id"] = this.id;
+        if (Array.isArray(this.students)) {
+            data["students"] = [];
+            for (let item of this.students)
+                data["students"].push(item);
+        }
         return data; 
     }
 
@@ -131,6 +143,7 @@ export interface IProtectorDto {
     phoneNumber: string | undefined;
     protectorType: string | undefined;
     isActive: boolean | undefined;
+    students: StudentDto[] | undefined;
     id: string;
 }
 

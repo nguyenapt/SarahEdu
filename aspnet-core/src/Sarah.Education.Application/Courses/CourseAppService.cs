@@ -76,14 +76,8 @@ namespace Sarah.Education.Courses
 
         public async void CreateCourseSubject(Guid courseId, string[] subjectNames)
         {
-            var courseSubjects = _courseSubjectRepository.GetAll().Where(x => x.CourseId == courseId);
-            if(courseSubjects != null && courseSubjects.Any())
-            {
-                foreach(var courseSubject in courseSubjects)
-                {
-                    _courseSubjectRepository.Delete(courseSubject);
-                }                
-            }
+            _courseSubjectRepository.Delete(x => x.CourseId == courseId);
+            
             foreach (var subjectName in subjectNames)
             {
                 var subject = _subjectRepository.FirstOrDefault(x => x.Name == subjectName);

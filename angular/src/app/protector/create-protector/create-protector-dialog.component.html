@@ -119,6 +119,21 @@
           </div>
         </div>
       </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label">
+          Students
+        </label>
+        <div class="col-md-9">
+          <ng-select [items]="students"
+               bindLabel="firstName"
+               name="select_student"
+               placeholder="Select student"
+               appendTo="body"
+               multiple="true"
+               [(ngModel)]="selectStudent">
+          </ng-select>
+        </div>
+      </div>
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"

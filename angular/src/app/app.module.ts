@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -127,6 +128,7 @@ import { EditProtectorDialogComponent } from './protector/edit-protector/edit-pr
   ],
   imports: [
     CommonModule,
+    NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

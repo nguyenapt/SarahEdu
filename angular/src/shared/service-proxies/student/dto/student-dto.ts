@@ -13,7 +13,7 @@ export class CreateStudentDto implements ICreateStudentDto {
     className: string | undefined;
     isActive: boolean | undefined;
     description: string | undefined;
-    subjects: string[] | undefined;
+    courseSubjects: string[] | undefined;
 
     constructor(data?: ICreateStudentDto) {
         if (data) {
@@ -38,10 +38,10 @@ export class CreateStudentDto implements ICreateStudentDto {
             this.className = data["className"];            
             this.isActive = data["isActive"];
             this.description = data["description"];
-            if (Array.isArray(data["subjects"])) {
-                this.subjects = [] as any;
-                for (let item of data["subjects"])
-                    this.subjects.push(item);
+            if (Array.isArray(data["courseSubjects"])) {
+                this.courseSubjects = [] as any;
+                for (let item of data["courseSubjects"])
+                    this.courseSubjects.push(item);
             }
         }
     }
@@ -67,10 +67,10 @@ export class CreateStudentDto implements ICreateStudentDto {
         data["className"] = this.className;
         data["description"] = this.description;            
         data["isActive"] = this.isActive;
-        if (Array.isArray(this.subjects)) {
-            data["subjects"] = [];
-            for (let item of this.subjects)
-                data["subjects"].push(item);
+        if (Array.isArray(this.courseSubjects)) {
+            data["courseSubjects"] = [];
+            for (let item of this.courseSubjects)
+                data["courseSubjects"].push(item);
         }
         return data; 
     }
@@ -96,7 +96,7 @@ export interface ICreateStudentDto {
     className: string | undefined;
     isActive: boolean | undefined;
     description: string | undefined;
-    subjects: string[] | undefined;
+    courseSubjects: string[] | undefined;
 }
 
 export class StudentDto implements IStudentDto {
@@ -112,7 +112,7 @@ export class StudentDto implements IStudentDto {
     className: string | undefined;
     isActive: boolean | undefined;
     description: string | undefined;
-    subjects: string[] | undefined;
+    courseSubjects: string[] | undefined;
     id: string;
 
     constructor(data?: IStudentDto) {
@@ -126,22 +126,22 @@ export class StudentDto implements IStudentDto {
 
     init(data?: any) {
         if (data) {
-            data["firstName"] = this.firstName;
-            data["middleName"] = this.middleName;
-            data["lastName"] = this.lastName;
-            data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
-            data["startDate"] = this.startDate ? this.startDate : <any>undefined;
-            data["endDate"] = this.endDate ? this.endDate : <any>undefined;
-            data["email"] = this.email;
-            data["phoneNumber"] = this.phoneNumber;
-            data["schoolName"] = this.schoolName;
-            data["className"] = this.className;
-            data["description"] = this.description;            
-            data["isActive"] = this.isActive;
-            if (Array.isArray(data["subjects"])) {
-                this.subjects = [] as any;
-                for (let item of data["subjects"])
-                    this.subjects.push(item);
+            this.firstName = data["firstName"];
+            this.middleName = data["middleName"];
+            this.lastName = data["lastName"];
+            this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
+            this.email = data["email"];
+            this.phoneNumber = data["phoneNumber"];
+            this.schoolName = data["schoolName"];
+            this.className = data["className"];
+            this.description = data["description"]; 
+            this.isActive = data["isActive"];
+            if (Array.isArray(data["courseSubjects"])) {
+                this.courseSubjects = [] as any;
+                for (let item of data["courseSubjects"])
+                    this.courseSubjects.push(item);
             }
             this.id = data["id"];
         }
@@ -168,10 +168,10 @@ export class StudentDto implements IStudentDto {
         data["className"] = this.className;
         data["description"] = this.description;            
         data["isActive"] = this.isActive;
-        if (Array.isArray(this.subjects)) {
-            data["subjects"] = [];
-            for (let item of this.subjects)
-                data["subjects"].push(item);
+        if (Array.isArray(this.courseSubjects)) {
+            data["courseSubjects"] = [];
+            for (let item of this.courseSubjects)
+                data["courseSubjects"].push(item);
         }
         data["id"] = this.id;
         return data; 
@@ -198,7 +198,7 @@ export interface IStudentDto {
     className: string | undefined;
     isActive: boolean | undefined;
     description: string | undefined;
-    subjects: string[] | undefined;
+    courseSubjects: string[] | undefined;
     id: string;
 }
 

@@ -11,6 +11,7 @@ import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-
 import { AppComponentBase } from '@shared/app-component-base';
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
 import { StudentDto,CourseSubjectDto } from '@shared/service-proxies/student/dto/student-dto';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: './edit-student-dialog.component.html'
@@ -22,6 +23,9 @@ export class EditStudentDialogComponent extends AppComponentBase
   courseSubjects: CourseSubjectDto[] = [];
   checkedCourseSubjectsMap: { [key: string]: boolean } = {};
   id: string;
+  dateOfBirth :string;
+  startDate:string;
+  endDate:string;
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -35,9 +39,11 @@ export class EditStudentDialogComponent extends AppComponentBase
 
   ngOnInit(): void {
     this._studentService.get(this.id).subscribe((result) => {
-      this.student = result;
-
-      this._studentService.getCourseSubjects().subscribe((result2) => {
+        this.student = result;
+        this.dateOfBirth = this.student.dateOfBirth ? this.student.dateOfBirth.format().split("T")[0]:"";
+        this.startDate = this.student.startDate ? this.student.startDate.format().split("T")[0]:"";
+        this.endDate = this.student.endDate ? this.student.endDate.format().split("T")[0]:"";
+        this._studentService.getCourseSubjects().subscribe((result2) => {
         this.courseSubjects = result2.items;
         this.setInitialCourseSubjectsStatus();
       });
@@ -46,18 +52,18 @@ export class EditStudentDialogComponent extends AppComponentBase
 
   setInitialCourseSubjectsStatus(): void {
     _map(this.courseSubjects, (item) => {
-      this.checkedCourseSubjectsMap[item.courseName+item.subjectName] = this.isCourseSubjectChecked(
-        item.courseName+item.subjectName
+      this.checkedCourseSubjectsMap[item.id] = this.isCourseSubjectChecked(
+        item.id
       );
     });
   }
 
   isCourseSubjectChecked(name: string): boolean {
-    return _includes(this.student.subjects, name);
+    return _includes(this.student.courseSubjects, name);
   }
 
   onCourseSubjectChange(courseSubject: CourseSubjectDto, $event) {
-    this.checkedCourseSubjectsMap[courseSubject.courseName+courseSubject.subjectName] = $event.target.checked;
+    this.checkedCourseSubjectsMap[courseSubject.id] = $event.target.checked;
   }
 
   getCheckedCourseSubjects(): string[] {
@@ -73,7 +79,11 @@ export class EditStudentDialogComponent extends AppComponentBase
   save(): void {
     this.saving = true;
 
-    this.student.subjects = this.getCheckedCourseSubjects();
+    this.student.dateOfBirth = this.dateOfBirth ? moment(this.dateOfBirth).format() : <any>undefined;
+    this.student.startDate =  this.startDate ? moment(this.startDate).format() : <any>undefined;
+    this.student.endDate = this.endDate ? moment(this.endDate).format(): <any>undefined;
+
+    this.student.courseSubjects = this.getCheckedCourseSubjects();
 
     this._studentService
       .update(this.student)

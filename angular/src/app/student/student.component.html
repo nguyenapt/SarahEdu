@@ -43,7 +43,17 @@
               <thead class="bg-light">
                 <tr>
                   <th>{{ "FirstName" | localize }}</th>
+                  <th>{{ "MiddleName" | localize }}</th>
                   <th>{{ "LastName" | localize }}</th>
+                  <th>{{ "DateOfBirth" | localize }}</th>
+                  <th>{{ "Email" | localize }}</th>
+                  <th>{{ "PhoneNumber" | localize }}</th>
+                  <th>{{ "Description" | localize }}</th>
+                  <th>{{ "SchoolName" | localize }}</th>
+                  <th>{{ "ClassName" | localize }}</th>
+                  <th>{{ "StartDate" | localize }}</th>
+                  <th>{{ "EndDate" | localize }}</th>
+                  <th>{{ "IsActive" | localize }}</th>
                   <th style="width: 200px;">{{ "Actions" | localize }}</th>
                 </tr>
               </thead>
@@ -61,7 +71,27 @@
                   "
                 >
                   <td>{{ student.firstName }}</td>
+                  <td>{{ student.middleName }}</td>
+                  <td>{{ student.lastName }}</td>
+                  <td>{{ student.dateOfBirth | date}}</td>
+                  <td>{{ student.email }}</td>
+                  <td>{{ student.phoneNumber }}</td>
                   <td>{{ student.description }}</td>
+                  <td>{{ student.schoolName }}</td>
+                  <td>{{ student.className }}</td>
+                  <td>{{ student.startDate | date}}</td>
+                  <td>{{ student.endDate | date}}</td>
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        disabled
+                        [checked]="student.isActive"
+                      />
+                      <label class="custom-control-label"></label>
+                    </div>
+                  </td>
                   <td>
                     <button
                       type="button"

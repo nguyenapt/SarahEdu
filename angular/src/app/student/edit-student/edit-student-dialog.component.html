@@ -5,7 +5,7 @@
   (ngSubmit)="save()"
 >
   <abp-modal-header
-    [title]="'Edit course'"
+    [title]="'Edit student'"
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
   <div class="modal-body">
@@ -71,7 +71,7 @@
             <input class="form-control" 
               type="date" 
               name="dateOfBirth" 
-              [(ngModel)]="student.dateOfBirth" 
+              [(ngModel)]="dateOfBirth" 
             />
           </div>
         </div>
@@ -122,7 +122,7 @@
             <input class="form-control" 
               type="date" 
               name="startDate" 
-              [(ngModel)]="student.startDate" 
+              [(ngModel)]="startDate" 
             />
           </div>
         </div>
@@ -135,7 +135,7 @@
             <input class="form-control" 
               type="date" 
               name="endDate" 
-              [(ngModel)]="student.endDate" 
+              [(ngModel)]="endDate" 
             />
           </div>
         </div>
@@ -213,11 +213,11 @@
                   type="checkbox"
                   class="custom-control-input"
                   [id]="'courseSubject_' + i"
-                  [checked]="isCourseSubjectChecked(courseSubject.courseName)"
+                  [checked]="isCourseSubjectChecked(courseSubject.id)"
                   (change)="onCourseSubjectChange(courseSubject, $event)"
                 />
                 <label class="custom-control-label" [for]="'courseSubject_' + i">
-                  {{ courseSubject.courseName + courseSubject.subjectName }}
+                  {{ courseSubject.courseName + ' - ' + courseSubject.subjectName }}
                 </label>
               </div>
             </div>

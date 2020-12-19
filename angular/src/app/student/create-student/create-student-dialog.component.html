@@ -212,11 +212,11 @@
                   type="checkbox"
                   class="custom-control-input"
                   [id]="'courseSubject_' + i"
-                  [checked]="isCourseSubjectChecked(courseSubject.courseName)"
+                  [checked]="isCourseSubjectChecked(courseSubject.id)"
                   (change)="onCourseSubjectChange(courseSubject, $event)"
                 />
                 <label class="custom-control-label" [for]="'courseSubject_' + i">
-                  {{ courseSubject.courseName + courseSubject.subjectName }}
+                  {{ courseSubject.courseName + ' - ' + courseSubject.subjectName }}
                 </label>
               </div>
             </div>

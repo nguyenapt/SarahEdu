@@ -46,8 +46,8 @@ export class CreateStudentDialogComponent extends AppComponentBase
 
   setInitialSubjectsStatus(): void {
     _map(this.courseSubjects, (item) => {
-      this.checkedCourseSubjectsMap[item.courseName + item.subjectName] = this.isCourseSubjectChecked(
-        item.courseName+item.subjectName
+      this.checkedCourseSubjectsMap[item.id] = this.isCourseSubjectChecked(
+        item.id
       );
     });
   }
@@ -59,7 +59,7 @@ export class CreateStudentDialogComponent extends AppComponentBase
   }
 
   onCourseSubjectChange(courseSubject: CourseSubjectDto, $event) {
-    this.checkedCourseSubjectsMap[courseSubject.courseName+courseSubject.subjectName] = $event.target.checked;
+    this.checkedCourseSubjectsMap[courseSubject.id] = $event.target.checked;
   }
 
   getCheckedCourseSubjects(): string[] {
@@ -75,7 +75,7 @@ export class CreateStudentDialogComponent extends AppComponentBase
   save(): void {
     this.saving = true;
 
-    this.student.subjects = this.getCheckedCourseSubjects();
+    this.student.courseSubjects = this.getCheckedCourseSubjects();
 
     this._studentService
       .create(this.student)

@@ -6,13 +6,22 @@ using Sarah.Education.Entities;
 
 namespace Sarah.Education.Students.Dto
 {
-    [AutoMapFrom(typeof(CourseSubject))]
-    [AutoMapTo(typeof(CourseSubject))]
-    public class CourseSubjectDto : EntityDto<Guid>
+    [AutoMapFrom(typeof(Student))]
+    [AutoMapTo(typeof(Student))]
+    public class StudentDto : EntityDto<Guid>
     {
-        public Guid CourseId { get; set; }
-        public Guid SubjectId { get; set; }
-        public string CourseName { get; set; }
-        public string SubjectName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string SchoolName { get; set; }
+        public string ClassName { get; set; }
+        public bool IsActive { get; set; }
+        public string Description { get; set; }
+        public Guid[] CourseSubjects { get; set; }
     }
 }

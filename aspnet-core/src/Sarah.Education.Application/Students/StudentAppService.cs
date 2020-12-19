@@ -123,5 +123,11 @@ namespace Sarah.Education.Students
                        || x.ClassName.Contains(input.Keyword)
                        || x.Description.Contains(input.Keyword));
         }
+
+        public async Task<ListResultDto<StudentDto>> GetStudents()
+        {
+            var students = Repository.GetAllList();
+            return new ListResultDto<StudentDto>(ObjectMapper.Map<List<StudentDto>>(students));
+        }
     }
 }

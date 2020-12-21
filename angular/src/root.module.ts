@@ -18,6 +18,14 @@ import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 
 import { RootComponent } from './root.component';
 import { AppInitializer } from './app-initializer';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+export function momentAdapterFactory() {
+  return adapterFactory(moment);
+};
 
 export function getCurrentLanguage(): string {
   if (abp.localization.currentLanguage.name) {
@@ -40,6 +48,8 @@ export function getCurrentLanguage(): string {
     TabsModule.forRoot(),
     ServiceProxyModule,
     RootRoutingModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+    NgbModule,
   ],
   declarations: [RootComponent],
   providers: [

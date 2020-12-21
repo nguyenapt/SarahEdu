@@ -32,12 +32,14 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "node_modules/famfamfam-flags/dist/sprite/famfamfam-flags.css",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "src/assets/freeze-ui/freeze-ui.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/admin-lte-css-only/css/adminlte.min.css",
-              "node_modules/@ng-select/ng-select/themes/material.theme.css",
+              "node_modules/@ng-select/ng-select/themes/material.theme.css",              
               "src/shared/core.less"
             ],
             "scripts": [
@@ -133,12 +135,13 @@
               }
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "node_modules/famfamfam-flags/dist/sprite/famfamfam-flags.css",
               "node_modules/sweetalert2/dist/sweetalert2.css",
               "src/assets/freeze-ui/freeze-ui.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/admin-lte-css-only/css/adminlte.min.css",
-              "node_modules/@ng-select/ng-select/themes/material.theme.css",
+              "node_modules/@ng-select/ng-select/themes/material.theme.css",              
               "src/shared/core.less"
             ],
             "scripts": [

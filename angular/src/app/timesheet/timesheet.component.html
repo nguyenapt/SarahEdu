@@ -2,135 +2,225 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-12">
-          <h1>{{ "About" | localize }}</h1>
+        <div class="col-6">
+          <h1>{{ "Time scheduler" | localize }}</h1>
+        </div>
+        <div class="col-6 text-right">
+          <a href="javascript:;" class="btn bg-blue" (click)="addEvent()">
+            <i class="fa fa-plus-square"></i>
+            {{ "Create" | localize }}
+          </a>
         </div>
       </div>
     </div>
   </section>
   <section class="content px-2">
     <div class="container-fluid">
-      <div class="card">
-        <div class="card-body">
-          <p>
-            This is a simple startup template based on ASP.NET Boilerplate
-            framework and Module Zero. If you need an enterprise startup
-            project, check
-            <a href="http://aspnetzero.com?ref=abptmpl" target="_blank">
-              ASP.NET ZERO </a
-            >.
-          </p>
-          <h3>What is ASP.NET Boilerplate?</h3>
-          <p>
-            ASP.NET Boilerplate is an application framework built on latest
-            <strong>ASP.NET Core</strong> framework. It makes easy to use
-            authorization, dependency injection, validation, exception handling,
-            localization, logging, caching, background jobs and so on. It's
-            built on already familiar tools like Entity Framework, AutoMapper,
-            Castle Windsor...
-          </p>
-          <p>
-            ASP.NET Boilerplate implements
-            <strong>NLayer architecture</strong> (Domain, Application,
-            Infrastructure and Presentation Layers) and
-            <strong>Domain Driven Design</strong> (Entities, Repositories,
-            Domain/Application Services, DTO's...). Also implements and provides
-            a good infrastructure to implement common software development
-            <strong>best practices</strong>.
-          </p>
-          <h3>What is Module Zero?</h3>
-          <p>
-            ASP.NET Boilerplate framework is designed to be independent of any
-            database schema and to be as generic as possible. Therefore, It
-            leaves some concepts
-            <strong>abstract</strong> and <strong>optional</strong> (like audit
-            logging, permission and setting stores) which requires some
-            <strong>data store</strong>.
-          </p>
-          <p>
-            <strong>Module Zero </strong>implements all fundamental concepts of
-            ASP.NET Boilerplate framework such as
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Zero/Tenant-Management"
-              >tenant management</a
+      <div class="row">
+        <div class="col-md-4">
+          <div class="btn-group">
+            <div
+              class="btn btn-warning"
+              mwlCalendarPreviousView
+              [view]="view"
+              [(viewDate)]="viewDate"
+              (viewDateChange)="closeOpenMonthViewDay()"
             >
-            (<strong>multi-tenancy</strong>),
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Zero/Role-Management"
+              Previous
+            </div>
+            <div
+              class="btn btn-secondary"
+              mwlCalendarToday
+              [(viewDate)]="viewDate"
             >
-              role management </a
-            >,
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Zero/User-Management"
-              >user management</a
-            >,
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Authorization"
-              >authorization</a
+              Today
+            </div>
+            <div
+              class="btn btn-warning"
+              mwlCalendarNextView
+              [view]="view"
+              [(viewDate)]="viewDate"
+              (viewDateChange)="closeOpenMonthViewDay()"
             >
-            (<a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Zero/Permission-Management"
+              Next
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+        </div>
+        <div class="col-md-4 text-right">
+          <div class="btn-group">
+            <div
+              class="btn btn-warning"
+              (click)="setView(CalendarView.Month)"
+              [class.active]="view === CalendarView.Month"
             >
-              permission management </a
-            >),
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Setting-Management"
-              >setting management</a
-            >,
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Zero/Language-Management"
+              Month
+            </div>
+            <div
+              class="btn btn-warning"
+              (click)="setView(CalendarView.Week)"
+              [class.active]="view === CalendarView.Week"
             >
-              language management </a
-            >,
-            <a
-              href="http://www.aspnetboilerplate.com/Pages/Documents/Audit-Logging"
-              >audit logging</a
+              Week
+            </div>
+            <div
+              class="btn btn-warning"
+              (click)="setView(CalendarView.Day)"
+              [class.active]="view === CalendarView.Day"
             >
-            and so on.
-          </p>
-          <p>
-            Module-Zero defines entities and implements
-            <strong>domain logic</strong>
-            (domain layer) and leaves application and presentation layers to
-            you.
-          </p>
-          <h4>Based on Microsoft ASP.NET Core Identity</h4>
-          <p>
-            Module Zero is based on Microsoft's
-            <a
-              href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity"
-              target="_blank"
-              >ASP.NET Core Identity</a
-            >
-            library. It extends user and role managers and implements user and
-            role stores using generic repositories.
-          </p>
-          <h3>Documentation</h3>
-          <ul>
-            <li>
-              <a
-                href="https://www.aspnetboilerplate.com/Pages/Documents/Zero/Startup-Template-Core"
-                >Documentation for this template</a
-              >
-            </li>
-            <li>
-              <a href="http://www.aspnetboilerplate.com/Pages/Documents"
-                >ASP.NET Boilerplate documentation</a
-              >
-            </li>
-          </ul>
-          <h3>Source code</h3>
-          <p>
-            This template is developed open source on Github. You can contribute
-            to the template.
-            <a
-              href="https://github.com/aspnetboilerplate/module-zero-core-template"
-              target="_blank"
-              >https://github.com/aspnetboilerplate/module-zero-core-template</a
-            >
-          </p>
+              Day
+            </div>
+          </div>
         </div>
       </div>
+      <br />
+      <div [ngSwitch]="view">
+        <mwl-calendar-month-view
+          *ngSwitchCase="CalendarView.Month"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [activeDayIsOpen]="activeDayIsOpen"
+          (dayClicked)="dayClicked($event.day)"
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view
+          *ngSwitchCase="CalendarView.Week"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"          
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view
+          *ngSwitchCase="CalendarView.Day"
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"          
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-day-view>
+      </div>
+
+      <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+
+      <br /><br /><br />
+
+      <h3>
+        Edit events
+        <button class="btn btn-primary float-right" (click)="addEvent()">
+          Add new
+        </button>
+        <div class="clearfix"></div>
+      </h3>
+
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Primary color</th>
+              <th>Secondary color</th>
+              <th>Starts at</th>
+              <th>Ends at</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let event of events">
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="event.title"
+                  (keyup)="refresh.next()"
+                />
+              </td>
+              <td>
+                <input
+                  type="color"
+                  [(ngModel)]="event.color.primary"
+                  (change)="refresh.next()"
+                />
+              </td>
+              <td>
+                <input
+                  type="color"
+                  [(ngModel)]="event.color.secondary"
+                  (change)="refresh.next()"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  type="text"
+                  mwlFlatpickr
+                  [(ngModel)]="event.start"
+                  (ngModelChange)="refresh.next()"
+                  [altInput]="true"
+                  [convertModelValue]="true"
+                  [enableTime]="true"
+                  dateFormat="Y-m-dTH:i"
+                  altFormat="F j, Y H:i"
+                  placeholder="Not set"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  type="text"
+                  mwlFlatpickr
+                  [(ngModel)]="event.end"
+                  (ngModelChange)="refresh.next()"
+                  [altInput]="true"
+                  [convertModelValue]="true"
+                  [enableTime]="true"
+                  dateFormat="Y-m-dTH:i"
+                  altFormat="F j, Y H:i"
+                  placeholder="Not set"
+                />
+              </td>
+              <td>
+                <button class="btn btn-danger" (click)="deleteEvent(event)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #modalContent let-close="close">
+        <div class="modal-header">
+          <h5 class="modal-title">Event action occurred</h5>
+          <button type="button" class="close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            Action:
+            <pre>{{ modalData?.action }}</pre>
+          </div>
+          <div>
+            Event:
+            <pre>{{ modalData?.event | json }}</pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="close()">
+            OK
+          </button>
+        </div>
+      </ng-template>
+
     </div>
   </section>
 </div>

@@ -68,6 +68,9 @@ import { ProtectorComponent } from './protector/protector.component';
 import { CreateProtectorDialogComponent } from './protector/create-protector/create-protector-dialog.component'
 import { EditProtectorDialogComponent } from './protector/edit-protector/edit-protector-dialog.component';
 
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -141,6 +144,10 @@ import { EditProtectorDialogComponent } from './protector/edit-protector/edit-pr
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [],
   entryComponents: [

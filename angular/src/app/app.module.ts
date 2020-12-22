@@ -14,7 +14,10 @@ import { AppComponent } from './app.component';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { SharedModule } from '@shared/shared.module';
 import { HomeComponent } from '@app/home/home.component';
+//timeSheet
 import { TimeSheetComponent } from '@app/timesheet/timesheet.component';
+import { CreateTimeSheetDialogComponent } from './timesheet/create-timesheet/create-timesheet-dialog.component';
+import { EditTimeSheetDialogComponent } from './timesheet/edit-timesheet/edit-timesheet-dialog.component';
 // tenants
 import { TenantsComponent } from '@app/tenants/tenants.component';
 import { CreateTenantDialogComponent } from './tenants/create-tenant/create-tenant-dialog.component';
@@ -181,7 +184,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     EditStudentDialogComponent,
     //protector
     CreateProtectorDialogComponent,
-    EditProtectorDialogComponent
+    EditProtectorDialogComponent,
+    //timesheet
+    CreateTimeSheetDialogComponent,
+    EditTimeSheetDialogComponent
   ],
 })
 export class AppModule {}

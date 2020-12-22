@@ -1,8 +1,11 @@
-import { Component, Injector, ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { Subject } from 'rxjs';
+import { Subject,fromEvent  } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { WeekViewHourSegment } from 'calendar-utils';
+
 import {
   startOfDay,
   endOfDay,
@@ -12,6 +15,8 @@ import {
   isSameDay,
   isSameMonth,
   addHours,
+  addMinutes,
+  endOfWeek
 } from 'date-fns';
 
 import {
@@ -36,6 +41,14 @@ const colors: any = {
   },
 };
 
+function floorToNearest(amount: number, precision: number) {
+  return Math.floor(amount / precision) * precision;
+}
+
+function ceilToNearest(amount: number, precision: number) {
+  return Math.ceil(amount / precision) * precision;
+}
+
 @Component({
   templateUrl: './timesheet.component.html',
   animations: [appModuleAnimation()],
@@ -55,6 +68,10 @@ export class TimeSheetComponent extends AppComponentBase {
     action: string;
     event: CalendarEvent;
   };
+
+  dragToCreateActive = false;
+
+  weekStartsOn: 0 = 0;
 
   actions: CalendarEventAction[] = [
     {
@@ -119,7 +136,7 @@ export class TimeSheetComponent extends AppComponentBase {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(injector: Injector, private modal: NgbModal) {
+  constructor(injector: Injector, private modal: NgbModal,private cdr: ChangeDetectorRef) {
     super(injector);
   }
 
@@ -187,5 +204,60 @@ export class TimeSheetComponent extends AppComponentBase {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  startDragToCreate(
+    segment: WeekViewHourSegment,
+    mouseDownEvent: MouseEvent,
+    segmentElement: HTMLElement
+  ) {
+    const dragToSelectEvent: CalendarEvent = {
+      id: this.events.length,
+      title: 'New event',
+      color: colors.red,
+      start: segment.date,
+      actions: this.actions,
+      meta: {
+        teacherName: "Hoang Nguyen",
+      },
+    };
+    this.events = [...this.events, dragToSelectEvent];
+    const segmentPosition = segmentElement.getBoundingClientRect();
+    this.dragToCreateActive = true;
+    const endOfView = endOfWeek(this.viewDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+
+    fromEvent(document, 'mousemove')
+      .pipe(
+        finalize(() => {
+          delete dragToSelectEvent.meta.tmpEvent;
+          this.dragToCreateActive = false;
+          this.refreshEvent();
+        }),
+        takeUntil(fromEvent(document, 'mouseup'))
+      )
+      .subscribe((mouseMoveEvent: MouseEvent) => {
+        const minutesDiff = ceilToNearest(
+          mouseMoveEvent.clientY - segmentPosition.top,
+          30
+        );
+
+        const daysDiff =
+          floorToNearest(
+            mouseMoveEvent.clientX - segmentPosition.left,
+            segmentPosition.width
+          ) / segmentPosition.width;
+
+        const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
+        if (newEnd > segment.date && newEnd < endOfView) {
+          dragToSelectEvent.end = newEnd;
+        }
+        this.refreshEvent();
+      });
+  }
+  private refreshEvent() {
+    this.events = [...this.events];
+    this.cdr.detectChanges();
   }
 }

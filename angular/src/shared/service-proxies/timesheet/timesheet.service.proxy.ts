@@ -2,7 +2,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { CreateTimeSheetDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from './dto/timesheet-dto';
+import { TimeSheetDto, TimeSheetDtoPagedResultDto} from './dto/timesheet-dto';
 import { ApiException } from '../api-exception';
 import { API_BASE_URL } from '../service-proxies';
 
@@ -21,7 +21,7 @@ export class TimeSheetServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(body: CreateTimeSheetDto | undefined): Observable<TimeSheetDto> {
+    create(body: TimeSheetDto | undefined): Observable<TimeSheetDto> {
         let url_ = this.baseUrl + "/api/services/app/Teacher/Create";
         url_ = url_.replace(/[?&]$/, "");
 

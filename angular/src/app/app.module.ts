@@ -78,7 +78,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   declarations: [
     AppComponent,
     HomeComponent,
+    //timesheet
     TimeSheetComponent,
+    CreateTimeSheetDialogComponent,
+    EditTimeSheetDialogComponent,
     // tenants
     TenantsComponent,
     CreateTenantDialogComponent,

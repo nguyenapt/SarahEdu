@@ -12,7 +12,6 @@ import { TeacherServiceProxy } from '@shared/service-proxies/teacher/teacher.ser
 
 import { TeacherDto, CreateTeacherDto} from '@shared/service-proxies/teacher/dto/teacher-dto';
 
-
 import { forEach as _forEach, map as _map } from 'lodash-es';
 
 @Component({

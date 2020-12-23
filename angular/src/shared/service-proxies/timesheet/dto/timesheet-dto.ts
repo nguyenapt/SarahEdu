@@ -1,101 +1,24 @@
+import { CalendarEvent } from 'angular-calendar';
+import { EventColor, EventAction } from 'calendar-utils';
 import * as moment from 'moment';
 
-export class CreateTimeSheetDto implements ICreateTimeSheetDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
-    dateOfBirth: moment.Moment | undefined;
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    salary: number | undefined;
-    description: string | undefined;
-    startDate: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    isActive: boolean | undefined;
-
-    constructor(data?: ICreateTimeSheetDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.firstName = data["firstName"];
-            this.middleName = data["middleName"];
-            this.lastName = data["lastName"];
-            this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
-            this.email = data["email"];
-            this.phoneNumber = data["phoneNumber"];
-            this.salary = data["salary"];
-            this.description = data["description"];
-            this.startDate =data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
-            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
-            this.isActive = data["isActive"];
-        }
-    }
-
-    static fromJS(data: any): CreateTimeSheetDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateTimeSheetDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
-        data["dateOfBirth"] = this.dateOfBirth ? moment.utc(this.dateOfBirth).format() : <any>undefined;
-        data["email"] = this.email;
-        data["phoneNumber"] = this.phoneNumber;
-        data["salary"] = this.salary;
-        data["description"] = this.description;
-        data["startDate"] = this.startDate ? moment.utc(this.dateOfBirth).format() : <any>undefined;
-        data["endDate"] = this.endDate ? moment.utc(this.dateOfBirth).format(): <any>undefined;
-        data["isActive"] = this.isActive;
-        return data; 
-    }
-
-    clone(): CreateTimeSheetDto {
-        const json = this.toJSON();
-        let result = new CreateTimeSheetDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateTimeSheetDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
-    dateOfBirth: moment.Moment | undefined;
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    salary: number | undefined;
-    description: string | undefined;
-    startDate: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    isActive: boolean | undefined;
-}
-
 export class TimeSheetDto implements ITimeSheetDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
-    dateOfBirth: moment.Moment | undefined;
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    salary: number | undefined;
-    description: string | undefined;
-    startDate: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    isActive: boolean | undefined;
-    id: string;
+    id?: string | number;
+    start: Date;
+    end?: Date;
+    title: string;
+    color?: EventColor;
+    actions?: EventAction[];
+    allDay?: boolean;
+    cssClass?: string;
+    resizable?: { beforeStart?: boolean; afterEnd?: boolean; };
+    draggable?: boolean;
+    meta?: any;
+    roomId: string | undefined;
+    teacherId: string | undefined;
+    courseSubjectId: string | undefined;
+    fee:number | undefined;
+    status:number | undefined;    
 
     constructor(data?: ITimeSheetDto) {
         if (data) {
@@ -105,21 +28,18 @@ export class TimeSheetDto implements ITimeSheetDto {
             }
         }
     }
+    
 
     init(data?: any) {
         if (data) {
-            this.firstName = data["firstName"];
-            this.middleName = data["middleName"];
-            this.lastName = data["lastName"];
-            this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
-            this.email = data["email"];
-            this.phoneNumber = data["phoneNumber"];
-            this.salary = data["salary"];
-            this.description = data["description"];
-            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
-            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
-            this.isActive = data["isActive"];
             this.id = data["id"];
+            this.start = data["fromDate"] ? moment(data["fromDate"].toString()) : <any>undefined;
+            this.end = data["toDate"] ? moment(data["toDate"].toString()) : <any>undefined;
+            this.roomId = data["roomId"];
+            this.teacherId = data["teacherId"];
+            this.courseSubjectId = data["courseSubjectId"];
+            this.fee = data["fee"];
+            this.status = data["status"];            
         }
     }
 
@@ -132,18 +52,14 @@ export class TimeSheetDto implements ITimeSheetDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
-        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
-        data["email"] = this.email;
-        data["phoneNumber"] = this.phoneNumber;
-        data["salary"] = this.salary;
-        data["description"] = this.description;
-        data["startDate"] = this.startDate ? this.startDate : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate : <any>undefined;
-        data["isActive"] = this.isActive;
         data["id"] = this.id;
+        data["fromDate"] = this.start ? moment.utc(this.start) : <any>undefined;
+        data["toDate"] = this.start ? moment.utc(this.start) : <any>undefined;
+        data["roomId"] = this.roomId;
+        data["teacherId"] = this.teacherId;
+        data["courseSubjectId"] = this.courseSubjectId;
+        data["fee"] = this.fee;
+        data["status"] = this.status;        
         return data; 
     }
 
@@ -155,20 +71,14 @@ export class TimeSheetDto implements ITimeSheetDto {
     }
 }
 
-export interface ITimeSheetDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
-    dateOfBirth: moment.Moment | undefined;
-    email: string | undefined;
-    phoneNumber: string | undefined;
-    salary: number | undefined;
-    description: string | undefined;
-    startDate: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    isActive: boolean | undefined;
-    id: string;
+export interface ITimeSheetDto extends CalendarEvent {
+    roomId?: string | undefined;
+    teacherId?: string | undefined;
+    courseSubjectId?: string | undefined;
+    fee?:number | undefined;
+    status?:number | undefined;
 }
+
 
 export class TimeSheetDtoPagedResultDto implements ITimeSheetDtoPagedResultDto {
     totalCount: number;

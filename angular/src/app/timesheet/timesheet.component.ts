@@ -1,10 +1,15 @@
-import { Component, Injector, ChangeDetectionStrategy, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Subject,fromEvent  } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WeekViewHourSegment } from 'calendar-utils';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
+import { ITimeSheetDto, TimeSheetDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+
+import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
+import { EditTimeSheetDialogComponent } from './edit-timesheet/edit-timesheet-dialog.component';
 
 import {
   startOfDay,
@@ -20,7 +25,6 @@ import {
 } from 'date-fns';
 
 import {
-  CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
@@ -51,23 +55,14 @@ function ceilToNearest(amount: number, precision: number) {
 
 @Component({
   templateUrl: './timesheet.component.html',
-  animations: [appModuleAnimation()],
-  styleUrls: ['./timesheet.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  animations: [appModuleAnimation()]
 })
 export class TimeSheetComponent extends AppComponentBase {
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
 
   viewDate: Date = new Date();
-
-  modalData: {
-    action: string;
-    event: CalendarEvent;
-  };
 
   dragToCreateActive = false;
 
@@ -77,23 +72,23 @@ export class TimeSheetComponent extends AppComponentBase {
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
+      onClick: ({ event }: { event: ITimeSheetDto }): void => {
+        this.showCreateOrEditTimeSheetDialog();
       },
     },
     {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: ITimeSheetDto }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.showCreateOrEditTimeSheetDialog(event);
       },
     },
   ];
 
   refresh: Subject<any> = new Subject();
 
-  events: CalendarEvent[] = [
+  events: ITimeSheetDto[] = [
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
@@ -136,11 +131,15 @@ export class TimeSheetComponent extends AppComponentBase {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(injector: Injector, private modal: NgbModal,private cdr: ChangeDetectorRef) {
+  constructor(
+    injector: Injector,
+    private _timesheetService: TimeSheetServiceProxy,
+    private _modalService: BsModalService
+  ) {
     super(injector);
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({ date, events }: { date: Date; events: ITimeSheetDto[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -169,37 +168,45 @@ export class TimeSheetComponent extends AppComponentBase {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+  createScheduler(): void {
+    this.showCreateOrEditTimeSheetDialog();
   }
 
-  addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
-  }
-
-  deleteEvent(eventToDelete: CalendarEvent) {
+  deleteEvent(eventToDelete: ITimeSheetDto) {
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
   setView(view: CalendarView) {
     this.view = view;
+  }
+
+  private showCreateOrEditTimeSheetDialog(timeSheet?: ITimeSheetDto): void {
+    let createOrEditTimeSheetDialog: BsModalRef;
+    if (!timeSheet) {
+      createOrEditTimeSheetDialog = this._modalService.show(
+        CreateTimeSheetDialogComponent,
+        {
+          class: 'modal-lg',
+        }
+      );
+    } 
+    else {
+      createOrEditTimeSheetDialog = this._modalService.show(
+        EditTimeSheetDialogComponent,
+        {
+          class: 'modal-lg',
+          initialState: {
+            timeSheet: timeSheet,
+          },
+        }
+      );
+    }
+
+    createOrEditTimeSheetDialog.content.onSave.subscribe(() => {
+      this.refreshEvent();
+    });
   }
 
   closeOpenMonthViewDay() {
@@ -211,7 +218,7 @@ export class TimeSheetComponent extends AppComponentBase {
     mouseDownEvent: MouseEvent,
     segmentElement: HTMLElement
   ) {
-    const dragToSelectEvent: CalendarEvent = {
+    const dragToSelectEvent: ITimeSheetDto = {
       id: this.events.length,
       title: 'New event',
       color: colors.red,
@@ -231,7 +238,7 @@ export class TimeSheetComponent extends AppComponentBase {
     fromEvent(document, 'mousemove')
       .pipe(
         finalize(() => {
-          delete dragToSelectEvent.meta.tmpEvent;
+          delete dragToSelectEvent.meta.teacherName;
           this.dragToCreateActive = false;
           this.refreshEvent();
         }),
@@ -258,6 +265,5 @@ export class TimeSheetComponent extends AppComponentBase {
   }
   private refreshEvent() {
     this.events = [...this.events];
-    this.cdr.detectChanges();
   }
 }

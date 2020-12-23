@@ -2,8 +2,8 @@ import {
   Component,
   Injector,
   OnInit,
+  EventEmitter,
   Output,
-  EventEmitter
 } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -14,6 +14,7 @@ import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timeshe
 import { TimeSheetDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import * as moment from 'moment';
+import { CalendarEvent } from 'angular-calendar';
 
 @Component({
   templateUrl: 'edit-timesheet-dialog.component.html'
@@ -21,39 +22,35 @@ import * as moment from 'moment';
 export class EditTimeSheetDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
-  teacher: TimeSheetDto = new TimeSheetDto();
-  id: string;
-  dateOfBirth :string;
+  timeSheet: TimeSheetDto;
   startDate:string;
   endDate:string;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    public _teacherService: TimeSheetServiceProxy,
+    public _timesheetService: TimeSheetServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this._teacherService.get(this.id).subscribe((result: TimeSheetDto) => {
-      this.teacher = result;
-      this.dateOfBirth = this.teacher.dateOfBirth ? this.teacher.dateOfBirth.format().split("T")[0]:"";
-      this.startDate = this.teacher.startDate ? this.teacher.startDate.format().split("T")[0]:"";
-      this.endDate = this.teacher.endDate ? this.teacher.endDate.format().split("T")[0]:"";
-    });
+    // this._timesheetService.get(this.event.id.toString()).subscribe((result: TimeSheetDto) => {
+    //   this.timeSheet = result;
+    //   this.startDate = this.timeSheet.start ? this.timeSheet.start.toString():"";
+    //   this.endDate = this.timeSheet.start ? this.timeSheet.start.toString():"";
+    // });
   }
 
   save(): void {
     this.saving = true;
 
-    this.teacher.dateOfBirth = this.dateOfBirth ? moment(this.dateOfBirth).format() : <any>undefined;
-    this.teacher.startDate =  this.startDate ? moment(this.startDate).format() : <any>undefined;
-    this.teacher.endDate = this.endDate ? moment(this.endDate).format(): <any>undefined;
+    this.timeSheet.start =  this.startDate ? moment(this.startDate).format() : <any>undefined;
+    this.timeSheet.start = this.endDate ? moment(this.endDate).format(): <any>undefined;
 
-    this._teacherService
-      .update(this.teacher)
+    this._timesheetService
+      .update(this.timeSheet)
       .pipe(
         finalize(() => {
           this.saving = false;

@@ -8,9 +8,10 @@ import {
 import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
+
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 
-import { TimeSheetDto, CreateTimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
@@ -21,7 +22,7 @@ import { forEach as _forEach, map as _map } from 'lodash-es';
 export class CreateTimeSheetDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
-  teacher: CreateTimeSheetDto = new CreateTimeSheetDto();
+  timeSheet: TimeSheetDto = new TimeSheetDto();
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -41,7 +42,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this.saving = true;
 
     this._teacherService
-      .create(this.teacher)
+      .create(this.timeSheet)
       .pipe(
         finalize(() => {
           this.saving = false;

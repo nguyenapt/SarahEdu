@@ -5,11 +5,91 @@
   (ngSubmit)="save()"
 >
   <abp-modal-header
-    [title]="'CreateNewRoom' | localize"
+    [title]="'EditTimeScheduler' | localize"
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
   <div class="modal-body">   
-    <b>aaaaa</b>
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label" for="startDate">
+        Start Date
+      </label>
+      <div class="col-md-6">
+        <input class="form-control" 
+          type="date" 
+          name="startDate" 
+          [(ngModel)]="timeSheet.start" 
+        />
+      </div>
+      <div class="col-md-3">
+        <input placeholder="00:00" class="form-control"  [ngxTimepicker]="fullTimeStart" [format]="24"  readonly>
+        <ngx-material-timepicker #fullTimeStart></ngx-material-timepicker>
+      </div>
+    </div>
+
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label" for="endDate">
+        End Date
+      </label>
+      <div class="col-md-6">
+        <input class="form-control" 
+          type="date" 
+          name="endDate" 
+          [(ngModel)]="timeSheet.end" 
+        />
+      </div>
+      <div class="col-md-3">
+        <input placeholder="00:00" class="form-control" [ngxTimepicker]="fullTimeEnd" [format]="24"  readonly>
+        <ngx-material-timepicker #fullTimeEnd></ngx-material-timepicker>
+      </div>
+    </div>
+
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label">
+        Subject
+      </label>
+      <div class="col-md-9">
+        <ng-select [items]="courseSubjects"
+             bindLabel="name"
+             name="select_courseSubject"
+             placeholder="Select Subject"
+             appendTo="body"
+             multiple="false"
+             [(ngModel)]="selectSubject">
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label">
+        Teacher
+      </label>
+      <div class="col-md-9">
+        <ng-select [items]="teachers"
+             bindLabel="firstName"
+             name="select_teacher"
+             placeholder="Select Teacher"
+             appendTo="body"
+             multiple="false"
+             [(ngModel)]="selectedTeacher">
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="form-group row ">
+      <label class="col-md-3 col-form-label">
+        Students
+      </label>
+      <div class="col-md-9">
+        <ng-select [items]="students"
+             bindLabel="firstName"
+             name="select_student"
+             placeholder="Select Students"
+             appendTo="body"
+             multiple="true"
+             [(ngModel)]="selectedStudents">
+        </ng-select>
+      </div>
+    </div>
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"

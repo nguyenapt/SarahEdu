@@ -66,7 +66,7 @@ export class TimeSheetComponent extends AppComponentBase {
 
   dragToCreateActive = false;
 
-  weekStartsOn: 0 = 0;
+  weekStartsOn: 1 = 1;
 
   actions: CalendarEventAction[] = [
     {
@@ -90,6 +90,7 @@ export class TimeSheetComponent extends AppComponentBase {
 
   events: ITimeSheetDto[] = [
     {
+      id: 'aaaa',
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
@@ -103,12 +104,14 @@ export class TimeSheetComponent extends AppComponentBase {
       draggable: true,
     },
     {
+      id: 'bbbb',
       start: startOfDay(new Date()),
       title: 'An event with no end date',
       color: colors.yellow,
       actions: this.actions,
     },
     {
+      id: 'cccc',
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
       title: 'A long event that spans 2 months',
@@ -116,6 +119,7 @@ export class TimeSheetComponent extends AppComponentBase {
       allDay: true,
     },
     {
+      id: 'dddd',
       start: addHours(startOfDay(new Date()), 2),
       end: addHours(new Date(), 2),
       title: 'A draggable and resizable event',
@@ -171,7 +175,7 @@ export class TimeSheetComponent extends AppComponentBase {
   }
 
   createScheduler(): void {
-    this.showCreateOrEditTimeSheetDialog();
+    this.showCreateOrEditTimeSheetDialog(new TimeSheetDto);
   }
 
   deleteEvent(eventToDelete: ITimeSheetDto) {
@@ -184,7 +188,7 @@ export class TimeSheetComponent extends AppComponentBase {
 
   private showCreateOrEditTimeSheetDialog(timeSheet?: ITimeSheetDto): void {
     let createOrEditTimeSheetDialog: BsModalRef;
-    if (!timeSheet) {
+    if (timeSheet.id == null || timeSheet.id == undefined) {
       createOrEditTimeSheetDialog = this._modalService.show(
         CreateTimeSheetDialogComponent,
         {

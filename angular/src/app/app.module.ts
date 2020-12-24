@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -137,6 +138,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   ],
   imports: [
     CommonModule,
+    NgxMaterialTimepickerModule,
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,

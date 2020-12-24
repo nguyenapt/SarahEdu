@@ -15,6 +15,8 @@ import { TimeSheetDto } from '@shared/service-proxies/timesheet/dto/timesheet-dt
 
 import * as moment from 'moment';
 import { CalendarEvent } from 'angular-calendar';
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
+import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 
 @Component({
   templateUrl: 'edit-timesheet-dialog.component.html'
@@ -22,9 +24,15 @@ import { CalendarEvent } from 'angular-calendar';
 export class EditTimeSheetDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
-  timeSheet: TimeSheetDto;
-  startDate:string;
-  endDate:string;
+  timeSheet: TimeSheetDto = new TimeSheetDto();
+  students : StudentDto[] = [];
+  selectedStudents : StudentDto[] = [];
+  
+  teachers : TeacherDto[] = [];
+  selectedTeacher : TeacherDto;
+  
+  courseSubjects : any[] = [];
+  selectSubject : any;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -46,8 +54,8 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
   save(): void {
     this.saving = true;
 
-    this.timeSheet.start =  this.startDate ? moment(this.startDate).format() : <any>undefined;
-    this.timeSheet.start = this.endDate ? moment(this.endDate).format(): <any>undefined;
+    // this.timeSheet.start =  this.startDate ? moment(this.startDate).format() : <any>undefined;
+    // this.timeSheet.start = this.endDate ? moment(this.endDate).format(): <any>undefined;
 
     this._timesheetService
       .update(this.timeSheet)

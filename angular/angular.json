@@ -39,7 +39,8 @@
               "src/assets/freeze-ui/freeze-ui.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/admin-lte-css-only/css/adminlte.min.css",
-              "node_modules/@ng-select/ng-select/themes/material.theme.css",              
+              "node_modules/@ng-select/ng-select/themes/material.theme.css",
+              "src/shared/style.css",
               "src/shared/core.less"
             ],
             "scripts": [
@@ -141,7 +142,8 @@
               "src/assets/freeze-ui/freeze-ui.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/admin-lte-css-only/css/adminlte.min.css",
-              "node_modules/@ng-select/ng-select/themes/material.theme.css",              
+              "node_modules/@ng-select/ng-select/themes/material.theme.css",
+              "src/shared/style.css",
               "src/shared/core.less"
             ],
             "scripts": [

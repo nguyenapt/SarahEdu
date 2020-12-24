@@ -15,14 +15,29 @@ import { TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto
 
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
+import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
+import { CourseDto } from '@shared/service-proxies/course/dto/course-dto';
 
 @Component({
-  templateUrl: 'create-timesheet-dialog.component.html'
+  templateUrl: 'create-timesheet-dialog.component.html',
+  styleUrls: ['./create-timesheet-dialog.component.css'],
 })
 export class CreateTimeSheetDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
   timeSheet: TimeSheetDto = new TimeSheetDto();
+  students : StudentDto[] = [];
+  selectedStudents : StudentDto[] = [];
+  
+  teachers : TeacherDto[] = [];
+  selectedTeacher : TeacherDto;
+  
+  courses : CourseDto[] = [];
+  selectedCourse : CourseDto;
+  
+  courseSubjects : any[] = [];
+  selectSubject : any;
 
   @Output() onSave = new EventEmitter<any>();
 

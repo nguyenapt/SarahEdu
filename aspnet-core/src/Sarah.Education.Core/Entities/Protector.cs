@@ -16,15 +16,8 @@ namespace Sarah.Education.Entities
         }
 
         [Required]
-        [StringLength(50)]
-        public string FirstName { get; set; }
-
-        [StringLength(50)]
-        public string MiddleName { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string LastName { get; set; }
+        [StringLength(500)]
+        public string FullName { get; set; }
 
         public string Email { get; set; }
 

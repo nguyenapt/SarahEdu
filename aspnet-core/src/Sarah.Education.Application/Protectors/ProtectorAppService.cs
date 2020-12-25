@@ -89,9 +89,7 @@ namespace Sarah.Education.Protectors
         protected override IQueryable<Protector> CreateFilteredQuery(ProtectorResultRequestDto input)
         {
             return Repository.GetAllIncluding()
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.FirstName.Contains(input.Keyword)
-                       || x.MiddleName.Contains(input.Keyword)
-                       || x.LastName.Contains(input.Keyword)
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.FullName.Contains(input.Keyword)
                        || x.Email.Contains(input.Keyword));
         }
 

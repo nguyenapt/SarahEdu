@@ -10,56 +10,26 @@
   ></abp-modal-header>
   <div class="modal-body">   
       <div class="form-group row required">
-        <label class="col-md-3 col-form-label" for="firstName">
-          First Name
+        <label class="col-md-3 col-form-label" for="name">
+          Name
         </label>
         <div class="col-md-9">
           <input
             type="text"
             class="form-control"
-            name="firstName"
-            id="firstName"
+            name="name"
+            id="name"
             required
             minlength="2"
             maxlength="32"
-            [(ngModel)]="protector.firstName"
-            #firstNameModel="ngModel"
-            #firstNameEl
+            [(ngModel)]="protector.fullName"
+            #fullNameModel="ngModel"
+            #fullNameEl
           />
           <abp-validation-summary
-            [control]="firstNameModel"
-            [controlEl]="firstNameEl"
+            [control]="fullNameModel"
+            [controlEl]="fullNameEl"
           ></abp-validation-summary>
-        </div>
-      </div>
-
-      <div class="form-group row ">
-        <label class="col-md-3 col-form-label" for="middleName">
-          Middle Name
-        </label>
-        <div class="col-md-9">
-          <input
-            type="text"
-            class="form-control"
-            name="middleName"
-            id="middleName"
-            [(ngModel)]="protector.middleName"
-          />
-        </div>
-      </div>
-
-      <div class="form-group row ">
-        <label class="col-md-3 col-form-label" for="lastName">
-          Last Name
-        </label>
-        <div class="col-md-9">
-          <input
-            type="text"
-            class="form-control"
-            name="lastName"
-            id="lastName"
-            [(ngModel)]="protector.lastName"
-          />
         </div>
       </div>      
 
@@ -125,7 +95,7 @@
         </label>
         <div class="col-md-9">
           <ng-select [items]="students"
-               bindLabel="firstName"
+               bindLabel="fullName"
                name="select_student"
                placeholder="Select student"
                appendTo="body"

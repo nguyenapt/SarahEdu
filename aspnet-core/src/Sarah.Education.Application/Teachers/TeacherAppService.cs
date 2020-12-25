@@ -27,15 +27,13 @@ namespace Sarah.Education.Teachers
 
         protected override IQueryable<Teacher> ApplySorting(IQueryable<Teacher> query, TeacherResultRequestDto input)
         {
-            return query.OrderBy(r => r.FirstName);
+            return query.OrderBy(r => r.FullName);
         }
 
         protected override IQueryable<Teacher> CreateFilteredQuery(TeacherResultRequestDto input)
         {
             return Repository.GetAllIncluding()
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.FirstName.Contains(input.Keyword) 
-                       || x.MiddleName.Contains(input.Keyword)
-                       || x.LastName.Contains(input.Keyword)
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.FullName.Contains(input.Keyword) 
                        || x.Email.Contains(input.Keyword)
                        || x.Description.Contains(input.Keyword));
         }

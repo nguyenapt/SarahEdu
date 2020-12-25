@@ -13,18 +13,12 @@ namespace Sarah.Education.Entities
         public Teacher()
         {
             TimeSheetEntries = new HashSet<TimeSheetEntry>();
+            TeacherSalaries = new HashSet<TeacherSalary>();
         }
 
         [Required]
-        [StringLength(50)]
-        public string FirstName { get; set; }
-
-        [StringLength(50)]
-        public string MiddleName { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string LastName { get; set; }
+        [StringLength(500)]
+        public string FullName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
@@ -42,5 +36,6 @@ namespace Sarah.Education.Entities
 
         public virtual ICollection<TimeSheetEntry> TimeSheetEntries { get; set; }
 
+        public virtual ICollection<TeacherSalary> TeacherSalaries { get; set; }
     }
 }

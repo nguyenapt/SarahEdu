@@ -1,9 +1,7 @@
 import * as moment from 'moment';
 
-export class CreateStudentDto implements ICreateStudentDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export class CreateStudentDto implements ICreateStudentDto {    
+    fullName: string | undefined;
     dateOfBirth: moment.Moment | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
@@ -26,9 +24,7 @@ export class CreateStudentDto implements ICreateStudentDto {
 
     init(data?: any) {
         if (data) {
-            this.firstName = data["firstName"];
-            this.middleName = data["middleName"];
-            this.lastName = data["lastName"];
+            this.fullName = data["fullName"];            
             this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
@@ -55,9 +51,7 @@ export class CreateStudentDto implements ICreateStudentDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
+        data["fullName"] = this.fullName;        
         data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
         data["startDate"] = this.startDate ? this.startDate : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate : <any>undefined;
@@ -83,10 +77,8 @@ export class CreateStudentDto implements ICreateStudentDto {
     }
 }
 
-export interface ICreateStudentDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export interface ICreateStudentDto {    
+    fullName: string | undefined;
     dateOfBirth: moment.Moment | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
@@ -99,10 +91,8 @@ export interface ICreateStudentDto {
     courseSubjects: string[] | undefined;
 }
 
-export class StudentDto implements IStudentDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export class StudentDto implements IStudentDto {    
+    fullName: string | undefined;
     dateOfBirth: moment.Moment | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
@@ -125,10 +115,8 @@ export class StudentDto implements IStudentDto {
     }
 
     init(data?: any) {
-        if (data) {
-            this.firstName = data["firstName"];
-            this.middleName = data["middleName"];
-            this.lastName = data["lastName"];
+        if (data) {            
+            this.fullName = data["fullName"];
             this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
@@ -155,10 +143,8 @@ export class StudentDto implements IStudentDto {
     }
 
     toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
+        data = typeof data === 'object' ? data : {};        
+        data["fullName"] = this.fullName;
         data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth : <any>undefined;
         data["startDate"] = this.startDate ? this.startDate : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate : <any>undefined;
@@ -185,10 +171,8 @@ export class StudentDto implements IStudentDto {
     }
 }
 
-export interface IStudentDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export interface IStudentDto {    
+    fullName: string | undefined;
     dateOfBirth: moment.Moment | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;

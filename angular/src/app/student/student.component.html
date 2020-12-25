@@ -41,10 +41,8 @@
           <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap" [busy]="isTableLoading">
               <thead class="bg-light">
-                <tr>
-                  <th>{{ "FirstName" | localize }}</th>
-                  <th>{{ "MiddleName" | localize }}</th>
-                  <th>{{ "LastName" | localize }}</th>
+                <tr>                  
+                  <th>{{ "FullName" | localize }}</th>
                   <th>{{ "DateOfBirth" | localize }}</th>
                   <th>{{ "Email" | localize }}</th>
                   <th>{{ "PhoneNumber" | localize }}</th>
@@ -69,10 +67,8 @@
                             totalItems: totalItems
                           }
                   "
-                >
-                  <td>{{ student.firstName }}</td>
-                  <td>{{ student.middleName }}</td>
-                  <td>{{ student.lastName }}</td>
+                >                  
+                  <td>{{ student.fullName }}</td>
                   <td>{{ student.dateOfBirth | date}}</td>
                   <td>{{ student.email }}</td>
                   <td>{{ student.phoneNumber }}</td>

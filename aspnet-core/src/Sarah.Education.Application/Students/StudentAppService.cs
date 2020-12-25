@@ -115,9 +115,7 @@ namespace Sarah.Education.Students
         protected override IQueryable<Student> CreateFilteredQuery(StudentResultRequestDto input)
         {
             return Repository.GetAllIncluding()
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.FirstName.Contains(input.Keyword)
-                       || x.MiddleName.Contains(input.Keyword)
-                       || x.LastName.Contains(input.Keyword)
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.FullName.Contains(input.Keyword)
                        || x.Email.Contains(input.Keyword)
                        || x.SchoolName.Contains(input.Keyword)
                        || x.ClassName.Contains(input.Keyword)

@@ -1,10 +1,8 @@
 import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import * as moment from 'moment';
 
-export class CreateProtectorDto implements ICreateProtectorDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export class CreateProtectorDto implements ICreateProtectorDto {    
+    fullName: string | undefined;
     email: string | undefined;
     phoneNumber: string | undefined;
     protectorType: string | undefined;
@@ -20,10 +18,8 @@ export class CreateProtectorDto implements ICreateProtectorDto {
     }
 
     init(data?: any) {
-        if (data) {
-            this.firstName = data["firstName"];
-            this.middleName = data["middleName"];
-            this.lastName = data["lastName"];
+        if (data) {            
+            this.fullName = data["fullName"];
             this.email = data["email"];
             this.phoneNumber = data["phoneNumber"];
             this.isActive = data["isActive"];
@@ -39,9 +35,7 @@ export class CreateProtectorDto implements ICreateProtectorDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
+        data["fullName"] = this.fullName;        
         data["email"] = this.email;
         data["phoneNumber"] = this.phoneNumber;
         data["isActive"] = this.isActive;
@@ -56,20 +50,16 @@ export class CreateProtectorDto implements ICreateProtectorDto {
     }
 }
 
-export interface ICreateProtectorDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export interface ICreateProtectorDto {    
+    fullName: string | undefined;
     email: string | undefined;
     phoneNumber: string | undefined;
     protectorType: string | undefined;
     isActive: boolean | undefined;
 }
 
-export class ProtectorDto implements IProtectorDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export class ProtectorDto implements IProtectorDto {    
+    fullName: string | undefined;
     email: string | undefined;
     phoneNumber: string | undefined;
     protectorType: string | undefined;
@@ -88,9 +78,7 @@ export class ProtectorDto implements IProtectorDto {
 
     init(data?: any) {
         if (data) {
-            this.firstName = data["firstName"];
-            this.middleName = data["middleName"];
-            this.lastName = data["lastName"];
+            this.fullName = data["fullName"];            
             this.email = data["email"];
             this.phoneNumber = data["phoneNumber"];
             this.isActive = data["isActive"];
@@ -112,9 +100,7 @@ export class ProtectorDto implements IProtectorDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
+        data["fullName"] = this.fullName;        
         data["email"] = this.email;
         data["phoneNumber"] = this.phoneNumber;
         data["isActive"] = this.isActive;
@@ -135,10 +121,8 @@ export class ProtectorDto implements IProtectorDto {
     }
 }
 
-export interface IProtectorDto {
-    firstName: string | undefined;
-    middleName: string | undefined;
-    lastName: string | undefined;
+export interface IProtectorDto {    
+    fullName: string | undefined;
     email: string | undefined;
     phoneNumber: string | undefined;
     protectorType: string | undefined;

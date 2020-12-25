@@ -18,8 +18,8 @@ namespace Sarah.Education.Entities
         public Guid RoomId { get; set; }
         public Guid TeacherId { get; set; }
         public Guid CourseSubjectId { get; set; }
-        public double Fee { get; set; }
         public int Status { get; set; }
+        public bool? IsSingle { get; set; }
 
         [ForeignKey(nameof(RoomId))]
         public virtual Room Room { get; set; }

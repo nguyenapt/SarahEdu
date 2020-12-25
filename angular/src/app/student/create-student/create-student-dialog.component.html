@@ -13,7 +13,7 @@
       <tab [heading]="'Student details'" class="pt-3 px-2">
         <div class="form-group row required">
           <label class="col-md-3 col-form-label" for="name">
-            {{ "Name" | localize }}
+            Name
           </label>
           <div class="col-md-9">
             <input
@@ -22,46 +22,18 @@
               name="name"
               id="name"
               required
+              minlength="2"
               maxlength="32"
-              [(ngModel)]="student.firstName"
-              #nameModel="ngModel"
-              #nameEl
+              [(ngModel)]="student.fullName"
+              #fullNameModel="ngModel"
+              #fullNameEl
             />
             <abp-validation-summary
-              [control]="nameModel"
-              [controlEl]="nameEl"
+              [control]="fullNameModel"
+              [controlEl]="fullNameEl"
             ></abp-validation-summary>
           </div>
-        </div>      
-        <div class="form-group row ">
-          <label class="col-md-3 col-form-label" for="middleName">
-            Middle Name
-          </label>
-          <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="middleName"
-              id="middleName"
-              [(ngModel)]="student.middleName"
-            />
-          </div>
-        </div>
-  
-        <div class="form-group row ">
-          <label class="col-md-3 col-form-label" for="lastName">
-            Last Name
-          </label>
-          <div class="col-md-9">
-            <input
-              type="text"
-              class="form-control"
-              name="lastName"
-              id="lastName"
-              [(ngModel)]="student.lastName"
-            />
-          </div>
-        </div>
+        </div>    
   
         <div class="form-group row ">
           <label class="col-md-3 col-form-label" for="dateOfBirth">

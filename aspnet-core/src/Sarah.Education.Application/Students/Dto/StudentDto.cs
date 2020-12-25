@@ -10,9 +10,7 @@ namespace Sarah.Education.Students.Dto
     [AutoMapTo(typeof(Student))]
     public class StudentDto : EntityDto<Guid>
     {
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }

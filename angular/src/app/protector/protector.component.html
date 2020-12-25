@@ -41,10 +41,8 @@
           <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap" [busy]="isTableLoading">
               <thead class="bg-light">
-                <tr>
-                  <th>{{ "FirstName" | localize }}</th>
-                  <th>{{ "MiddleName" | localize }}</th>
-                  <th>{{ "LastName" | localize }}</th>
+                <tr>                  
+                  <th>{{ "FullName" | localize }}</th>
                   <th>{{ "Email" | localize }}</th>
                   <th>{{ "PhoneNumber" | localize }}</th>
                   <th>{{ "IsActive" | localize }}</th>
@@ -63,10 +61,8 @@
                             totalItems: totalItems
                           }
                   "
-                >
-                  <td>{{ protector.firstName }}</td>
-                  <td>{{ protector.middleName }}</td>
-                  <td>{{ protector.lastName }}</td>
+                >                  
+                  <td>{{ protector.fullName }}</td>
                   <td>{{ protector.email }}</td>
                   <td>{{ protector.phoneNumber }}</td>
                   <td>

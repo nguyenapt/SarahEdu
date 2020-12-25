@@ -15,9 +15,9 @@ import { TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto
 
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
-import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
+import { CourseSubjectDto, StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
-import { CourseDto } from '@shared/service-proxies/course/dto/course-dto';
+import { CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
 
 @Component({
   templateUrl: 'create-timesheet-dialog.component.html',
@@ -33,30 +33,42 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   teachers : TeacherDto[] = [];
   selectedTeacher : TeacherDto;
   
-  courses : CourseDto[] = [];
-  selectCourse : CourseDto;
+  courses : CourseWithSubjectDto[] = [];
+  selectCourse : CourseWithSubjectDto;
   
-  courseSubjects : any[] = [];
-  selectSubject : any;
+  courseSubjects : CourseSubjectDto[] = [];
+  selectSubject : CourseSubjectDto;
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    private _teacherService: TimeSheetServiceProxy,
+    private _timeSheetService: TimeSheetServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    
+    this._timeSheetService.getCourses().subscribe((result) => {
+      this.courses = result.items;
+    });  
+  }
+
+  changeCourse($event){
+    if($event == null){
+      this.courseSubjects = [];
+    }
+    else{
+      this.courseSubjects = [];
+      this.courseSubjects = $event.courseSubjects;
+    }
   }
 
   save(): void {
     this.saving = true;
 
-    this._teacherService
+    this._timeSheetService
       .create(this.timeSheet)
       .pipe(
         finalize(() => {

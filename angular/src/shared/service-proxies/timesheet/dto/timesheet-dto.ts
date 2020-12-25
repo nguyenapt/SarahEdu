@@ -1,3 +1,4 @@
+import { CourseDto, CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
 import { CalendarEvent } from 'angular-calendar';
 import { EventColor, EventAction } from 'calendar-utils';
 import * as moment from 'moment';
@@ -133,4 +134,55 @@ export class TimeSheetDtoPagedResultDto implements ITimeSheetDtoPagedResultDto {
 export interface ITimeSheetDtoPagedResultDto {
     totalCount: number;
     items: TimeSheetDto[] | undefined;
+}
+
+export class CourseDtoListResultDto implements ICourseDtoListResultDto {
+    items: CourseWithSubjectDto[] | undefined;
+
+    constructor(data?: ICourseDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data)) {
+                this.items = [] as any;
+                for (let item of data)
+                    this.items.push(CourseWithSubjectDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CourseDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CourseDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data = [];
+            for (let item of this.items)
+                data.push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CourseDtoListResultDto {
+        const json = this.toJSON();
+        let result = new CourseDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICourseDtoListResultDto {
+    items: CourseWithSubjectDto[] | undefined;
 }

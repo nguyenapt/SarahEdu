@@ -50,12 +50,12 @@
       </label>
       <div class="col-md-3">
         <ng-select [items]="courses"
-             bindLabel="name"
-             name="select_course"
-             placeholder="Select course"
-             appendTo="body"
-             multiple="false"
-             [(ngModel)]="selectCourse">
+              name="select_course"
+              bindLabel="name"
+              autofocus
+              bindValue="id"
+              [(ngModel)]="selectCourse"
+              (change)="changeCourse($event)">
         </ng-select>
       </div>
 
@@ -64,11 +64,10 @@
       </label>
       <div class="col-md-3">
         <ng-select [items]="courseSubjects"
-             bindLabel="name"
-             name="select_courseSubject"
-             placeholder="Select Subject"
-             appendTo="body"
-             multiple="false"
+              name="select_course"
+              bindLabel="subjectName"
+              autofocus
+              bindValue="id"
              [(ngModel)]="selectSubject">
         </ng-select>
       </div>

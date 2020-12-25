@@ -18,8 +18,8 @@ export class TimeSheetDto implements ITimeSheetDto {
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
     fee:number | undefined;
-    status:number | undefined;    
-
+    status:number | undefined;
+      
     constructor(data?: ITimeSheetDto) {
         if (data) {
             for (var property in data) {

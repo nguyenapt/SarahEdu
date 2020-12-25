@@ -22,7 +22,7 @@ export class TimeSheetServiceProxy {
      * @return Success
      */
     create(body: TimeSheetDto | undefined): Observable<TimeSheetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Teacher/Create";
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/Create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -78,7 +78,7 @@ export class TimeSheetServiceProxy {
      * @return Success
      */
     update(body: TimeSheetDto | undefined): Observable<TimeSheetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Teacher/Update";
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/Update";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -134,7 +134,7 @@ export class TimeSheetServiceProxy {
      * @return Success
      */
     delete(id: string | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Teacher/Delete?";
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/Delete?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -186,7 +186,7 @@ export class TimeSheetServiceProxy {
      * @return Success
      */
     get(id: string | undefined): Observable<TimeSheetDto> {
-        let url_ = this.baseUrl + "/api/services/app/Teacher/Get?";
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/Get?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -245,7 +245,7 @@ export class TimeSheetServiceProxy {
      * @return Success
      */
     getAll(keyword: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<TimeSheetDtoPagedResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Teacher/GetAll?";
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/GetAll?";
         if (keyword === null)
             throw new Error("The parameter 'keyword' cannot be null.");
         else if (keyword !== undefined)

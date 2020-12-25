@@ -46,9 +46,23 @@
 
     <div class="form-group row ">
       <label class="col-md-3 col-form-label">
+        Course
+      </label>
+      <div class="col-md-3">
+        <ng-select [items]="courses"
+             bindLabel="name"
+             name="select_course"
+             placeholder="Select course"
+             appendTo="body"
+             multiple="false"
+             [(ngModel)]="selectCourse">
+        </ng-select>
+      </div>
+
+      <label class="col-md-3 col-form-label">
         Subject
       </label>
-      <div class="col-md-9">
+      <div class="col-md-3">
         <ng-select [items]="courseSubjects"
              bindLabel="name"
              name="select_courseSubject"

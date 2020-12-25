@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { CalendarEvent } from 'angular-calendar';
 import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
+import { CourseDto } from '@shared/service-proxies/course/dto/course-dto';
 
 @Component({
   templateUrl: 'edit-timesheet-dialog.component.html'
@@ -30,6 +31,9 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
   
   teachers : TeacherDto[] = [];
   selectedTeacher : TeacherDto;
+  
+  courses : CourseDto[] = [];
+  selectCourse : CourseDto;
   
   courseSubjects : any[] = [];
   selectSubject : any;

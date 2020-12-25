@@ -34,7 +34,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   selectedTeacher : TeacherDto;
   
   courses : CourseDto[] = [];
-  selectedCourse : CourseDto;
+  selectCourse : CourseDto;
   
   courseSubjects : any[] = [];
   selectSubject : any;

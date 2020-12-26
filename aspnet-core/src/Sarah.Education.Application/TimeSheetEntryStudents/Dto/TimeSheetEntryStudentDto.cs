@@ -15,5 +15,6 @@ namespace Sarah.Education.TimeSheetEntryStudents.Dto
         public string Attitude { get; set; }
         public string ReceptiveAbility { get; set; }
         public string Description { get; set; }
+        public double Fee { get; set; }
     }
 }

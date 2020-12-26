@@ -49,27 +49,15 @@
         Course
       </label>
       <div class="col-md-3">
-        <ng-select [items]="courses"
-              name="select_course"
-              bindLabel="name"
-              autofocus
-              bindValue="id"
-              [(ngModel)]="selectCourse"
-              (change)="changeCourse($event)">
-        </ng-select>
+        <p-dropdown [options]="courses" autoWidth="false" [style]="{'width':'100%'}" name="courses" [(ngModel)]="selectCourse" (onChange)="changeCourse($event)" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a course">          
+        </p-dropdown>
       </div>
-
-      <label class="col-md-3 col-form-label">
+      
+      <label class="col-md-2 col-form-label">
         Subject
       </label>
-      <div class="col-md-3">
-        <ng-select [items]="courseSubjects"
-              name="select_course"
-              bindLabel="subjectName"
-              autofocus
-              bindValue="id"
-             [(ngModel)]="selectSubject">
-        </ng-select>
+      <div class="col-md-4">
+        <p-dropdown [options]="courseSubjects" autoWidth="false" [style]="{'width':'100%'}" name="courseSubjects" [(ngModel)]="selectSubject" placeholder="Select a subject" optionLabel="subjectName" [showClear]="true"></p-dropdown>        
       </div>
     </div>
 

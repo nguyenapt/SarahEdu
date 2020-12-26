@@ -61,7 +61,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     }
     else{
       this.courseSubjects = [];
-      this.courseSubjects = $event.courseSubjects;
+      this.courseSubjects = $event.value.courseSubjects;
     }
   }
 

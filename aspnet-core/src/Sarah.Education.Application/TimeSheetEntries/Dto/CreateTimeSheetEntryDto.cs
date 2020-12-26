@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Sarah.Education.Entities;
+using Sarah.Education.TimeSheetEntryStudents.Dto;
 
 namespace Sarah.Education.TimeSheetEntries.Dto
 {
@@ -12,8 +13,8 @@ namespace Sarah.Education.TimeSheetEntries.Dto
         public DateTime ToDate { get; set; }
         public Guid RoomId { get; set; }
         public Guid TeacherId { get; set; }
-        public Guid CourseSubjectId { get; set; }
-        public double Fee { get; set; }
+        public Guid CourseSubjectId { get; set; }        
         public int Status { get; set; }
+        public TimeSheetEntryStudentDto[] TimeSheetStudents { get; set; }
     }
 }

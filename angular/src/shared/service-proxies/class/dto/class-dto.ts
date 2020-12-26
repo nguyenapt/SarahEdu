@@ -1,8 +1,10 @@
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import * as moment from 'moment';
 
 export class CreateClassDto implements ICreateClassDto {
     name: string | undefined;
     description: string | undefined;
+    students: StudentDto[] | undefined;
 
     constructor(data?: ICreateClassDto) {
         if (data) {
@@ -17,6 +19,11 @@ export class CreateClassDto implements ICreateClassDto {
         if (data) {
             this.name = data["name"];
             this.description = data["description"];
+            if (Array.isArray(data["students"])) {
+                this.students = [] as any;
+                for (let item of data["students"])
+                    this.students.push(item);
+            }
         }
     }
 
@@ -30,7 +37,12 @@ export class CreateClassDto implements ICreateClassDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["description"] = this.description;        
+        data["description"] = this.description;     
+        if (Array.isArray(this.students)) {
+            data["students"] = [];
+            for (let item of this.students)
+                data["students"].push(item);
+        }   
         return data; 
     }
 
@@ -45,11 +57,13 @@ export class CreateClassDto implements ICreateClassDto {
 export interface ICreateClassDto {
     name: string | undefined;
     description: string | undefined;
+    students: StudentDto[] | undefined;
 }
 
 export class ClassDto implements IClassDto {
     name: string | undefined;
     description: string | undefined;  
+    students: StudentDto[] | undefined;
     id: string;
 
     constructor(data?: IClassDto) {
@@ -66,6 +80,11 @@ export class ClassDto implements IClassDto {
             this.name = data["name"];
             this.description = data["description"];            
             this.id = data["id"];
+            if (Array.isArray(data["students"])) {
+                this.students = [] as any;
+                for (let item of data["students"])
+                    this.students.push(item);
+            }
         }
     }
 
@@ -81,6 +100,11 @@ export class ClassDto implements IClassDto {
         data["name"] = this.name;
         data["description"] = this.description;        
         data["id"] = this.id;
+        if (Array.isArray(this.students)) {
+            data["students"] = [];
+            for (let item of this.students)
+                data["students"].push(item);
+        }
         return data; 
     }
 
@@ -95,6 +119,7 @@ export class ClassDto implements IClassDto {
 export interface IClassDto {
     name: string | undefined;
     description: string | undefined;    
+    students: StudentDto[] | undefined;
     id: string;
 }
 

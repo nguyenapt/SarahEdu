@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem} from 'primeng/api';                  //api
+import { NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -75,6 +77,9 @@ import { EditProtectorDialogComponent } from './protector/edit-protector/edit-pr
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
+//primeng
+import { DropdownModule } from 'primeng/dropdown';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -146,6 +151,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     HttpClientJsonpModule,
     ModalModule.forChild(),
     BsDropdownModule,
+    DropdownModule,
     CollapseModule,
     TabsModule,
     AppRoutingModule,

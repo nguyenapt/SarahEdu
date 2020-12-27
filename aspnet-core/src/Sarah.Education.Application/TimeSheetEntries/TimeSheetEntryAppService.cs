@@ -13,6 +13,8 @@ using Abp.Application.Services.Dto;
 using Sarah.Education.Courses.Dto;
 using Sarah.Education.Students.Dto;
 using Sarah.Education.TimeSheetEntryStudents.Dto;
+using Abp.Collections.Extensions;
+using Abp.Linq.Extensions;
 
 namespace Sarah.Education.TimeSheetEntries
 {
@@ -80,6 +82,15 @@ namespace Sarah.Education.TimeSheetEntries
                     SubjectName = k.Subject.Name
                 }).ToArray()
             }).ToList();
+        }
+
+        public async Task<ListResultDto<TimeSheetEntryDto>> GetTimeSheetFromDateToDate(TimeSheetEntryResultRequestDto input)
+        {
+            var timeSheets =  Repository.GetAllIncluding(x=>x.Teacher, x=>x.CourseSubject, x=>x.CourseSubject.Course, x=>x.CourseSubject.Subject)
+                .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate)
+                .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate).ToList();
+
+            return new ListResultDto<TimeSheetEntryDto>(ObjectMapper.Map<List<TimeSheetEntryDto>>(timeSheets));
         }
     }
 }

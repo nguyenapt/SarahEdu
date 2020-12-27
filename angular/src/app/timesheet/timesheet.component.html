@@ -78,31 +78,23 @@
       <br />
       <div [ngSwitch]="view">
         <mwl-calendar-month-view
-          *ngSwitchCase="CalendarView.Month"
+          *ngSwitchCase="'month'"
           [viewDate]="viewDate"
           [events]="events"
-          [refresh]="refresh"
-          [activeDayIsOpen]="activeDayIsOpen"
-          (dayClicked)="dayClicked($event.day)"
-          (eventClicked)="showCreateOrEditTimeSheetDialog($event.event)"
           (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-month-view>
         <mwl-calendar-week-view
-          *ngSwitchCase="CalendarView.Week"
+          *ngSwitchCase="'week'"
           [viewDate]="viewDate"
           [events]="events"
-          [refresh]="refresh"          
-          (eventClicked)="showCreateOrEditTimeSheetDialog($event.event)"
           (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-week-view>
         <mwl-calendar-day-view
-          *ngSwitchCase="CalendarView.Day"
+          *ngSwitchCase="'day'"
           [viewDate]="viewDate"
           [events]="events"
-          [refresh]="refresh"          
-          (eventClicked)="showCreateOrEditTimeSheetDialog($event.event)"
           (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-day-view>

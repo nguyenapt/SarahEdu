@@ -3,32 +3,34 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Subject,fromEvent  } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { WeekViewHourSegment } from 'calendar-utils';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
-import { ITimeSheetDto, TimeSheetDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { ITimeSheetDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
 import { EditTimeSheetDialogComponent } from './edit-timesheet/edit-timesheet-dialog.component';
+import * as moment from 'moment';
 
 import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours,
-  addMinutes,
-  endOfWeek
-} from 'date-fns';
-
-import {
+  CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
+  DAYS_OF_WEEK
 } from 'angular-calendar';
+import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
+
+class PagedTimeSheetRequestDto extends PagedRequestDto {
+  fromDate: Date | null;
+  toDate: Date | null;
+}
+
+moment.updateLocale('en', {
+  week: {
+    dow: DAYS_OF_WEEK.MONDAY,
+    doy: 0,
+  },
+});
 
 const colors: any = {
   red: {
@@ -57,7 +59,8 @@ function ceilToNearest(amount: number, precision: number) {
   templateUrl: './timesheet.component.html',
   animations: [appModuleAnimation()]
 })
-export class TimeSheetComponent extends AppComponentBase {
+export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto> {  
+  
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -65,6 +68,8 @@ export class TimeSheetComponent extends AppComponentBase {
   viewDate: Date = new Date();
 
   dragToCreateActive = false;
+
+  events: any[]=[];
 
   weekStartsOn: 1 = 1;
 
@@ -86,54 +91,9 @@ export class TimeSheetComponent extends AppComponentBase {
     },
   ];
 
-  refresh: Subject<any> = new Subject();
-
-  events: ITimeSheetDto[] = [
-    {
-      id: 'aaaa',
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      id: 'bbbb',
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions,
-    },
-    {
-      id: 'cccc',
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true,
-    },
-    {
-      id: 'dddd',
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-  ];
-
   activeDayIsOpen: boolean = true;
+
+  refreshEvents: Subject<any> = new Subject();
 
   constructor(
     injector: Injector,
@@ -143,10 +103,42 @@ export class TimeSheetComponent extends AppComponentBase {
     super(injector);
   }
 
+  protected list(
+    request: PagedTimeSheetRequestDto, 
+    pageNumber: number, 
+    finishedCallback: Function): void {
+      this._timesheetService
+      .getAllTimeSheetFromDateToDate(
+        request.fromDate,
+        request.toDate
+      )
+      .pipe(
+        finalize(() => {
+          finishedCallback();
+        })
+      )
+      .subscribe((result: TimeSheetDtoPagedResultDto) => {
+        var self = this;
+        this.events = result.items;
+        this.events.forEach(function (event) {
+          event.actions = self.actions;     
+          event.color = colors.yellow;
+          event.resizable = {
+            beforeStart: true,
+            afterEnd: true,
+          };
+          event.draggable = true;
+        }); 
+      });
+  }
+  protected delete(entity: TimeSheetDto): void {
+    throw new Error('Method not implemented.');
+  }
+
   dayClicked({ date, events }: { date: Date; events: ITimeSheetDto[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
+    if (date.getMonth == this.viewDate.getMonth) {
       if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        (this.viewDate.getDay ==  date.getDay && this.activeDayIsOpen === true) ||
         events.length === 0
       ) {
         this.activeDayIsOpen = false;
@@ -217,56 +209,6 @@ export class TimeSheetComponent extends AppComponentBase {
     this.activeDayIsOpen = false;
   }
 
-  startDragToCreate(
-    segment: WeekViewHourSegment,
-    mouseDownEvent: MouseEvent,
-    segmentElement: HTMLElement
-  ) {
-    const dragToSelectEvent: ITimeSheetDto = {
-      id: this.events.length,
-      title: 'New event',
-      color: colors.red,
-      start: segment.date,
-      actions: this.actions,
-      meta: {
-        teacherName: "Hoang Nguyen",
-      },
-    };
-    this.events = [...this.events, dragToSelectEvent];
-    const segmentPosition = segmentElement.getBoundingClientRect();
-    this.dragToCreateActive = true;
-    const endOfView = endOfWeek(this.viewDate, {
-      weekStartsOn: this.weekStartsOn,
-    });
-
-    fromEvent(document, 'mousemove')
-      .pipe(
-        finalize(() => {
-          delete dragToSelectEvent.meta.teacherName;
-          this.dragToCreateActive = false;
-          this.refreshEvent();
-        }),
-        takeUntil(fromEvent(document, 'mouseup'))
-      )
-      .subscribe((mouseMoveEvent: MouseEvent) => {
-        const minutesDiff = ceilToNearest(
-          mouseMoveEvent.clientY - segmentPosition.top,
-          30
-        );
-
-        const daysDiff =
-          floorToNearest(
-            mouseMoveEvent.clientX - segmentPosition.left,
-            segmentPosition.width
-          ) / segmentPosition.width;
-
-        const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
-        if (newEnd > segment.date && newEnd < endOfView) {
-          dragToSelectEvent.end = newEnd;
-        }
-        this.refreshEvent();
-      });
-  }
   private refreshEvent() {
     this.events = [...this.events];
   }

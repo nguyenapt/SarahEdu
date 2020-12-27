@@ -2,10 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import {
-  PagedListingComponentBase,
-  PagedRequestDto
-} from 'shared/paged-listing-component-base';
+import { PagedListingComponentBase, PagedRequestDto } from 'shared/paged-listing-component-base';
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
 import { StudentDto, StudentDtoPagedResultDto } from '@shared/service-proxies/student/dto/student-dto';
 

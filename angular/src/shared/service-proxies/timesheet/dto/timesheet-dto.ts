@@ -1,4 +1,6 @@
 import { CourseDto, CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+import { CourseSubjectDto } from '@shared/service-proxies/student/dto/student-dto';
+import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 import { CalendarEvent } from 'angular-calendar';
 import { EventColor, EventAction } from 'calendar-utils';
 import * as moment from 'moment';
@@ -20,6 +22,8 @@ export class TimeSheetDto implements ITimeSheetDto {
     courseSubjectId: string | undefined;
     fee:number | undefined;
     status:number | undefined;
+    teacher?: TeacherDto | undefined;
+    courseSubject?: CourseSubjectDto | undefined;
       
     constructor(data?: ITimeSheetDto) {
         if (data) {
@@ -34,13 +38,16 @@ export class TimeSheetDto implements ITimeSheetDto {
     init(data?: any) {
         if (data) {
             this.id = data["id"];
-            this.start = data["fromDate"] ? moment(data["fromDate"].toString()) : <any>undefined;
-            this.end = data["toDate"] ? moment(data["toDate"].toString()) : <any>undefined;
+            this.start = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
+            this.end = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
             this.roomId = data["roomId"];
             this.teacherId = data["teacherId"];
             this.courseSubjectId = data["courseSubjectId"];
             this.fee = data["fee"];
-            this.status = data["status"];            
+            this.status = data["status"];
+            this.teacher = data["teacher"];
+            this.courseSubject = data["courseSubject"];
+            this.title = data["teacher"].fullName  + " - " + data["courseSubject"].course.name;
         }
     }
 
@@ -54,13 +61,15 @@ export class TimeSheetDto implements ITimeSheetDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["fromDate"] = this.start ? moment.utc(this.start) : <any>undefined;
-        data["toDate"] = this.start ? moment.utc(this.start) : <any>undefined;
+        data["fromDate"] = this.start ? new Date(this.start) : <any>undefined;
+        data["toDate"] = this.start ? new Date(this.start) : <any>undefined;
         data["roomId"] = this.roomId;
         data["teacherId"] = this.teacherId;
         data["courseSubjectId"] = this.courseSubjectId;
         data["fee"] = this.fee;
-        data["status"] = this.status;        
+        data["status"] = this.status;     
+        data["teacher"] = this.teacher;
+        data["courseSubject"] = this.courseSubject;
         return data; 
     }
 
@@ -78,6 +87,8 @@ export interface ITimeSheetDto extends CalendarEvent {
     courseSubjectId?: string | undefined;
     fee?:number | undefined;
     status?:number | undefined;
+    teacher?: TeacherDto | undefined;
+    courseSubject?: CourseSubjectDto | undefined;
 }
 
 

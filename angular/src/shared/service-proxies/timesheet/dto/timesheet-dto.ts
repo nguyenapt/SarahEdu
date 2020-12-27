@@ -47,7 +47,7 @@ export class TimeSheetDto implements ITimeSheetDto {
             this.status = data["status"];
             this.teacher = data["teacher"];
             this.courseSubject = data["courseSubject"];
-            this.title = data["teacher"].fullName  + " - " + data["courseSubject"].course.name;
+            this.title = data["teacher"].fullName  + " - " + data["courseSubject"].course.name + " - " + data["courseSubject"].subject.name+ "<br /> HS: Ngo Hoang Nguyen";
         }
     }
 

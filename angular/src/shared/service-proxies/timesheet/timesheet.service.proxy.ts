@@ -2,7 +2,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { CourseDtoListResultDto, TimeSheetDto, TimeSheetDtoPagedResultDto} from './dto/timesheet-dto';
+import { CourseDtoListResultDto, CreateTimeSheetDto, TimeSheetDto, TimeSheetDtoPagedResultDto} from './dto/timesheet-dto';
 import { ApiException } from '../api-exception';
 import { API_BASE_URL } from '../service-proxies';
 
@@ -21,7 +21,7 @@ export class TimeSheetServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(body: TimeSheetDto | undefined): Observable<TimeSheetDto> {
+    create(body: CreateTimeSheetDto | undefined): Observable<CreateTimeSheetDto> {
         let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/Create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -44,14 +44,14 @@ export class TimeSheetServiceProxy {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<TimeSheetDto>><any>_observableThrow(e);
+                    return <Observable<CreateTimeSheetDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TimeSheetDto>><any>_observableThrow(response_);
+                return <Observable<CreateTimeSheetDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<TimeSheetDto> {
+    protected processCreate(response: HttpResponseBase): Observable<CreateTimeSheetDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -62,7 +62,7 @@ export class TimeSheetServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TimeSheetDto.fromJS(resultData200);
+            result200 = CreateTimeSheetDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -70,7 +70,7 @@ export class TimeSheetServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TimeSheetDto>(<any>null);
+        return _observableOf<CreateTimeSheetDto>(<any>null);
     }
 
     /**

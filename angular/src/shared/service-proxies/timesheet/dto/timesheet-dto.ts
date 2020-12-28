@@ -5,6 +5,74 @@ import { CalendarEvent } from 'angular-calendar';
 import { EventColor, EventAction } from 'calendar-utils';
 import * as moment from 'moment';
 
+export class CreateTimeSheetDto implements ICreateTimeSheetDto {    
+    start: Date;
+    end?: Date;
+    roomId: string | undefined;
+    teacherId: string | undefined;
+    courseSubjectId: string | undefined;
+    status: number | undefined;
+    isSingle: boolean | undefined;
+
+    constructor(data?: ICreateTimeSheetDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {            
+            this.start = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
+            this.end = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
+            this.roomId = data["roomId"];
+            this.teacherId = data["teacherId"];
+            this.courseSubjectId = data["courseSubjectId"];
+            this.status = data["status"];
+            this.isSingle =data["isSingle"];
+        }
+    }
+
+    static fromJS(data: any): CreateTimeSheetDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateTimeSheetDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};        
+        data["fromDate"] = this.start;
+        data["toDate"] = this.end;
+        data["roomId"] = this.roomId;
+        data["teacherId"] = this.teacherId;
+        data["courseSubjectId"] = this.courseSubjectId;
+        data["status"] = this.status;
+        data["isSingle"] = this.isSingle;        
+        return data; 
+    }
+
+    clone(): CreateTimeSheetDto {
+        const json = this.toJSON();
+        let result = new CreateTimeSheetDto();
+        result.init(json);
+        return result;
+    }
+}
+
+
+export interface ICreateTimeSheetDto {    
+    start: Date;
+    end?: Date;
+    roomId: string | undefined;
+    teacherId: string | undefined;
+    courseSubjectId: string | undefined;
+    status: number | undefined;
+    isSingle: boolean | undefined;
+}
+
 export class TimeSheetDto implements ITimeSheetDto {
     id?: string | number;
     start: Date;

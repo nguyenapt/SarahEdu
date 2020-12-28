@@ -11,7 +11,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 
-import { TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { CreateTimeSheetDto, TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
@@ -26,7 +26,8 @@ import { CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-
 export class CreateTimeSheetDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
-  timeSheet: TimeSheetDto = new TimeSheetDto();
+  timeSheet: CreateTimeSheetDto = new CreateTimeSheetDto();
+  
   students : StudentDto[] = [];
   selectedStudents : StudentDto[] = [];
   

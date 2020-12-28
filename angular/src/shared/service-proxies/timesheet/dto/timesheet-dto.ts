@@ -6,8 +6,8 @@ import { EventColor, EventAction } from 'calendar-utils';
 import * as moment from 'moment';
 
 export class CreateTimeSheetDto implements ICreateTimeSheetDto {    
-    start: Date;
-    end?: Date;
+    start: string;
+    end: string;    
     roomId: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
@@ -64,8 +64,8 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
 
 
 export interface ICreateTimeSheetDto {    
-    start: Date;
-    end?: Date;
+    start: string;
+    end: string;
     roomId: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;

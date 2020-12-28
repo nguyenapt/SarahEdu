@@ -12,6 +12,7 @@ using Task = System.Threading.Tasks.Task;
 using Sarah.Education.Teachers.Dto;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.Application.Services.Dto;
 
 namespace Sarah.Education.Teachers
 {
@@ -23,6 +24,12 @@ namespace Sarah.Education.Teachers
         {
             _teacherRepository = teacherRepository;
             _unitOfWorkManager = unitOfWorkManager;
+        }
+
+        public async Task<ListResultDto<TeacherDto>> GetTeachers()
+        {
+            var teachers = Repository.GetAllList();
+            return new ListResultDto<TeacherDto>(ObjectMapper.Map<List<TeacherDto>>(teachers));
         }
 
         protected override IQueryable<Teacher> ApplySorting(IQueryable<Teacher> query, TeacherResultRequestDto input)

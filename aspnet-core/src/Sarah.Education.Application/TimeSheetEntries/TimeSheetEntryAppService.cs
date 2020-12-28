@@ -36,7 +36,7 @@ namespace Sarah.Education.TimeSheetEntries
         }
 
         public async override Task<TimeSheetEntryDto> CreateAsync(CreateTimeSheetEntryDto input)
-        {
+        {            
             CheckCreatePermission();
 
             var timeSheet = ObjectMapper.Map<TimeSheetEntry>(input);

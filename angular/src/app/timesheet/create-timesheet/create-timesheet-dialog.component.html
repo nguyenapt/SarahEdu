@@ -22,7 +22,7 @@
         />
       </div>
       <div class="col-md-3">
-        <input placeholder="00:00" class="form-control"  [ngxTimepicker]="fullTimeStart" [format]="24"  readonly>
+        <input placeholder="00:00" class="form-control" [(ngModel)]="startHour" name="startHour" [ngxTimepicker]="fullTimeStart" [format]="24" >
         <ngx-material-timepicker #fullTimeStart></ngx-material-timepicker>
       </div>
     </div>
@@ -39,7 +39,7 @@
         />
       </div>
       <div class="col-md-3">
-        <input placeholder="00:00" class="form-control" [ngxTimepicker]="fullTimeEnd" [format]="24"  readonly>
+        <input placeholder="00:00" class="form-control" [(ngModel)]="endHour" name="endHour" [ngxTimepicker]="fullTimeEnd" [format]="24" >
         <ngx-material-timepicker #fullTimeEnd></ngx-material-timepicker>
       </div>
     </div>
@@ -66,14 +66,8 @@
         Teacher
       </label>
       <div class="col-md-9">
-        <ng-select [items]="teachers"
-             bindLabel="fullName"
-             name="select_teacher"
-             placeholder="Select Teacher"
-             appendTo="body"
-             multiple="false"
-             [(ngModel)]="selectedTeacher">
-        </ng-select>
+        <p-dropdown [options]="teachers" autoWidth="false" [style]="{'width':'100%'}" name="courses" [(ngModel)]="selectedTeacher" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a teacher">          
+        </p-dropdown>
       </div>
     </div>
 

@@ -18,8 +18,13 @@ import {
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
+  CalendarViewPeriod,
+  CalendarMonthViewBeforeRenderEvent,
+  CalendarWeekViewBeforeRenderEvent,
+  CalendarDayViewBeforeRenderEvent,
   DAYS_OF_WEEK
 } from 'angular-calendar';
+
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
 
@@ -79,6 +84,8 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
 
   weekStartsOn: 1 = 1;
 
+  period: CalendarViewPeriod;
+
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -117,11 +124,22 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
     });  
   }
 
+  beforeViewRender(
+    event:
+      | CalendarMonthViewBeforeRenderEvent
+      | CalendarWeekViewBeforeRenderEvent
+      | CalendarDayViewBeforeRenderEvent
+  ) {
+    if (!this.period || this.period.start.getTime() !== event.period.start.getTime() || this.period.end.getTime() !== event.period.end.getTime()) {
+      this.period = event.period;
+    }  
+  }
+
   onChangeRoom(event) {    
     const req = new PagedTimeSheetRequestDto();
         req.roomId = event.value.id;
-        req.fromDate = new Date("2020-12-20").toISOString();
-        req.toDate = new Date("2020-12-30").toISOString();
+        req.fromDate = this.period.start.toISOString();
+        req.toDate = this.period.end.toISOString();
         this.isTableLoading = true;
         this.list(req, 0, () => {
             this.isTableLoading = false;
@@ -212,6 +230,9 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
         CreateTimeSheetDialogComponent,
         {
           class: 'modal-lg',
+          initialState: {
+            roomId: this.selectedRoom.id,
+          },
         }
       );
     } 
@@ -221,6 +242,7 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
         {
           class: 'modal-lg',
           initialState: {
+            roomId: this.selectedRoom.id,
             timeSheet: timeSheet,
           },
         }

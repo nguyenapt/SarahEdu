@@ -64,6 +64,13 @@ namespace ET.Resources
             return Repository.GetAllIncluding()
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
         }
+
+        public async Task<List<RoomDto>> GetRoomByCurrentTenant()
+        {
+            var tenantId = AbpSession.TenantId ?? 1;
+            var rooms = await _roomRepository.GetAllListAsync(x => x.TenantId == tenantId);
+            return new List<RoomDto>(ObjectMapper.Map<List<RoomDto>>(rooms));
+        }
     }
 }
 

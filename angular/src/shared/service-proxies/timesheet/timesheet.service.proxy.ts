@@ -353,8 +353,12 @@ export class TimeSheetServiceProxy {
     }
 
     //Get timesheet from date to date
-    getAllTimeSheetFromDateToDate(fromDate: Date | undefined, toDate: Date | undefined): Observable<TimeSheetDtoPagedResultDto> {
+    getAllTimeSheetFromDateToDate(roomId: string | undefined,fromDate: string | undefined, toDate: string | undefined): Observable<TimeSheetDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/GetTimeSheetFromDateToDate?";
+        if (roomId === null)
+            throw new Error("The parameter 'roomId' cannot be null.");
+        else if (roomId !== undefined)
+            url_ += "roomId=" + encodeURIComponent("" + roomId) + "&";         
         if (fromDate !== undefined)
             url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";         
         if (toDate !== undefined)

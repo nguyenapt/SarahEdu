@@ -152,3 +152,54 @@ export interface IRoomDtoPagedResultDto {
     totalCount: number;
     items: RoomDto[] | undefined;
 }
+
+export class RoomDtoListResultDto implements IRoomDtoListResultDto {
+    items: RoomDto[] | undefined;
+
+    constructor(data?: IRoomDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data)) {
+                this.items = [] as any;
+                for (let item of data)
+                    this.items.push(RoomDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RoomDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoomDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data = [];
+            for (let item of this.items)
+                data.push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): RoomDtoListResultDto {
+        const json = this.toJSON();
+        let result = new RoomDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRoomDtoListResultDto {
+    items: RoomDto[] | undefined;
+}

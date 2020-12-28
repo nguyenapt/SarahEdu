@@ -2,10 +2,13 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
           <h1>{{ "Time scheduler" | localize }}</h1>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-md-4 text-center">
+          <p-dropdown [options]="rooms" [(ngModel)]="selectedRoom" [style]="{'width':'100%'}" placeholder="Select a room" optionLabel="name" [showClear]="true" (onChange)="onChangeRoom($event)"></p-dropdown>          
+        </div>
+        <div class="col-4 text-right">
           <a href="javascript:;" class="btn bg-blue" (click)="createScheduler()">
             <i class="fa fa-plus-square"></i>
             {{ "Create" | localize }}
@@ -46,7 +49,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4 text-center">
+        <div class="col-md-4 text-center">          
           <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
         </div>
         <div class="col-md-4 text-right">

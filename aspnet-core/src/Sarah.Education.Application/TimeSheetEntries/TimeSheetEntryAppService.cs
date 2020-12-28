@@ -15,6 +15,7 @@ using Sarah.Education.Students.Dto;
 using Sarah.Education.TimeSheetEntryStudents.Dto;
 using Abp.Collections.Extensions;
 using Abp.Linq.Extensions;
+using Sarah.Education.Rooms.Dto;
 
 namespace Sarah.Education.TimeSheetEntries
 {
@@ -23,12 +24,14 @@ namespace Sarah.Education.TimeSheetEntries
         private readonly IRepository<TimeSheetEntry, Guid> _timeSheetEntryRepository;
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetEntryStudentRepository;
         private readonly IRepository<Course, Guid> _courseRepository;
+        private readonly IRepository<Room, Guid> _roomRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public TimeSheetEntryAppService(IRepository<TimeSheetEntry, Guid> timeSheetEntryRepository, IRepository<Course, Guid> courseRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryRepository)
+        public TimeSheetEntryAppService(IRepository<TimeSheetEntry, Guid> timeSheetEntryRepository, IRepository<Course, Guid> courseRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Room, Guid> roomRepository, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryRepository)
         {
             _timeSheetEntryRepository = timeSheetEntryRepository;
             _timeSheetEntryStudentRepository = timeSheetEntryStudentRepository;
             _courseRepository = courseRepository;
+            _roomRepository = roomRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -87,6 +90,7 @@ namespace Sarah.Education.TimeSheetEntries
         public async Task<ListResultDto<TimeSheetEntryDto>> GetTimeSheetFromDateToDate(TimeSheetEntryResultRequestDto input)
         {
             var timeSheets =  Repository.GetAllIncluding(x=>x.Teacher, x=>x.CourseSubject, x=>x.CourseSubject.Course, x=>x.CourseSubject.Subject)
+                .Where(x=>x.RoomId == input.RoomId)
                 .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate)
                 .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate).ToList();
 

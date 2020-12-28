@@ -1,10 +1,12 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Subject,fromEvent  } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
+import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
+
 import { ITimeSheetDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
@@ -19,10 +21,12 @@ import {
   DAYS_OF_WEEK
 } from 'angular-calendar';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
+import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
 
 class PagedTimeSheetRequestDto extends PagedRequestDto {
-  fromDate: Date | null;
-  toDate: Date | null;
+  roomId: string | undefined;
+  fromDate: string | null;
+  toDate: string | null;
 }
 
 moment.updateLocale('en', {
@@ -59,8 +63,10 @@ function ceilToNearest(amount: number, precision: number) {
   templateUrl: './timesheet.component.html',
   animations: [appModuleAnimation()]
 })
-export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto> {  
-  
+export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto> 
+  implements OnInit {
+  rooms: RoomDto[]=[];
+  selectedRoom : RoomDto;
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -98,17 +104,38 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto> 
   constructor(
     injector: Injector,
     private _timesheetService: TimeSheetServiceProxy,
+    private _roomService: RoomServiceProxy,
     private _modalService: BsModalService
   ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    this._roomService.getRoomByCurrentTenant().subscribe((result) => {
+      this.rooms = result.items;
+      this.selectedRoom = this.rooms[0];
+    });  
+  }
+
+  onChangeRoom(event) {    
+    const req = new PagedTimeSheetRequestDto();
+        req.roomId = event.value.id;
+        req.fromDate = new Date("2020-12-20").toISOString();
+        req.toDate = new Date("2020-12-30").toISOString();
+        this.isTableLoading = true;
+        this.list(req, 0, () => {
+            this.isTableLoading = false;
+        });
   }
 
   protected list(
     request: PagedTimeSheetRequestDto, 
     pageNumber: number, 
     finishedCallback: Function): void {
+      request.roomId = this.selectedRoom.id;
       this._timesheetService
       .getAllTimeSheetFromDateToDate(
+        request.roomId,
         request.fromDate,
         request.toDate
       )

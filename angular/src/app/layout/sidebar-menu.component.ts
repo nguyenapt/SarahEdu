@@ -43,27 +43,9 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
 
   getMenuItems(): MenuItem[] {
     return [
-      new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home'),
-      new MenuItem(
-        this.l('Tenants'),
-        '/app/tenants',
-        'fas fa-building',
-        'Pages.Tenants'
-      ),
-      new MenuItem(
-        this.l('Users'),
-        '/app/users',
-        'fas fa-users',
-        'Pages.Users'
-      ),
-      new MenuItem(
-        this.l('Roles'),
-        '/app/roles',
-        'fas fa-theater-masks',
-        'Pages.Roles'
-      ),
+      new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home'),      
       new MenuItem(this.l('TimeSheet'), '/app/timesheet', 'fas fa-calendar-alt'),
-      new MenuItem(this.l('Configuration'), '', 'fas fa-cogs', '', [
+      new MenuItem(this.l('Categories'), '', 'fas fa-list', '', [
         new MenuItem(
           'Room',
           '/app/room',
@@ -99,7 +81,39 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
           '/app/protector',
           'far fa-circle'
         ),
-      ])
+      ]),
+      new MenuItem(this.l('Settings'), '', 'fas fa-cogs', '', [
+        new MenuItem(
+          this.l('Tenants'),
+          '/app/tenants',
+          'fas fa-building',
+          'Pages.Tenants'
+        ),
+        new MenuItem(
+          this.l('Users'),
+          '/app/users',
+          'fas fa-users',
+          'Pages.Users'
+        ),
+        new MenuItem(
+          this.l('Roles'),
+          '/app/roles',
+          'fas fa-theater-masks',
+          'Pages.Roles'
+        ),       
+      ]),
+      new MenuItem(this.l('Reports'), '', 'fas fa-chart-pie', '', [
+        new MenuItem(
+          this.l('Teacher-Productivity'),
+          '/app/report/teacher-productivity',
+          'fas fa-user-check'
+        ),
+        new MenuItem(
+          this.l('Student-Fee'),
+          '/app/report/student-fee',
+          'fas fa-dollar-sign'
+        ),       
+      ])      
     ];
   }
 

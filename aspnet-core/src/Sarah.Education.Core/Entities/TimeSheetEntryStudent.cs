@@ -15,6 +15,7 @@ namespace Sarah.Education.Entities
         public string ReceptiveAbility { get; set; }
         public string Description { get; set; }
         public double Fee { get; set; }
+        public bool? isPaid { get; set; }
 
         [ForeignKey(nameof(StudentId))]
         public virtual Student Student { get; set; }

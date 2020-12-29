@@ -31,6 +31,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   saving = false;
   timeSheet: CreateTimeSheetDto = new CreateTimeSheetDto();
   students : StudentDto[] = [];
+  selectedStudent : StudentDto;
   selectedStudents : StudentDto[] = [];
   
   teachers : TeacherDto[] = [];
@@ -76,6 +77,22 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
       this.courseSubjects = [];
       this.courseSubjects = $event.value.courseSubjects;
     }
+  }
+
+  addStudent(student):void{
+    if(student){
+      var obj = this.selectedStudents.find(e => e.id === student.id);
+      if(obj == null){    
+        this.selectedStudents.push(student);
+      }    
+    }
+  }
+
+  removeStudent(student):void{
+    const index: number = this.selectedStudents.indexOf(student);
+    if (index !== -1) {
+        this.selectedStudents.splice(index, 1);
+    } 
   }
 
   save(): void {

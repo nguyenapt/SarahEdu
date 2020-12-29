@@ -71,20 +71,59 @@
       </div>
     </div>
 
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label">
-        Students
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="description">
+        {{ "Student" | localize }}
       </label>
-      <div class="col-md-9">
-        <ng-select [items]="students"
-             bindLabel="fullName"
-             name="select_student"
-             placeholder="Select Students"
-             appendTo="body"
-             multiple="true"
-             [(ngModel)]="selectedStudents">
-        </ng-select>
+      <div class="col-md-8">
+        <p-dropdown [options]="students" autoWidth="false" [style]="{'width':'100%'}" name="students" [(ngModel)]="selectedStudent" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a student">          
+        </p-dropdown>          
       </div>
+      <div class="col-md-1 text-left">
+        <button
+          type="button"
+          class="btn btn-sm bg-success"
+          (click)="addStudent(selectedStudent)"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="form-group row">
+      <table class="table table-hover text-nowrap">
+        <thead class="bg-light">
+          <tr>                  
+            <th>{{ "FullName" | localize }}</th>
+            <th style="width: 100px;">{{ "DateOfBirth" | localize }}</th>
+            <th style="width: 200px;">{{ "Email" | localize }}</th>
+            <th style="width: 100px;">{{ "PhoneNumber" | localize }}</th>
+            <th style="width: 100px;">{{ "SchoolName" | localize }}</th>
+            <th style="width: 50px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let student of selectedStudents                  
+            "
+          >                  
+            <td>{{ student.fullName }}</td>
+            <td>{{ student.dateOfBirth | date}}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.phoneNumber }}</td>
+            <td>{{ student.schoolName }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-sm bg-danger mx-2"
+                (click)="removeStudent(student)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
   </div>

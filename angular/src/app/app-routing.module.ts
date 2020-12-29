@@ -15,6 +15,8 @@ import { CourseComponent } from './course/course.component';
 import { SubjectComponent } from './subject/subject.component';
 import { StudentComponent } from './student/student.component';
 import { ProtectorComponent } from './protector/protector.component';
+import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
+import { StudentFeeComponent } from './report/student-fee/student-fee.component';
 
 @NgModule({
     imports: [
@@ -35,7 +37,9 @@ import { ProtectorComponent } from './protector/protector.component';
                     { path: 'subject', component: SubjectComponent },
                     { path: 'student', component: StudentComponent },
                     { path: 'protector', component: ProtectorComponent },
-                    { path: 'update-password', component: ChangePasswordComponent }
+                    { path: 'update-password', component: ChangePasswordComponent },
+                    { path: 'report/teacher-productivity', component: TeacherProductivityComponent },
+                    { path: 'report/student-fee', component: StudentFeeComponent }
                 ]
             }
         ])

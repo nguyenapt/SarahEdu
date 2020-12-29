@@ -9,6 +9,11 @@ namespace Sarah.Education.Entities
     [Table("ProtectorStudent")]
     public class ProtectorStudent:Entity<Guid>
     {
+        public ProtectorStudent()
+        {
+            ProtectorStudentComments = new HashSet<ProtectorStudentComment>();
+
+        }
         public Guid StudentId { get; set; }
 
         public Guid ProtectorId { get; set; }
@@ -18,5 +23,8 @@ namespace Sarah.Education.Entities
 
         [ForeignKey(nameof(ProtectorId))]
         public virtual Protector Protector { get; set; }
+
+        public virtual ICollection<ProtectorStudentComment> ProtectorStudentComments { get; set; }
+
     }
 }

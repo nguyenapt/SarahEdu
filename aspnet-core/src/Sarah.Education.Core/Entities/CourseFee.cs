@@ -15,6 +15,7 @@ namespace Sarah.Education.Entities
         public Guid CourseId { get; set; }
 
         public int? Year { get; set; }
+        public DateTime? ActiveFrom { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsSingle { get; set; }
 

@@ -121,6 +121,14 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
     this._roomService.getRoomByCurrentTenant().subscribe((result) => {
       this.rooms = result.items;
       this.selectedRoom = this.rooms[0];
+      const req = new PagedTimeSheetRequestDto();
+      req.roomId = this.selectedRoom.id;
+      req.fromDate = this.period.start.toISOString();
+      req.toDate = this.period.end.toISOString();
+      this.isTableLoading = true;
+      this.list(req, 0, () => {
+      this.isTableLoading = false;
+      });
     });  
   }
 
@@ -137,13 +145,13 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
 
   onChangeRoom(event) {    
     const req = new PagedTimeSheetRequestDto();
-        req.roomId = event.value.id;
-        req.fromDate = this.period.start.toISOString();
-        req.toDate = this.period.end.toISOString();
-        this.isTableLoading = true;
-        this.list(req, 0, () => {
-            this.isTableLoading = false;
-        });
+    req.roomId = event.value.id;
+    req.fromDate = this.period.start.toISOString();
+    req.toDate = this.period.end.toISOString();
+    this.isTableLoading = true;
+    this.list(req, 0, () => {
+        this.isTableLoading = false;
+    });
   }
 
   protected list(

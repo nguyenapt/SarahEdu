@@ -80,6 +80,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 //primeng
 import { DropdownModule } from 'primeng/dropdown';
 
+//report
+import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
+import { StudentFeeComponent } from './report/student-fee/student-fee.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -139,7 +143,10 @@ import { DropdownModule } from 'primeng/dropdown';
     //protector
     ProtectorComponent,
     CreateProtectorDialogComponent,
-    EditProtectorDialogComponent
+    EditProtectorDialogComponent,
+    //report
+    TeacherProductivityComponent,
+    StudentFeeComponent
   ],
   imports: [
     CommonModule,

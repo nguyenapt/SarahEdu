@@ -15,5 +15,6 @@ namespace Sarah.Education.CourseFees.Dto
         public int? Year { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsSingle { get; set; }
+        public DateTime? ActiveFrom { get; set; }
     }
 }

@@ -9,8 +9,6 @@ namespace Sarah.Education.Students
 {
     public interface IStudentAppService : IAsyncCrudAppService<StudentDto, Guid, StudentResultRequestDto, CreateStudentDto, StudentDto>
     {
-        Task<ListResultDto<CourseSubjectDto>> GetCourseSubjects();
-
         Task<ListResultDto<StudentDto>> GetStudents();
     }
 }

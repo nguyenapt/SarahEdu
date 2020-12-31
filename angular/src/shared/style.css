@@ -5,3 +5,14 @@
   .timepicker-backdrop-overlay {
     z-index: 1100 !important;
   }
+
+.btn-full-width-height{
+  width: 100% !important;
+  height: 100% !important;
+}  
+
+label:not(.form-check-label):not(.custom-file-label) {
+  font-weight: 700;
+  margin: auto;
+  padding-left: 5px;
+}

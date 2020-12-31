@@ -79,6 +79,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 //primeng
 import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
@@ -159,6 +161,7 @@ import { StudentFeeComponent } from './report/student-fee/student-fee.component'
     ModalModule.forChild(),
     BsDropdownModule,
     DropdownModule,
+    CheckboxModule,
     CollapseModule,
     TabsModule,
     AppRoutingModule,

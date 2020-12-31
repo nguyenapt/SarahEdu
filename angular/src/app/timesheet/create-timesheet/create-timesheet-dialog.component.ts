@@ -12,14 +12,15 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 import { TeacherServiceProxy } from '@shared/service-proxies/teacher/teacher.service.proxy';
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
+import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 
 import { CreateTimeSheetDto, TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
-import { CourseSubjectDto, StudentDto } from '@shared/service-proxies/student/dto/student-dto';
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
-import { CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+import { CourseSubjectDto, CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
 
 @Component({
   templateUrl: 'create-timesheet-dialog.component.html',
@@ -45,6 +46,8 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
 
   startHour = '00:00';
   endHour = '00:00';
+  isSingle = false;
+
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -52,6 +55,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     private _timeSheetService: TimeSheetServiceProxy,
     private _teacherService: TeacherServiceProxy,
     private _studentService: StudentServiceProxy,
+    private _courseService: CourseServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -64,7 +68,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this._studentService.getStudents().subscribe((result) => {
       this.students = result.items;
     });
-    this._timeSheetService.getCourses().subscribe((result) => {
+    this._courseService.getCourses().subscribe((result) => {
       this.courses = result.items;
     });  
   }
@@ -82,7 +86,10 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   addStudent(student):void{
     if(student){
       var obj = this.selectedStudents.find(e => e.id === student.id);
-      if(obj == null){    
+      if(obj == null){
+        if(this.isSingle){
+          this.selectedStudents = [];
+        }
         this.selectedStudents.push(student);
       }    
     }
@@ -103,6 +110,10 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this.timeSheet.status = 0;
     this.timeSheet.start =this.timeSheet.start.toString() + "T" + this.startHour+":00";
     this.timeSheet.end = this.timeSheet.end.toString() + "T" + this.endHour+":00";
+    if(this.isSingle && this.selectedStudent != null){
+      this.selectedStudents = [];
+      this.selectedStudents.push(this.selectedStudent);
+    }
     this._timeSheetService
       .create(this.timeSheet)
       .pipe(

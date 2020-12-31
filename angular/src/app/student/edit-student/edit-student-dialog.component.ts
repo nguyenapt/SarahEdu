@@ -9,9 +9,11 @@ import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
-import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
-import { StudentDto,CourseSubjectDto } from '@shared/service-proxies/student/dto/student-dto';
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import * as moment from 'moment';
+import { CourseSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
+import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 
 @Component({
   templateUrl: './edit-student-dialog.component.html'
@@ -32,6 +34,7 @@ export class EditStudentDialogComponent extends AppComponentBase
   constructor(
     injector: Injector,
     public _studentService: StudentServiceProxy,
+    public _courseService: CourseServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -43,7 +46,7 @@ export class EditStudentDialogComponent extends AppComponentBase
         this.dateOfBirth = this.student.dateOfBirth ? this.student.dateOfBirth.format().split("T")[0]:"";
         this.startDate = this.student.startDate ? this.student.startDate.format().split("T")[0]:"";
         this.endDate = this.student.endDate ? this.student.endDate.format().split("T")[0]:"";
-        this._studentService.getCourseSubjects().subscribe((result2) => {
+        this._courseService.getCourseSubjects().subscribe((result2) => {
         this.courseSubjects = result2.items;
         this.setInitialCourseSubjectsStatus();
       });

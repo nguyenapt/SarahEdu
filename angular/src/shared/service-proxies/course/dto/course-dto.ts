@@ -1,4 +1,3 @@
-import { CourseSubjectDto } from '@shared/service-proxies/student/dto/student-dto';
 import { SubjectDto } from '@shared/service-proxies/subject/dto/subject-dto';
 import * as moment from 'moment';
 
@@ -130,6 +129,7 @@ export class CourseWithSubjectDto implements ICourseWithSubjectDto {
     name: string | undefined;
     description: string | undefined;
     courseSubjects: CourseSubjectDto[] | undefined;
+    courseFees: CourseFeeDto[] | undefined;
     id: string;
 
     constructor(data?: ICourseDto) {
@@ -149,6 +149,11 @@ export class CourseWithSubjectDto implements ICourseWithSubjectDto {
                 this.courseSubjects = [] as any;
                 for (let item of data["courseSubjects"])
                     this.courseSubjects.push(item);
+            }
+            if (Array.isArray(data["courseFees"])) {
+                this.courseFees = [] as any;
+                for (let item of data["courseFees"])
+                    this.courseFees.push(item);
             }
             this.id = data["id"];
         }
@@ -170,6 +175,11 @@ export class CourseWithSubjectDto implements ICourseWithSubjectDto {
             for (let item of this.courseSubjects)
                 data["courseSubjects"].push(item);
         }
+        if (Array.isArray(this.courseFees)) {
+            data["courseFees"] = [];
+            for (let item of this.courseFees)
+                data["courseFees"].push(item);
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -186,6 +196,7 @@ export interface ICourseWithSubjectDto {
     name: string | undefined;
     description: string | undefined;
     courseSubjects: CourseSubjectDto[] | undefined;
+    courseFees: CourseFeeDto[] | undefined;
     id: string;
 }
 //end course with subject
@@ -294,4 +305,223 @@ export class SubjectDtoListResultDto implements ISubjectDtoListResultDto {
 
 export interface ISubjectDtoListResultDto {
     items: SubjectDto[] | undefined;
+}
+
+
+export class CourseSubjectDtoListResultDto implements ICourseSubjectDtoListResultDto {
+    items: CourseSubjectDto[] | undefined;
+
+    constructor(data?: ICourseSubjectDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(CourseSubjectDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CourseSubjectDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CourseSubjectDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CourseSubjectDtoListResultDto {
+        const json = this.toJSON();
+        let result = new CourseSubjectDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICourseSubjectDtoListResultDto {
+    items: CourseSubjectDto[] | undefined;
+}
+
+
+export class CourseSubjectDto implements ICourseSubjectDto {
+    courseName: string | undefined;
+    subjectName: string | undefined;    
+    id: string;
+
+    constructor(data?: ICourseSubjectDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.courseName = data["courseName"];
+            this.subjectName = data["subjectName"];            
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CourseSubjectDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CourseSubjectDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["courseName"] = this.courseName;
+        data["subjectName"] = this.subjectName;        
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CourseSubjectDto {
+        const json = this.toJSON();
+        let result = new CourseSubjectDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICourseSubjectDto {
+    courseName: string | undefined;
+    subjectName: string | undefined;    
+    id: string;
+}
+
+
+export class CourseFeeDto implements ICourseFeeDto {
+    fee: number | undefined;
+    year: number | undefined;
+    isActive: string | undefined;
+    isSingle: boolean | undefined;
+    activeFrom: string | undefined;
+    id: string;
+
+    constructor(data?: ICourseSubjectDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.fee = data["fee"];
+            this.year = data["year"];
+            this.isActive = data["isActive"];
+            this.isSingle = data["isSingle"];
+            this.activeFrom = data["activeFrom"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): CourseSubjectDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CourseSubjectDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fee"] = this.fee;
+        data["year"] = this.year;
+        data["isActive"] = this.isActive;
+        data["isSingle"] = this.isSingle;
+        data["activeFrom"] = this.activeFrom;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CourseSubjectDto {
+        const json = this.toJSON();
+        let result = new CourseSubjectDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICourseFeeDto {
+    fee: number | undefined;
+    year: number | undefined;
+    isActive: string | undefined;
+    isSingle: boolean | undefined;
+    activeFrom: string | undefined;
+    id: string;
+}
+
+export class CourseDtoListResultDto implements ICourseDtoListResultDto {
+    items: CourseWithSubjectDto[] | undefined;
+
+    constructor(data?: ICourseDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data)) {
+                this.items = [] as any;
+                for (let item of data)
+                    this.items.push(CourseWithSubjectDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CourseDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CourseDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data = [];
+            for (let item of this.items)
+                data.push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CourseDtoListResultDto {
+        const json = this.toJSON();
+        let result = new CourseDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICourseDtoListResultDto {
+    items: CourseWithSubjectDto[] | undefined;
 }

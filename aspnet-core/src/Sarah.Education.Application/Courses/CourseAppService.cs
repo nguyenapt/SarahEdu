@@ -13,6 +13,7 @@ using Task = System.Threading.Tasks.Task;
 using Sarah.Education.Courses.Dto;
 using Abp.Application.Services.Dto;
 using Sarah.Education.Subjects.Dto;
+using Sarah.Education.CourseFees.Dto;
 
 namespace Sarah.Education.Courses
 {
@@ -68,11 +69,48 @@ namespace Sarah.Education.Courses
             return await GetAsync(input);
         }
 
-        public async Task<ListResultDto<SubjectDto>> GetSubjects()
+        public async Task<ListResultDto<CourseSubjectDto>> GetCourseSubjects()
         {
-            var subjects = await _subjectRepository.GetAllListAsync();
-            return new ListResultDto<SubjectDto>(ObjectMapper.Map<List<SubjectDto>>(subjects));
+            var courseSubjects = _courseSubjectRepository.GetAllIncluding(x => x.Course, x => x.Subject).Select(x =>
+                  new CourseSubjectDto
+                  {
+                      CourseId = x.CourseId,
+                      SubjectId = x.SubjectId,
+                      CourseName = x.Course.Name,
+                      SubjectName = x.Subject.Name,
+                      Id = x.Id
+                  }
+                );
+            return new ListResultDto<CourseSubjectDto>(ObjectMapper.Map<List<CourseSubjectDto>>(courseSubjects));
         }
+
+        public async Task<List<CourseWithSubjectDto>> GetCourseWithSubject()
+        {
+            var courses = _courseRepository.GetAllIncluding(x => x.CourseSubjects);
+
+            return courses.Select(x => new CourseWithSubjectDto()
+            {
+                Name = x.Name,
+                Description = x.Description,
+                CourseSubjects = x.CourseSubjects.Select(k => new CourseSubjectDto()
+                {
+                    Id = k.Id,
+                    CourseId = k.CourseId,
+                    SubjectId = k.SubjectId,
+                    CourseName = k.Course.Name,
+                    SubjectName = k.Subject.Name
+                }).ToArray(),
+                CourseFees = x.CourseFees.Where(x=>x.IsActive != false).Select(k => new CourseFeeDto()
+                {
+                    Id = k.Id,
+                    Fee = k.Fee,
+                    Year = k.Year.Value,
+                    IsActive = k.IsActive,
+                    IsSingle = k.IsSingle,
+                    ActiveFrom = k.ActiveFrom
+                }).ToArray()
+            }).ToList();
+        }        
 
         public async void CreateCourseSubject(Guid courseId, string[] subjectNames)
         {

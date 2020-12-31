@@ -86,22 +86,7 @@ namespace Sarah.Education.Students
                     await _studentCourseSubjectRepository.InsertAsync(studentCourseSubject);
                 }
             }
-        }
-
-        public async Task<ListResultDto<CourseSubjectDto>> GetCourseSubjects()
-        {
-            var courseSubjects = _courseSubjectRepository.GetAllIncluding(x => x.Course, x => x.Subject).Select(x =>
-                  new CourseSubjectDto
-                  {
-                      CourseId = x.CourseId,
-                      SubjectId = x.SubjectId,
-                      CourseName = x.Course.Name,
-                      SubjectName = x.Subject.Name,
-                      Id = x.Id
-                  }
-                );
-            return new ListResultDto<CourseSubjectDto>(ObjectMapper.Map<List<CourseSubjectDto>>(courseSubjects));
-        }
+        }        
 
         protected override StudentDto MapToEntityDto(Student entity)
         {

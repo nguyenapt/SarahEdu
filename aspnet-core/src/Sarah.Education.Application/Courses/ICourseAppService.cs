@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
@@ -9,7 +10,9 @@ namespace Sarah.Education.Courses
 {
     public interface ICourseAppService : IAsyncCrudAppService<CourseDto, Guid, CourseResultRequestDto, CreateCourseDto, CourseDto>
     {
-        Task<ListResultDto<SubjectDto>> GetSubjects();
+        Task<ListResultDto<CourseSubjectDto>> GetCourseSubjects();
+        Task<List<CourseWithSubjectDto>> GetCourseWithSubject();
+        
     }
 }
 

@@ -66,26 +66,7 @@ namespace Sarah.Education.TimeSheetEntries
                 };
                 await _timeSheetEntryStudentRepository.InsertAsync(obj);
             }
-        }
-
-        public async Task<List<CourseWithSubjectDto>> GetCourseWithSubject()
-        {
-            var courses = _courseRepository.GetAllIncluding(x => x.CourseSubjects);
-
-            return courses.Select(x => new CourseWithSubjectDto()
-            {
-                Name = x.Name,
-                Description = x.Description,
-                CourseSubjects = x.CourseSubjects.Select(k => new CourseSubjectDto()
-                {
-                    Id = k.Id,
-                    CourseId = k.CourseId,
-                    SubjectId = k.SubjectId,
-                    CourseName = k.Course.Name,
-                    SubjectName = k.Subject.Name
-                }).ToArray()
-            }).ToList();
-        }
+        }        
 
         public async Task<ListResultDto<TimeSheetEntryDto>> GetTimeSheetFromDateToDate(TimeSheetEntryResultRequestDto input)
         {

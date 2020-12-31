@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Abp.Application.Services.Dto;
 
 namespace Sarah.Education.Subjects
 {
@@ -35,6 +36,12 @@ namespace Sarah.Education.Subjects
         {
             return Repository.GetAllIncluding()
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
+        }
+
+        public async Task<ListResultDto<SubjectDto>> GetSubjects()
+        {
+            var subjects = await _subjectRepository.GetAllListAsync();
+            return new ListResultDto<SubjectDto>(ObjectMapper.Map<List<SubjectDto>>(subjects));
         }
     }
 }

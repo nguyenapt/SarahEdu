@@ -72,24 +72,42 @@
     </div>
 
     <div class="form-group row">
-      <label class="col-md-3 col-form-label" for="description">
-        {{ "Student" | localize }}
-      </label>
-      <div class="col-md-8">
+      <div class="col-md-9 offset-md-3">
+        <div class="p-field-checkbox">
+          <p-checkbox [(ngModel)]="isSingle" binary="true" inputId="isSingle" name="isSingle"></p-checkbox>
+          <label for="isSingle">Is learn 1-1</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-3">
+        <label class="col-form-label" for="description">
+          {{ "Student" | localize }}
+        </label>
+      </div>
+      <div class="col-md-9" *ngIf="isSingle; else isMultiple">
         <p-dropdown [options]="students" autoWidth="false" [style]="{'width':'100%'}" name="students" [(ngModel)]="selectedStudent" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a student">          
         </p-dropdown>          
       </div>
-      <div class="col-md-1 text-left">
-        <button
-          type="button"
-          class="btn btn-sm bg-success"
-          (click)="addStudent(selectedStudent)"
-        >
-          <i class="fas fa-plus"></i>
-        </button>
-      </div>
+      <ng-template #isMultiple>
+        <div class="col-md-8">
+          <p-dropdown [options]="students" autoWidth="false" [style]="{'width':'100%'}" name="students" [(ngModel)]="selectedStudent" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a student">          
+          </p-dropdown>          
+        </div>
+        <div class="col-md-1 text-left">
+          <button
+            type="button"
+            class="btn btn-sm bg-success btn-full-width-height"
+            (click)="addStudent(selectedStudent)"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </ng-template>      
     </div>
-    <div class="form-group row">
+    
+    <div class="form-group row" *ngIf="!isSingle">
       <table class="table table-hover text-nowrap">
         <thead class="bg-light">
           <tr>                  

@@ -10,6 +10,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
 import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
+import { SubjectServiceProxy } from '@shared/service-proxies/subject/subject.service.proxy';
 import { CourseDto } from '@shared/service-proxies/course/dto/course-dto';
 import { SubjectDto } from '@shared/service-proxies/subject/dto/subject-dto';
 
@@ -29,6 +30,7 @@ export class EditCourseDialogComponent extends AppComponentBase
   constructor(
     injector: Injector,
     public _courseService: CourseServiceProxy,
+    public _subjectService: SubjectServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -38,7 +40,7 @@ export class EditCourseDialogComponent extends AppComponentBase
     this._courseService.get(this.id).subscribe((result) => {
       this.course = result;
 
-      this._courseService.getSubjects().subscribe((result2) => {
+      this._subjectService.getSubjects().subscribe((result2) => {
         this.subjects = result2.items;
         this.setInitialSubjectsStatus();
       });

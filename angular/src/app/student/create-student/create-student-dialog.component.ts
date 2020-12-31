@@ -9,12 +9,15 @@ import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
-import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
-import { CreateStudentDto, CourseSubjectDto } from '@shared/service-proxies/student/dto/student-dto';
+import { CreateStudentDto } from '@shared/service-proxies/student/dto/student-dto';
 
 import {  } from '@shared/service-proxies/student/dto/student-dto';
 
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
+import { CourseSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+
+import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
+import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 
 @Component({
   templateUrl: './create-student-dialog.component.html'
@@ -32,13 +35,14 @@ export class CreateStudentDialogComponent extends AppComponentBase
   constructor(
     injector: Injector,
     public _studentService: StudentServiceProxy,
+    public _courseService: CourseServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this._studentService.getCourseSubjects().subscribe((result) => {
+    this._courseService.getCourseSubjects().subscribe((result) => {
       this.courseSubjects = result.items;
       this.setInitialSubjectsStatus();
     });

@@ -80,6 +80,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 //primeng
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 
 //report
@@ -162,6 +163,7 @@ import { StudentFeeComponent } from './report/student-fee/student-fee.component'
     BsDropdownModule,
     DropdownModule,
     CheckboxModule,
+    ColorPickerModule,
     CollapseModule,
     TabsModule,
     AppRoutingModule,

@@ -136,7 +136,11 @@ export class TimeSheetDto implements ITimeSheetDto {
                     title += item.student.fullName + "<br />";
                 }
             }
-            
+            var color: any = {
+                    primary: this.teacher.color,
+                    secondary: this.teacher.color,
+                }
+            this.color = color;
             this.title = title;
         }
     }

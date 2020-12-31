@@ -10,6 +10,7 @@ export class CreateTeacherDto implements ICreateTeacherDto {
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
     isActive: boolean | undefined;
+    color: string | undefined;
 
     constructor(data?: ICreateTeacherDto) {
         if (data) {
@@ -31,6 +32,7 @@ export class CreateTeacherDto implements ICreateTeacherDto {
             this.startDate =data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.isActive = data["isActive"];
+            this.color = data["color"];
         }
     }
 
@@ -52,6 +54,7 @@ export class CreateTeacherDto implements ICreateTeacherDto {
         data["startDate"] = this.startDate ? moment.utc(this.dateOfBirth).format() : <any>undefined;
         data["endDate"] = this.endDate ? moment.utc(this.dateOfBirth).format(): <any>undefined;
         data["isActive"] = this.isActive;
+        data["color"] = this.color;
         return data; 
     }
 
@@ -73,6 +76,7 @@ export interface ICreateTeacherDto {
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
     isActive: boolean | undefined;
+    color: string | undefined;
 }
 
 export class TeacherDto implements ITeacherDto {    
@@ -86,6 +90,7 @@ export class TeacherDto implements ITeacherDto {
     endDate: moment.Moment | undefined;
     isActive: boolean | undefined;
     salaries: TeacherSalaryDto[] | undefined;
+    color: string | undefined;
     id: string;
 
     constructor(data?: ITeacherDto) {
@@ -108,6 +113,7 @@ export class TeacherDto implements ITeacherDto {
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.isActive = data["isActive"];
+            this.color = data["color"];
             this.id = data["id"];
             if (Array.isArray(data["salaries"])) {
                 this.salaries = [] as any;
@@ -135,6 +141,7 @@ export class TeacherDto implements ITeacherDto {
         data["startDate"] = this.startDate ? this.startDate : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate : <any>undefined;
         data["isActive"] = this.isActive;
+        data["color"] = this.color;
         data["id"] = this.id;
         if (Array.isArray(this.salaries)) {
             data["salaries"] = [];
@@ -163,6 +170,7 @@ export interface ITeacherDto {
     endDate: moment.Moment | undefined;
     isActive: boolean | undefined;
     salaries :TeacherSalaryDto[] | undefined;
+    color: string | undefined;
     id: string;
 }
 

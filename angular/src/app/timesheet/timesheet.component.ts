@@ -41,20 +41,20 @@ moment.updateLocale('en', {
   },
 });
 
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
-  },
-};
+// const colors: any = {
+//   red: {
+//     primary: '#ad2121',
+//     secondary: '#FAE3E3',
+//   },
+//   blue: {
+//     primary: '#1e90ff',
+//     secondary: '#D1E8FF',
+//   },
+//   yellow: {
+//     primary: '#e3bc08',
+//     secondary: '#FDF1BA',
+//   },
+// };
 
 function floorToNearest(amount: number, precision: number) {
   return Math.floor(amount / precision) * precision;
@@ -66,6 +66,7 @@ function ceilToNearest(amount: number, precision: number) {
 
 @Component({
   templateUrl: './timesheet.component.html',
+  styleUrls: ['./timesheet.component.css'],
   animations: [appModuleAnimation()]
 })
 export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto> 
@@ -175,7 +176,7 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
         this.events = result.items;
         this.events.forEach(function (event) {
           event.actions = self.actions;     
-          event.color = colors.yellow;
+//          event.color = colors.yellow;
           event.resizable = {
             beforeStart: true,
             afterEnd: true,

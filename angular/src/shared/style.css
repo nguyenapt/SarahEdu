@@ -16,3 +16,8 @@ label:not(.form-check-label):not(.custom-file-label) {
   margin: auto;
   padding-left: 5px;
 }
+
+.cal-week-view .cal-event {    
+  color: aliceblue !important;
+  font-weight: 500 !important;
+}

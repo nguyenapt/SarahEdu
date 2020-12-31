@@ -17,6 +17,7 @@ using Abp.Collections.Extensions;
 using Abp.Linq.Extensions;
 using Sarah.Education.Rooms.Dto;
 using Sarah.Education.Teachers.Dto;
+using Abp.UI;
 
 namespace Sarah.Education.TimeSheetEntries
 {
@@ -42,6 +43,12 @@ namespace Sarah.Education.TimeSheetEntries
         {            
             CheckCreatePermission();
 
+            var isAvailable = await CheckAvailable(input.RoomId, input.FromDate, input.ToDate);
+            if (!isAvailable){
+                
+                throw new UserFriendlyException("Error","The room is not available");
+            }
+
             var timeSheet = ObjectMapper.Map<TimeSheetEntry>(input);
 
             var timeSheetId = await _timeSheetEntryRepository.InsertAndGetIdAsync(timeSheet);
@@ -54,6 +61,15 @@ namespace Sarah.Education.TimeSheetEntries
             CurrentUnitOfWork.SaveChanges();
 
             return MapToEntityDto(timeSheet);
+        }
+
+        protected async Task<bool> CheckAvailable(Guid roomId, DateTime fromDate, DateTime toDate)
+        {
+            var timeScheduled = await Repository.FirstOrDefaultAsync(x => x.RoomId == roomId && ((x.FromDate <= fromDate && x.ToDate >= fromDate) || (x.FromDate <= toDate && x.ToDate >= toDate) || (x.FromDate >= fromDate && x.ToDate <= toDate) || (x.FromDate>= fromDate && x.ToDate >= toDate)));
+            if(timeScheduled != null){
+                return false;
+            }
+            return true;
         }
 
         public async void CreateTimeSheetStudents(Guid timeSheetId, TimeSheetEntryStudentDto[] timeSheetEntryStudents)

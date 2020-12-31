@@ -7,8 +7,8 @@ using Sarah.Education.Students.Dto;
 
 namespace Sarah.Education.TimeSheetEntryStudents.Dto
 {
-    [AutoMapFrom(typeof(TimeSheetEntry))]
-    [AutoMapTo(typeof(TimeSheetEntry))]
+    [AutoMapFrom(typeof(TimeSheetEntryStudent))]
+    [AutoMapTo(typeof(TimeSheetEntryStudent))]
     public class TimeSheetEntryStudentDto : EntityDto<Guid>
     {
         public Guid StudentId { get; set; }

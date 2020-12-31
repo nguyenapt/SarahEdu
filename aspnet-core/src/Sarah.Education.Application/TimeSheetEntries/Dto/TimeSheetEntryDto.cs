@@ -4,6 +4,7 @@ using Abp.AutoMapper;
 using Sarah.Education.Courses.Dto;
 using Sarah.Education.Entities;
 using Sarah.Education.Teachers.Dto;
+using Sarah.Education.TimeSheetEntryStudents.Dto;
 
 namespace Sarah.Education.TimeSheetEntries.Dto
 {
@@ -20,5 +21,7 @@ namespace Sarah.Education.TimeSheetEntries.Dto
         public int Status { get; set; }
         public TeacherDto Teacher { get; set; }
         public CourseSubjectDto CourseSubject { get; set; }
+
+        public TimeSheetEntryStudentDto[] TimeSheetEntryStudents { get; set; }
     }
 }

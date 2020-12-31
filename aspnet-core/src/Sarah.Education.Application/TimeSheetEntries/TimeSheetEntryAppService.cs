@@ -16,6 +16,7 @@ using Sarah.Education.TimeSheetEntryStudents.Dto;
 using Abp.Collections.Extensions;
 using Abp.Linq.Extensions;
 using Sarah.Education.Rooms.Dto;
+using Sarah.Education.Teachers.Dto;
 
 namespace Sarah.Education.TimeSheetEntries
 {
@@ -23,13 +24,15 @@ namespace Sarah.Education.TimeSheetEntries
     {
         private readonly IRepository<TimeSheetEntry, Guid> _timeSheetEntryRepository;
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetEntryStudentRepository;
+        private readonly IRepository<Student, Guid> _studentRepository;
         private readonly IRepository<Course, Guid> _courseRepository;
         private readonly IRepository<Room, Guid> _roomRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public TimeSheetEntryAppService(IRepository<TimeSheetEntry, Guid> timeSheetEntryRepository, IRepository<Course, Guid> courseRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Room, Guid> roomRepository, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryRepository)
+        public TimeSheetEntryAppService(IRepository<TimeSheetEntry, Guid> timeSheetEntryRepository, IRepository<Course, Guid> courseRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Room, Guid> roomRepository, IRepository<Student, Guid> studentRepository, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryRepository)
         {
             _timeSheetEntryRepository = timeSheetEntryRepository;
             _timeSheetEntryStudentRepository = timeSheetEntryStudentRepository;
+            _studentRepository = studentRepository;
             _courseRepository = courseRepository;
             _roomRepository = roomRepository;
             _unitOfWorkManager = unitOfWorkManager;
@@ -70,12 +73,36 @@ namespace Sarah.Education.TimeSheetEntries
 
         public async Task<ListResultDto<TimeSheetEntryDto>> GetTimeSheetFromDateToDate(TimeSheetEntryResultRequestDto input)
         {
-            var timeSheets =  Repository.GetAllIncluding(x=>x.Teacher, x=>x.CourseSubject, x=>x.CourseSubject.Course, x=>x.CourseSubject.Subject)
+            var timeSheets =  Repository.GetAllIncluding(x=>x.Teacher, x=> x.TimeSheetEntryStudents, x=>x.CourseSubject, x=>x.CourseSubject.Course, x=>x.CourseSubject.Subject)
                 .Where(x=>x.RoomId == input.RoomId)
                 .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate)
                 .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate).ToList();
 
-            return new ListResultDto<TimeSheetEntryDto>(ObjectMapper.Map<List<TimeSheetEntryDto>>(timeSheets));
+            var timesheetEntries = timeSheets.Select(x => new TimeSheetEntryDto()
+            {
+                CourseSubject = ObjectMapper.Map<Courses.Dto.CourseSubjectDto>(x.CourseSubject),
+                CourseSubjectId = x.CourseSubjectId,
+                FromDate = x.FromDate,
+                Id = x.Id,
+                RoomId = x.RoomId,
+                Status = x.Status,
+                Teacher = ObjectMapper.Map<TeacherDto>(x.Teacher),
+                TeacherId = x.TeacherId,
+                ToDate = x.ToDate,
+                TimeSheetEntryStudents = x.TimeSheetEntryStudents.Select(k=> new TimeSheetEntryStudentDto()
+                {
+                    Attitude = k.Attitude,
+                    Description = k.Description,
+                    Fee = k.Fee,
+                    ReceptiveAbility = k.ReceptiveAbility,
+                    Id = k.Id,
+                    StudentId = k.StudentId,
+                    TimeSheetEntryId = k.TimeSheetEntryId,
+                    Student = ObjectMapper.Map<StudentDto>(_studentRepository.FirstOrDefault(st=>st.Id == k.StudentId))
+                }).ToArray()
+            }).ToList();
+
+            return new ListResultDto<TimeSheetEntryDto>(timesheetEntries);
         }
     }
 }

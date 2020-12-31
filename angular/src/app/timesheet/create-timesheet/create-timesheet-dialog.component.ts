@@ -14,7 +14,7 @@ import { TeacherServiceProxy } from '@shared/service-proxies/teacher/teacher.ser
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
 import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 
-import { CreateTimeSheetDto, TimeSheetDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { CreateTimeSheetDto, TimeSheetDto, TimeSheetStudentDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
@@ -110,10 +110,18 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this.timeSheet.status = 0;
     this.timeSheet.start =this.timeSheet.start.toString() + "T" + this.startHour+":00";
     this.timeSheet.end = this.timeSheet.end.toString() + "T" + this.endHour+":00";
+    this.timeSheet.isSingle = this.isSingle;
     if(this.isSingle && this.selectedStudent != null){
       this.selectedStudents = [];
       this.selectedStudents.push(this.selectedStudent);
     }
+    this.timeSheet.timeSheetStudents = []
+    this.selectedStudents.forEach(t => {
+      var timeSheetStudent = new TimeSheetStudentDto();
+      timeSheetStudent.studentId = t.id;
+      timeSheetStudent.fee = 1000000;
+      this.timeSheet.timeSheetStudents.push(timeSheetStudent);
+    });
     this._timeSheetService
       .create(this.timeSheet)
       .pipe(

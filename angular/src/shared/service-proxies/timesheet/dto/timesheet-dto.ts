@@ -13,6 +13,7 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
     courseSubjectId: string | undefined;
     status: number | undefined;
     isSingle: boolean | undefined;
+    timeSheetStudents: TimeSheetStudentDto [] | undefined;
 
     constructor(data?: ICreateTimeSheetDto) {
         if (data) {
@@ -32,6 +33,11 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
             this.courseSubjectId = data["courseSubjectId"];
             this.status = data["status"];
             this.isSingle =data["isSingle"];
+            if (Array.isArray(data["timeSheetStudents"])) {
+                this.timeSheetStudents = [] as any;
+                for (let item of data["timeSheetStudents"])
+                    this.timeSheetStudents.push(item);
+            }
         }
     }
 
@@ -51,6 +57,11 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
         data["courseSubjectId"] = this.courseSubjectId;
         data["status"] = this.status;
         data["isSingle"] = this.isSingle;        
+        if (Array.isArray(this.timeSheetStudents)) {
+            data["timeSheetStudents"] = [];
+            for (let item of this.timeSheetStudents)
+                data["timeSheetStudents"].push(item);
+        }
         return data; 
     }
 
@@ -71,6 +82,7 @@ export interface ICreateTimeSheetDto {
     courseSubjectId: string | undefined;
     status: number | undefined;
     isSingle: boolean | undefined;
+    timeSheetStudents: TimeSheetStudentDto [] | undefined;
 }
 
 export class TimeSheetDto implements ITimeSheetDto {
@@ -213,4 +225,77 @@ export class TimeSheetDtoPagedResultDto implements ITimeSheetDtoPagedResultDto {
 export interface ITimeSheetDtoPagedResultDto {
     totalCount: number;
     items: TimeSheetDto[] | undefined;
+}
+
+
+export class TimeSheetStudentDto implements ITimeSheetStudentDto {    
+    id: string | undefined;
+    studentId: string | undefined;
+    timeSheetEntryId: string | undefined;
+    attitude: string | undefined;
+    receptiveAbility: string | undefined;
+    description: string | undefined;
+    fee: number | undefined;
+    isPaid: boolean | undefined;
+
+    constructor(data?: ICreateTimeSheetDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {            
+            this.id = data["id"];
+            this.studentId = data["studentId"];
+            this.timeSheetEntryId = data["timeSheetEntryId"];
+            this.attitude = data["attitude"];
+            this.receptiveAbility = data["receptiveAbility"];
+            this.description = data["description"];
+            this.fee = data["fee"];
+            this.isPaid = data["isPaid"];
+        }
+    }
+
+    static fromJS(data: any): CreateTimeSheetDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateTimeSheetDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};        
+        data["id"] = this.id;
+        data["studentId"] = this.studentId;
+        data["timeSheetEntryId"] = this.timeSheetEntryId;
+        data["attitude"] = this.attitude;
+        data["receptiveAbility"] = this.receptiveAbility;
+        data["description"] = this.description;
+        data["fee"] = this.fee;        
+        data["isPaid"] = this.isPaid;        
+        return data; 
+    }
+
+    clone(): CreateTimeSheetDto {
+        const json = this.toJSON();
+        let result = new CreateTimeSheetDto();
+        result.init(json);
+        return result;
+    }
+}
+
+
+export interface ITimeSheetStudentDto {    
+    id: string | undefined;
+    studentId: string | undefined;
+    timeSheetEntryId: string | undefined;
+    attitude: string | undefined;
+    receptiveAbility: string | undefined;
+    description: string | undefined;
+    fee: number | undefined;
+    isPaid: boolean | undefined;
 }

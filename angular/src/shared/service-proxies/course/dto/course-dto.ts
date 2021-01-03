@@ -5,6 +5,7 @@ export class CreateCourseDto implements ICreateCourseDto {
     name: string | undefined;
     description: string | undefined;
     subjects: string[] | undefined;
+    courseFees: CourseFeeDto[] | undefined;
 
     constructor(data?: ICreateCourseDto) {
         if (data) {
@@ -23,6 +24,11 @@ export class CreateCourseDto implements ICreateCourseDto {
                 this.subjects = [] as any;
                 for (let item of data["subjects"])
                     this.subjects.push(item);
+            }
+            if (Array.isArray(data["courseFees"])) {
+                this.courseFees = [] as any;
+                for (let item of data["courseFees"])
+                    this.courseFees.push(item);
             }
         }
     }
@@ -43,6 +49,11 @@ export class CreateCourseDto implements ICreateCourseDto {
             for (let item of this.subjects)
                 data["subjects"].push(item);
         }
+        if (Array.isArray(this.courseFees)) {
+            data["courseFees"] = [];
+            for (let item of this.courseFees)
+                data["courseFees"].push(item);
+        }
         return data; 
     }
 
@@ -58,12 +69,14 @@ export interface ICreateCourseDto {
     name: string | undefined;
     description: string | undefined;
     subjects: string[] | undefined;
+    courseFees: CourseFeeDto[] | undefined;
 }
 
 export class CourseDto implements ICourseDto {
     name: string | undefined;
     description: string | undefined;
     subjects: string[] | undefined;
+    courseFees: CourseFeeDto[] | undefined;
     id: string;
 
     constructor(data?: ICourseDto) {
@@ -83,6 +96,11 @@ export class CourseDto implements ICourseDto {
                 this.subjects = [] as any;
                 for (let item of data["subjects"])
                     this.subjects.push(item);
+            }
+            if (Array.isArray(data["courseFees"])) {
+                this.courseFees = [] as any;
+                for (let item of data["courseFees"])
+                    this.courseFees.push(item);
             }
             this.id = data["id"];
         }
@@ -104,6 +122,11 @@ export class CourseDto implements ICourseDto {
             for (let item of this.subjects)
                 data["subjects"].push(item);
         }
+        if (Array.isArray(this.courseFees)) {
+            data["courseFees"] = [];
+            for (let item of this.courseFees)
+                data["courseFees"].push(item);
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -120,6 +143,7 @@ export interface ICourseDto {
     name: string | undefined;
     description: string | undefined;
     subjects: string[] | undefined;
+    courseFees: CourseFeeDto[] | undefined;
     id: string;
 }
 
@@ -414,9 +438,9 @@ export interface ICourseSubjectDto {
 
 export class CourseFeeDto implements ICourseFeeDto {
     fee: number | undefined;
+    feeMultiple: number | undefined;
     year: number | undefined;
-    isActive: string | undefined;
-    isSingle: boolean | undefined;
+    isActive: boolean | undefined;
     activeFrom: string | undefined;
     id: string;
 
@@ -434,7 +458,7 @@ export class CourseFeeDto implements ICourseFeeDto {
             this.fee = data["fee"];
             this.year = data["year"];
             this.isActive = data["isActive"];
-            this.isSingle = data["isSingle"];
+            this.feeMultiple = data["feeMultiple"];
             this.activeFrom = data["activeFrom"];
             this.id = data["id"];
         }
@@ -452,7 +476,7 @@ export class CourseFeeDto implements ICourseFeeDto {
         data["fee"] = this.fee;
         data["year"] = this.year;
         data["isActive"] = this.isActive;
-        data["isSingle"] = this.isSingle;
+        data["feeMultiple"] = this.feeMultiple;
         data["activeFrom"] = this.activeFrom;
         data["id"] = this.id;
         return data; 
@@ -468,9 +492,9 @@ export class CourseFeeDto implements ICourseFeeDto {
 
 export interface ICourseFeeDto {
     fee: number | undefined;
+    feeMultiple: number | undefined;
     year: number | undefined;
-    isActive: string | undefined;
-    isSingle: boolean | undefined;
+    isActive: boolean | undefined;    
     activeFrom: string | undefined;
     id: string;
 }

@@ -44,18 +44,15 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
   getMenuItems(): MenuItem[] {
     return [
       new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home'),      
-      new MenuItem(this.l('TimeSheet'), '/app/timesheet', 'fas fa-calendar-alt'),
+      new MenuItem('Time Scheduler', '/app/timesheet', 'fas fa-calendar-alt'),
+      new MenuItem('Teacher','/app/teacher','fas fa-chalkboard-teacher'),
+      new MenuItem('Student','/app/student','fas fa-user-graduate'),
       new MenuItem(this.l('Categories'), '', 'fas fa-list', '', [
         new MenuItem(
           'Room',
           '/app/room',
           'far fa-circle'
-        ),
-        new MenuItem(
-          'Teacher',
-          '/app/teacher',
-          'far fa-circle'
-        ),
+        ),        
         new MenuItem(
           'Class',
           '/app/class',
@@ -70,12 +67,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
           'Subject',
           '/app/subject',
           'far fa-circle'
-        ),
-        new MenuItem(
-          'Student',
-          '/app/student',
-          'far fa-circle'
-        ),
+        ),        
         new MenuItem(
           'Protector',
           '/app/protector',

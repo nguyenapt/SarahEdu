@@ -1,6 +1,7 @@
 ﻿using System;
 using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
+using Sarah.Education.CourseFees.Dto;
 using Sarah.Education.Entities;
 
 namespace Sarah.Education.Courses.Dto
@@ -10,9 +11,7 @@ namespace Sarah.Education.Courses.Dto
     {
         public string Name { get; set; }
         public string Description { get; set; }
-
         public string[] Subjects { get; set; }
-
+        public CourseFeeDto[] CourseFees { get; set; }
     }
-
 }

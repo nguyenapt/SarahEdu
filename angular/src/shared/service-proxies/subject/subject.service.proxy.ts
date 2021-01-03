@@ -309,7 +309,7 @@ export class SubjectServiceProxy {
      * @return Success
      */
     getSubjects(): Observable<SubjectDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Course/GetSubjects";
+        let url_ = this.baseUrl + "/api/services/app/Subject/GetSubjects";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

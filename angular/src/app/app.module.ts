@@ -86,6 +86,8 @@ import { ColorPickerModule } from 'primeng/colorpicker';
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
 import { StudentFeeComponent } from './report/student-fee/student-fee.component';
+import { TeacherSchedulerComponent } from './teacher/teacher-scheduler/teacher-scheduler.component';
+import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dialog/teacher-scheduler-dialog.component';
 
 @NgModule({
   declarations: [
@@ -149,7 +151,9 @@ import { StudentFeeComponent } from './report/student-fee/student-fee.component'
     EditProtectorDialogComponent,
     //report
     TeacherProductivityComponent,
-    StudentFeeComponent
+    StudentFeeComponent,
+    TeacherSchedulerComponent,
+    TeacherSchedulerDialogComponent
   ],
   imports: [
     CommonModule,

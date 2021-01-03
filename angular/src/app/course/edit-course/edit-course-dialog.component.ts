@@ -11,7 +11,7 @@ import { forEach as _forEach, includes as _includes, map as _map } from 'lodash-
 import { AppComponentBase } from '@shared/app-component-base';
 import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 import { SubjectServiceProxy } from '@shared/service-proxies/subject/subject.service.proxy';
-import { CourseDto } from '@shared/service-proxies/course/dto/course-dto';
+import { CourseDto, CourseFeeDto } from '@shared/service-proxies/course/dto/course-dto';
 import { SubjectDto } from '@shared/service-proxies/subject/dto/subject-dto';
 
 @Component({
@@ -24,7 +24,9 @@ export class EditCourseDialogComponent extends AppComponentBase
   subjects: SubjectDto[] = [];
   checkedSubjectsMap: { [key: string]: boolean } = {};
   id: string;
-
+  courseFees : CourseFeeDto[]=[];
+  fee = 0;  
+  feeMultiple = 0;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -39,7 +41,7 @@ export class EditCourseDialogComponent extends AppComponentBase
   ngOnInit(): void {
     this._courseService.get(this.id).subscribe((result) => {
       this.course = result;
-
+      this.courseFees = result.courseFees;
       this._subjectService.getSubjects().subscribe((result2) => {
         this.subjects = result2.items;
         this.setInitialSubjectsStatus();
@@ -73,11 +75,18 @@ export class EditCourseDialogComponent extends AppComponentBase
     return subjects;
   }
 
+  removeCourseFee(fee):void{
+    const index: number = this.courseFees.indexOf(fee);
+    if (index !== -1) {
+        this.courseFees.splice(index, 1);
+    } 
+  }
+
   save(): void {
     this.saving = true;
 
     this.course.subjects = this.getCheckedSubjects();
-
+    this.course.courseFees = this.courseFees;
     this._courseService
       .update(this.course)
       .pipe(

@@ -22,12 +22,14 @@ namespace Sarah.Education.Courses
         private readonly IRepository<Course, Guid> _courseRepository;
         private readonly IRepository<Subject, Guid> _subjectRepository;
         private readonly IRepository<CourseSubject, Guid> _courseSubjectRepository;
+        private readonly IRepository<CourseFee, Guid> _courseFeeRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public CourseAppService(IRepository<Course, Guid> courseRepository, IRepository<Subject, Guid> subjectRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IUnitOfWorkManager unitOfWorkManager) : base(courseRepository)
+        public CourseAppService(IRepository<Course, Guid> courseRepository, IRepository<Subject, Guid> subjectRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<CourseFee, Guid> courseFeeRepository, IUnitOfWorkManager unitOfWorkManager) : base(courseRepository)
         {
             _courseRepository = courseRepository;
             _subjectRepository = subjectRepository;
             _courseSubjectRepository = courseSubjectRepository;
+            _courseFeeRepository = courseFeeRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -35,13 +37,18 @@ namespace Sarah.Education.Courses
         {
             CheckCreatePermission();
 
-            var course = ObjectMapper.Map<Course>(input);            
+            var course = ObjectMapper.Map<Course>(input);
 
             var courseId = await _courseRepository.InsertAndGetIdAsync(course);
 
             if (input.Subjects != null)
             {
                 CreateCourseSubject(courseId, input.Subjects);
+            }
+
+            if (input.CourseFees != null)
+            {
+                CreateCourseFee(courseId, input.CourseFees);
             }
 
             CurrentUnitOfWork.SaveChanges();
@@ -53,7 +60,7 @@ namespace Sarah.Education.Courses
         {
             CheckUpdatePermission();
 
-            var course = _courseRepository.FirstOrDefault(x=>x.Id == input.Id);
+            var course = _courseRepository.FirstOrDefault(x => x.Id == input.Id);
 
             MapToEntity(input, course);
 
@@ -62,6 +69,11 @@ namespace Sarah.Education.Courses
             if (input.Subjects != null)
             {
                 CreateCourseSubject(course.Id, input.Subjects);
+            }
+
+            if (input.CourseFees != null)
+            {
+                CreateCourseFee(course.Id, input.CourseFees);
             }
 
             CurrentUnitOfWork.SaveChanges();
@@ -100,26 +112,26 @@ namespace Sarah.Education.Courses
                     CourseName = k.Course.Name,
                     SubjectName = k.Subject.Name
                 }).ToArray(),
-                CourseFees = x.CourseFees.Where(x=>x.IsActive != false).Select(k => new CourseFeeDto()
+                CourseFees = x.CourseFees.Where(x => x.IsActive != false).Select(k => new CourseFeeDto()
                 {
                     Id = k.Id,
                     Fee = k.Fee,
+                    FeeMultiple = k.FeeMultiple,
                     Year = k.Year.Value,
                     IsActive = k.IsActive,
-                    IsSingle = k.IsSingle,
                     ActiveFrom = k.ActiveFrom
                 }).ToArray()
             }).ToList();
-        }        
+        }
 
         public async void CreateCourseSubject(Guid courseId, string[] subjectNames)
         {
             _courseSubjectRepository.Delete(x => x.CourseId == courseId);
-            
+
             foreach (var subjectName in subjectNames)
             {
                 var subject = _subjectRepository.FirstOrDefault(x => x.Name == subjectName);
-                if(subject != null)
+                if (subject != null)
                 {
                     var courseSubject = new CourseSubject();
                     courseSubject.Id = Guid.NewGuid();
@@ -127,18 +139,43 @@ namespace Sarah.Education.Courses
                     courseSubject.SubjectId = subject.Id;
                     await _courseSubjectRepository.InsertAsync(courseSubject);
                 }
-            }            
+            }
+        }
+
+        public async void CreateCourseFee(Guid courseId, CourseFeeDto[] courseFees)
+        {
+            _courseFeeRepository.Delete(x => x.CourseId == courseId);
+
+            foreach (var courseFee in courseFees)
+            {
+                var courseFeeObj = ObjectMapper.Map<CourseFee>(courseFee);
+                courseFeeObj.CourseId = courseId;
+                if (!courseFeeObj.ActiveFrom.HasValue)
+                {
+                    courseFeeObj.ActiveFrom = DateTime.Now;
+                }
+                await _courseFeeRepository.InsertAsync(courseFeeObj);
+            }
         }
 
         protected override CourseDto MapToEntityDto(Course entity)
         {
-            var subjectIds = _courseSubjectRepository.GetAll().Where(x=>x.CourseId == entity.Id).Select(x => x.SubjectId).ToArray();
+            var subjectIds = _courseSubjectRepository.GetAll().Where(x => x.CourseId == entity.Id).Select(x => x.SubjectId).ToArray();
 
             var subjects = _subjectRepository.GetAll().Where(r => subjectIds.Contains(r.Id)).Select(r => r.Name);
 
             var courseDto = base.MapToEntityDto(entity);
             courseDto.Subjects = subjects.ToArray();
-
+            var courseFees = _courseFeeRepository.GetAllList(x => x.CourseId == entity.Id).Select(x=> new CourseFeeDto { 
+                Id = x.Id,
+                ActiveFrom = x.ActiveFrom,
+                CourseId = x.CourseId,
+                Fee = x.Fee,
+                FeeMultiple = x.FeeMultiple,
+                IsActive = x.IsActive,
+                Year = x.Year
+            }).ToArray();
+            courseDto.CourseFees = courseFees; 
             return courseDto;
         }
     }

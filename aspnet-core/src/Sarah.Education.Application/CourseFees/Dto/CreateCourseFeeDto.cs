@@ -9,9 +9,10 @@ namespace Sarah.Education.CourseFees.Dto
     public class CreateCourseFeeDto
     {
         public double Fee { get; set; }
+        public double FeeMultiple { get; set; }
+
         public Guid CourseId { get; set; }
         public int Year { get; set; }
         public bool? IsActive { get; set; }
-        public bool? IsSingle { get; set; }
     }
 }

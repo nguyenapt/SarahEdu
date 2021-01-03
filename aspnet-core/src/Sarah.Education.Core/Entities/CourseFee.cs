@@ -10,14 +10,13 @@ namespace Sarah.Education.Entities
     public class CourseFee:Entity<Guid>
     {        
 
-        public double Fee { get; set; } 
-
+        public double Fee { get; set; }
+        public double FeeMultiple { get; set; }
         public Guid CourseId { get; set; }
 
         public int? Year { get; set; }
         public DateTime? ActiveFrom { get; set; }
-        public bool? IsActive { get; set; }
-        public bool? IsSingle { get; set; }
+        public bool? IsActive { get; set; }        
 
         [ForeignKey(nameof(CourseId))]
         public virtual Course Course { get; set; }

@@ -11,7 +11,7 @@ import { forEach as _forEach, map as _map } from 'lodash-es';
 import { AppComponentBase } from '@shared/app-component-base';
 import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 import { SubjectServiceProxy } from '@shared/service-proxies/subject/subject.service.proxy';
-import { CreateCourseDto } from '@shared/service-proxies/course/dto/course-dto';
+import { CourseFeeDto, CreateCourseDto } from '@shared/service-proxies/course/dto/course-dto';
 
 import { SubjectDto } from '@shared/service-proxies/subject/dto/subject-dto';
 
@@ -27,7 +27,9 @@ export class CreateCourseDialogComponent extends AppComponentBase
   subjects: SubjectDto[] = [];
   checkedSubjectsMap: { [key: string]: boolean } = {};
   defaultSubjectCheckedStatus = false;
-
+  courseFees : CourseFeeDto[]=[];
+  fee = 0;  
+  feeMultiple = 0;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -78,6 +80,13 @@ export class CreateCourseDialogComponent extends AppComponentBase
     this.saving = true;
 
     this.course.subjects = this.getCheckedSubjects();
+    var courseFee = new CourseFeeDto();
+    courseFee.fee = this.fee;
+    courseFee.isActive = true;
+    courseFee.feeMultiple = this.feeMultiple;    
+    this.courseFees.push(courseFee);
+    
+    this.course.courseFees = this.courseFees;
 
     this._courseService
       .create(this.course)

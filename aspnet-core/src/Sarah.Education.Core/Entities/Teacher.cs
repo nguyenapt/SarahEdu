@@ -35,6 +35,8 @@ namespace Sarah.Education.Entities
         public bool IsActive { get; set; }
         public string Color { get; set; }
 
+        public long? UserId { get; set; }        
+
         public virtual ICollection<TimeSheetEntry> TimeSheetEntries { get; set; }
 
         public virtual ICollection<TeacherSalary> TeacherSalaries { get; set; }

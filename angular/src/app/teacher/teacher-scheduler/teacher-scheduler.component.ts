@@ -74,4 +74,8 @@ export class TeacherSchedulerComponent extends AppComponentBase {
   getStatus(status){
 
   }  
+  editTimeScheduler(timeScheduler : TimeSheetDto){
+
+  }
+
 }

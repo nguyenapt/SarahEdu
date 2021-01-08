@@ -1,1 +1,77 @@
-<p>teacher-scheduler works!</p>
+<div>
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6">
+            <h1>{{ "TeacherScheduler" | localize }}</h1>
+          </div>        
+          <div class="col-6 text-right">
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+          </div>  
+        </div>
+      </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <p-table [value]="timeSchedulers" dataKey="id" [autoLayout]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th pSortableColumn="start">From <p-sortIcon field="start"></p-sortIcon></th>
+                        <th pSortableColumn="end">To <p-sortIcon field="end"></p-sortIcon></th>
+                        <th pSortableColumn="roomName">Room <p-sortIcon field="roomName"></p-sortIcon></th>
+                        <th pSortableColumn="teacher.fullName">Teacher <p-sortIcon field="teacher.fullName"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>                        
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-timeScheduler let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button type="button" pButton pRipple [pRowToggler]="timeScheduler" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></button>
+                        </td>
+                        <td>{{ timeScheduler.start  | date:'dd-MM-yyyy hh:mm a' }}</td>                        
+                        <td>{{ timeScheduler.end  | date:'dd-MM-yyyy hh:mm a' }}</td>
+                        <td>{{ timeScheduler.roomName }}</td>
+                        <td>{{ timeScheduler.teacher.fullName }}</td>
+                        <td>{{ getStatus(timeScheduler.status) }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-timeScheduler>
+                    <tr>
+                        <td colspan="7">
+                            <div class="p-p-3">
+                                <p-table [value]="timeScheduler.timeSheetStudents" dataKey="id">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th pSortableColumn="student.fullName">Student <p-sortIcon field="student.fullName"></p-sortIcon></th>
+                                            <th pSortableColumn="attitude">Attitude <p-sortIcon field="attitude"></p-sortIcon></th>
+                                            <th pSortableColumn="receptiveAbility">Receptive Ability <p-sortIcon field="receptiveAbility"></p-sortIcon></th>
+                                            <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+                                            <!--TODO: Fee-->
+                                            <th style="width: 4rem"></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-timeSheetStudent>
+                                        <tr>
+                                            <td>{{timeSheetStudent.student.fullName}}</td>
+                                            <td>{{timeSheetStudent.attitude}}</td>
+                                            <td>{{timeSheetStudent.receptiveAbility}}</td>
+                                            <td>{{timeSheetStudent.description}}</td>
+                                            <!--TODO: Fee-->
+                                            <td><p-button type="button" icon="pi pi-search"></p-button></td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="6">There are no student for this time scheduler yet.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </section>
+</div>

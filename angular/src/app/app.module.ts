@@ -81,7 +81,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ColorPickerModule } from 'primeng/colorpicker';
-
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
@@ -156,7 +157,7 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
     TeacherSchedulerDialogComponent
   ],
   imports: [
-    CommonModule,
+    CommonModule,    
     NgxMaterialTimepickerModule,
     NgSelectModule,
     FormsModule,
@@ -167,6 +168,8 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
     BsDropdownModule,
     DropdownModule,
     CheckboxModule,
+    TableModule,
+    ButtonModule,
     ColorPickerModule,
     CollapseModule,
     TabsModule,

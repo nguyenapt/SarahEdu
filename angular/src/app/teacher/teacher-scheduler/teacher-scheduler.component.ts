@@ -5,17 +5,32 @@ import { TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxie
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
+import { trigger,state,style,transition,animate } from '@angular/animations';
 
 @Component({
   selector: 'app-teacher-scheduler',
   templateUrl: './teacher-scheduler.component.html',
-  styleUrls: ['./teacher-scheduler.component.css']
+  styleUrls: ['./teacher-scheduler.component.css'],
+  animations: [
+    trigger('rowExpansionTrigger', [
+        state('void', style({
+            transform: 'translateX(-10%)',
+            opacity: 0
+        })),
+        state('active', style({
+            transform: 'translateX(0)',
+            opacity: 1
+        })),
+        transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+    ])
+  ]
 })
 export class TeacherSchedulerComponent extends AppComponentBase {
   roomId: string;  
   fromDate: string;
   toDate: string;
   timeSchedulers: TimeSheetDto[]=[];
+  isTableLoading = true;
   constructor(
     injector: Injector,
     private _timesheetService: TimeSheetServiceProxy,
@@ -26,6 +41,9 @@ export class TeacherSchedulerComponent extends AppComponentBase {
   }
 
   ngOnInit(): void {
+    this.loadTimeScheduler(() => {
+      this.isTableLoading = false;
+    });
   }
 
   loadTimeScheduler(finishedCallback: Function)  {
@@ -52,4 +70,8 @@ export class TeacherSchedulerComponent extends AppComponentBase {
         }); 
       });
   }
+
+  getStatus(status){
+
+  }  
 }

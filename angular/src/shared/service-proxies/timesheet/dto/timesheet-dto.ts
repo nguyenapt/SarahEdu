@@ -1,5 +1,6 @@
 import { CourseDto, CourseWithSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
 import { CourseSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 import { CalendarEvent } from 'angular-calendar';
 import { EventColor, EventAction } from 'calendar-utils';
@@ -252,10 +253,11 @@ export class TimeSheetStudentDto implements ITimeSheetStudentDto {
     id: string | undefined;
     studentId: string | undefined;
     timeSheetEntryId: string | undefined;
-    attitude: string | undefined;
-    receptiveAbility: string | undefined;
+    attitude: number | undefined;
+    receptiveAbility: number | undefined;
     description: string | undefined;
     fee: number | undefined;
+    student: StudentDto | undefined;
     isPaid: boolean | undefined;
 
     constructor(data?: ICreateTimeSheetDto) {
@@ -277,6 +279,7 @@ export class TimeSheetStudentDto implements ITimeSheetStudentDto {
             this.description = data["description"];
             this.fee = data["fee"];
             this.isPaid = data["isPaid"];
+            this.student = data["student"];
         }
     }
 
@@ -297,6 +300,7 @@ export class TimeSheetStudentDto implements ITimeSheetStudentDto {
         data["description"] = this.description;
         data["fee"] = this.fee;        
         data["isPaid"] = this.isPaid;        
+        data["student"] = this.student;   
         return data; 
     }
 
@@ -313,9 +317,10 @@ export interface ITimeSheetStudentDto {
     id: string | undefined;
     studentId: string | undefined;
     timeSheetEntryId: string | undefined;
-    attitude: string | undefined;
-    receptiveAbility: string | undefined;
+    attitude: number | undefined;
+    receptiveAbility: number | undefined;
     description: string | undefined;
     fee: number | undefined;
+    student: StudentDto | undefined;
     isPaid: boolean | undefined;
 }

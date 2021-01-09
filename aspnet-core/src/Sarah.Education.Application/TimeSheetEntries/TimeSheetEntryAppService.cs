@@ -83,6 +83,10 @@ namespace Sarah.Education.TimeSheetEntries
                     Id = Guid.NewGuid(),
                     TimeSheetEntryId = timeSheetId,
                     StudentId = timeSheetStudent.StudentId,
+                    Attitude = timeSheetStudent.Attitude,
+                    ReceptiveAbility = timeSheetStudent.ReceptiveAbility,
+                    Description = timeSheetStudent.Description,
+                    isPaid = timeSheetStudent.isPaid,
                     Fee = timeSheetStudent.Fee
                 };
                 await _timeSheetEntryStudentRepository.InsertAsync(obj);

@@ -7,6 +7,7 @@ namespace Sarah.Education.TimeSheetEntryStudents
 {
     public interface ITimeSheetEntryStudentAppService : IAsyncCrudAppService<TimeSheetEntryStudentDto, Guid, TimeSheetEntryStudentResultRequestDto, CreateTimeSheetEntryStudentDto, TimeSheetEntryStudentDto>
     {
+        Task<TimeSheetEntryStudentDto> CreateOrUpdateTimeSheetStudent(TimeSheetEntryStudentDto timeSheetEntryStudent);
     }
 }
 

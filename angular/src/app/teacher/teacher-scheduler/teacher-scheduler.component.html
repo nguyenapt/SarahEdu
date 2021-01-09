@@ -33,7 +33,7 @@
                         <td>{{ timeScheduler.end  | date:'dd-MM-yyyy hh:mm a' }}</td>
                         <td>{{ timeScheduler.roomName }}</td>
                         <td>{{ timeScheduler.teacher.fullName }}</td>
-                        <td>{{ getStatus(timeScheduler.status) }}</td>                        
+                        <td>{{ getTextByValue(statuses,timeScheduler.status) }}</td>                        
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="rowexpansion" let-timeScheduler>
@@ -54,12 +54,16 @@
                                     <ng-template pTemplate="body" let-timeSheetStudent>
                                         <tr>
                                             <td>{{timeSheetStudent.student.fullName}}</td>
-                                            <td>{{timeSheetStudent.attitude}}</td>
-                                            <td>{{timeSheetStudent.receptiveAbility}}</td>
+                                            <td>
+                                                <span [class]="'customer-badge status-' + timeSheetStudent.attitude">{{ getTextByValue(statuses,timeSheetStudent.attitude) }}</span>
+                                            </td>
+                                            <td>
+                                                <span [class]="'customer-badge status-' + timeSheetStudent.receptiveAbility">{{ getTextByValue(statuses,timeSheetStudent.receptiveAbility) }}</span>
+                                            </td>
                                             <td>{{timeSheetStudent.description}}</td>
                                             <!--TODO: Fee-->
                                             <td>
-                                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editTimeScheduler(timeScheduler)"></button>                            
+                                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="showCreateOrEditTeacherDialog(timeSheetStudent)"></button>                            
                                             </td>
                                         </tr>
                                     </ng-template>

@@ -45,9 +45,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     return [
       new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home'),      
       new MenuItem('Time Scheduler', '/app/timesheet', 'fas fa-calendar-alt'),
-      new MenuItem('Teacher','/app/teacher','fas fa-chalkboard-teacher'),
       new MenuItem('Student','/app/student','fas fa-user-graduate'),
       new MenuItem(this.l('Categories'), '', 'fas fa-list', '', [
+        new MenuItem(
+          'Teacher',
+          '/app/teacher',
+          'fas fa-chalkboard-teacher'),
         new MenuItem(
           'Room',
           '/app/room',

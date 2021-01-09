@@ -217,7 +217,8 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
     EditProtectorDialogComponent,
     //timesheet
     CreateTimeSheetDialogComponent,
-    EditTimeSheetDialogComponent
+    EditTimeSheetDialogComponent,
+    TeacherSchedulerDialogComponent
   ],
 })
 export class AppModule {}

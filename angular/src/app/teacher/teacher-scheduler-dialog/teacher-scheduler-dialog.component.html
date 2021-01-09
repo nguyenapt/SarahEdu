@@ -1,1 +1,66 @@
-<p>teacher-scheduler-dialog works!</p>
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #createOrUpdateTimeSheetStudentForm="ngForm"
+  (ngSubmit)="save()"
+>
+  <abp-modal-header
+    [title] = "'Update Student Attitude'"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">   
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="name">
+          Student name
+        </label>
+        <div class="col-md-9">
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            id="name"
+            [(ngModel)]="timeSheetStudent.student.fullName"
+            #nameModel="ngModel"
+            #nameEl
+            disabled
+          />          
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="attitude">
+          {{ "Attitude" | localize }}
+        </label>
+        <div class="col-md-3">
+          <p-dropdown [options]="attitudes" [style]="{'width':'100%'}" [(ngModel)]="timeSheetStudent.attitude" optionLabel="name" optionValue="code" name="attitude"></p-dropdown>
+        </div>
+        <label class="col-md-3 col-form-label" for="receptiveAbility">
+          {{ "ReceptiveAbility" | localize }}
+        </label>
+        <div class="col-md-3">
+          <p-dropdown [options]="receptiveAbilities" [style]="{'width':'100%'}" [(ngModel)]="timeSheetStudent.receptiveAbility" optionLabel="name" optionValue="code" name="receptiveAbility"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="description">
+          {{ "Description" | localize }}
+        </label>
+        <div class="col-md-9">
+          <textarea
+            type="text"
+            class="form-control"
+            name="description"
+            id="description"
+            [(ngModel)]="timeSheetStudent.description"
+          >
+          </textarea>
+        </div>
+      </div>
+  </div>
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!createOrUpdateTimeSheetStudentForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>

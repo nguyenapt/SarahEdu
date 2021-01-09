@@ -21,5 +21,29 @@ namespace Sarah.Education.TimeSheetEntryStudents
             _timeSheetEntryStudentRepository = timeSheetEntryStudentRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
+
+        public async Task<TimeSheetEntryStudentDto> CreateOrUpdateTimeSheetStudent(TimeSheetEntryStudentDto timeSheetEntryStudent)
+        {
+            CheckCreatePermission();           
+
+            var timeSheetStudent = ObjectMapper.Map<TimeSheetEntryStudent>(timeSheetEntryStudent);
+
+            if (timeSheetStudent.Id == Guid.Empty)
+            {
+                await _timeSheetEntryStudentRepository.InsertAsync(timeSheetStudent);
+            }
+            else
+            {
+                timeSheetStudent = await _timeSheetEntryStudentRepository.FirstOrDefaultAsync(x => x.Id == timeSheetEntryStudent.Id);
+
+                MapToEntity(timeSheetEntryStudent, timeSheetStudent);
+
+                await _timeSheetEntryStudentRepository.UpdateAsync(timeSheetStudent);
+            }
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return MapToEntityDto(timeSheetStudent);
+        }
     }
 }

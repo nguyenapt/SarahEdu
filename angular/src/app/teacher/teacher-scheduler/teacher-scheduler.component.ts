@@ -1,11 +1,14 @@
 import { Component, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
-import { TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { TimeSheetDto, TimeSheetDtoPagedResultDto, TimeSheetStudentDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import { trigger,state,style,transition,animate } from '@angular/animations';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TeacherSchedulerDialogComponent } from '../teacher-scheduler-dialog/teacher-scheduler-dialog.component';
+import { KeyValueItem } from '@shared/interface/keyvalue-item';
+
 
 @Component({
   selector: 'app-teacher-scheduler',
@@ -40,6 +43,15 @@ export class TeacherSchedulerComponent extends AppComponentBase {
     super(injector);
   }
 
+  statuses = [
+    {name: '- Select -', code: 0},
+    {name: 'Very good', code: 1},
+    {name: 'Good', code: 2},
+    {name: 'Normal', code: 3},
+    {name: 'Bad', code: 4},
+    {name: 'Very bad', code: 5}      
+  ];
+
   ngOnInit(): void {
     this.loadTimeScheduler(() => {
       this.isTableLoading = false;
@@ -71,11 +83,31 @@ export class TeacherSchedulerComponent extends AppComponentBase {
       });
   }
 
-  getStatus(status){
-
+  getTextByValue(array:KeyValueItem[],value:number){
+    for (var i=0; i < array.length; i++) {
+      if (array[i].code === value) {
+          return array[i].name;
+      }
+    }
   }  
-  editTimeScheduler(timeScheduler : TimeSheetDto){
 
+  private showCreateOrEditTeacherDialog(timeSheetStudent?: TimeSheetStudentDto): void {
+    let createOrEditTeacherDialog: BsModalRef;
+    
+    createOrEditTeacherDialog = this._modalService.show(
+      TeacherSchedulerDialogComponent,
+      {
+        class: 'modal-lg',
+        initialState: {
+          timeSheetStudent: timeSheetStudent,
+        },
+      }
+    );    
+
+    createOrEditTeacherDialog.content.onSave.subscribe(() => {
+      this.loadTimeScheduler(() => {
+        this.isTableLoading = false;
+      });
+    });
   }
-
 }

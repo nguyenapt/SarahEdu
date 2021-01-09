@@ -13,10 +13,11 @@ namespace Sarah.Education.TimeSheetEntryStudents.Dto
     {
         public Guid StudentId { get; set; }
         public Guid TimeSheetEntryId { get; set; }
-        public string Attitude { get; set; }
-        public string ReceptiveAbility { get; set; }
+        public int? Attitude { get; set; }
+        public int? ReceptiveAbility { get; set; }
         public string Description { get; set; }
         public double Fee { get; set; }
+        public bool? isPaid { get; set; }
         public StudentDto Student { get; set; }
     }
 }

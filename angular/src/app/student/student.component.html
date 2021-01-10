@@ -95,7 +95,6 @@
                       (click)="editStudent(student)"
                     >
                       <i class="fas fa-pencil-alt"></i>
-                      {{ "Edit" | localize }}
                     </button>
                     <button
                       type="button"
@@ -103,7 +102,20 @@
                       (click)="delete(student)"
                     >
                       <i class="fas fa-trash"></i>
-                      {{ "Delete" | localize }}
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm bg-info mx-2"
+                      (click)="fee(student)"
+                    >
+                    <i class="fas fa-dollar-sign"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm bg-warning mx-2"
+                      (click)="scheduler(student)"
+                    >
+                    <i class="fas fa-calendar-week"></i>
                     </button>
                   </td>
                 </tr>

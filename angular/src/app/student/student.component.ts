@@ -8,6 +8,8 @@ import { StudentDto, StudentDtoPagedResultDto } from '@shared/service-proxies/st
 
 import { CreateStudentDialogComponent } from './create-student/create-student-dialog.component';
 import { EditStudentDialogComponent } from './edit-student/edit-student-dialog.component';
+import { StudentFeeDialogComponent } from './student-fee/student-fee-dialog.component';
+import { StudentSchedulerDialogComponent } from './student-scheduler/student-scheduler-dialog.component';
 
 class PagedUsersRequestDto extends PagedRequestDto {
   keyword: string;
@@ -79,6 +81,23 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
             this.refresh();
           });
         }
+      }
+    );
+  }
+
+  fee(student){
+    this._modalService.show(
+      StudentFeeDialogComponent,
+      {
+        class: 'modal-lg',
+      }
+    );
+  }
+  scheduler(student){
+    this._modalService.show(
+      StudentSchedulerDialogComponent,
+      {
+        class: 'modal-lg',
       }
     );
   }

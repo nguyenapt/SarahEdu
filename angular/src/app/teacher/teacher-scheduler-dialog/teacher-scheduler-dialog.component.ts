@@ -45,19 +45,15 @@ export class TeacherSchedulerDialogComponent  extends AppComponentBase
   ngOnInit(): void {
     this.attitudes = [
       {name: '- Select -', code: 0},
-      {name: 'Very good', code: 1},
-      {name: 'Good', code: 2},
-      {name: 'Normal', code: 3},
-      {name: 'Bad', code: 4},
-      {name: 'Very bad', code: 5}      
+      {name: 'High impotant', code: 1},
+      {name: 'Normal', code: 2},
+      {name: 'Low impotant', code: 3}      
     ];
     this.receptiveAbilities = [
       {name: '- Select -', code: 0},
-      {name: 'Very good', code: 1},
-      {name: 'Good', code: 2},
-      {name: 'Normal', code: 3},
-      {name: 'Bad', code: 4},
-      {name: 'Very bad', code: 5}      
+      {name: 'High impotant', code: 1},
+      {name: 'Normal', code: 2},
+      {name: 'Low impotant', code: 3}
     ];
   }
 

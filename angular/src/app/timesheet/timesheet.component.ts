@@ -238,7 +238,7 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
       createOrEditTimeSheetDialog = this._modalService.show(
         CreateTimeSheetDialogComponent,
         {
-          class: 'modal-lg',
+          class: 'modal-xlg',
           initialState: {
             roomId: this.selectedRoom.id,
           },
@@ -249,7 +249,7 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
       createOrEditTimeSheetDialog = this._modalService.show(
         EditTimeSheetDialogComponent,
         {
-          class: 'modal-lg',
+          class: 'modal-xlg',
           initialState: {
             roomId: this.selectedRoom.id,
             timeSheet: timeSheet,

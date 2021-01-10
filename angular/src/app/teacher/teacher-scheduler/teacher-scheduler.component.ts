@@ -45,11 +45,17 @@ export class TeacherSchedulerComponent extends AppComponentBase {
 
   statuses = [
     {name: '- Select -', code: 0},
-    {name: 'Very good', code: 1},
-    {name: 'Good', code: 2},
-    {name: 'Normal', code: 3},
-    {name: 'Bad', code: 4},
-    {name: 'Very bad', code: 5}      
+    {name: 'PENDING', code: 1},
+    {name: 'APPROVED', code: 2},
+    {name: 'REJECTED', code: 3}
+  ];
+
+
+  attitudes = [
+    {name: '- Select -', code: 0},
+    {name: 'High impotant', code: 1},
+    {name: 'Normal', code: 2},
+    {name: 'Low impotant', code: 3}
   ];
 
   ngOnInit(): void {

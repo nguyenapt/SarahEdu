@@ -33,7 +33,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   timeSheet: CreateTimeSheetDto = new CreateTimeSheetDto();
   students : StudentDto[] = [];
   selectedStudent : StudentDto;
-  selectedStudents : StudentDto[] = [];
+  selectedStudents : TimeSheetStudentDto[] = [];
   
   teachers : TeacherDto[] = [];
   selectedTeacher : TeacherDto;
@@ -48,6 +48,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   endHour = '00:00';
   isSingle = false;
 
+  fee = 0;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -80,17 +81,33 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     else{
       this.courseSubjects = [];
       this.courseSubjects = $event.value.courseSubjects;
+      this.changeFee();
     }
   }
 
-  addStudent(student):void{
+  changeFee(){
+    if(this.selectCourse){
+      if(this.isSingle){
+        this.fee = this.selectCourse.courseFees[0].fee;
+      }
+      else{
+        this.fee = this.selectCourse.courseFees[0].feeMultiple;
+      }
+    }
+  }
+
+  addStudent(student:StudentDto):void{
     if(student){
-      var obj = this.selectedStudents.find(e => e.id === student.id);
+      var obj = this.selectedStudents.find(e => e.studentId === student.id);
       if(obj == null){
         if(this.isSingle){
           this.selectedStudents = [];
         }
-        this.selectedStudents.push(student);
+        var timeSheetStudent = new TimeSheetStudentDto();
+        timeSheetStudent.studentId = student.id;
+        timeSheetStudent.student = student;
+        timeSheetStudent.fee = this.fee;
+        this.selectedStudents.push(timeSheetStudent);
       }    
     }
   }
@@ -113,15 +130,12 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this.timeSheet.isSingle = this.isSingle;
     if(this.isSingle && this.selectedStudent != null){
       this.selectedStudents = [];
-      this.selectedStudents.push(this.selectedStudent);
-    }
-    this.timeSheet.timeSheetStudents = []
-    this.selectedStudents.forEach(t => {
       var timeSheetStudent = new TimeSheetStudentDto();
-      timeSheetStudent.studentId = t.id;
-      timeSheetStudent.fee = 1000000;
-      this.timeSheet.timeSheetStudents.push(timeSheetStudent);
-    });
+        timeSheetStudent.studentId = this.selectedStudent.id;
+        timeSheetStudent.fee = this.fee;
+      this.selectedStudents.push(timeSheetStudent);
+    }
+    this.timeSheet.timeSheetStudents = this.selectedStudents;    
     this._timeSheetService
       .create(this.timeSheet)
       .pipe(

@@ -83,12 +83,15 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
 import { StudentFeeComponent } from './report/student-fee/student-fee.component';
 import { TeacherSchedulerComponent } from './teacher/teacher-scheduler/teacher-scheduler.component';
 import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dialog/teacher-scheduler-dialog.component';
+import { StudentSchedulerDialogComponent } from './student/student-scheduler/student-scheduler-dialog.component';
+import { StudentFeeDialogComponent } from './student/student-fee/student-fee-dialog.component';
 
 @NgModule({
   declarations: [
@@ -154,7 +157,9 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
     TeacherProductivityComponent,
     StudentFeeComponent,
     TeacherSchedulerComponent,
-    TeacherSchedulerDialogComponent
+    TeacherSchedulerDialogComponent,
+    StudentSchedulerDialogComponent,
+    StudentFeeDialogComponent
   ],
   imports: [
     CommonModule,    
@@ -171,6 +176,7 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
     TableModule,
     ButtonModule,
     ColorPickerModule,
+    InputNumberModule,
     CollapseModule,
     TabsModule,
     AppRoutingModule,
@@ -212,6 +218,8 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
     //student
     CreateStudentDialogComponent,
     EditStudentDialogComponent,
+    StudentSchedulerDialogComponent,
+    StudentFeeDialogComponent,
     //protector
     CreateProtectorDialogComponent,
     EditProtectorDialogComponent,

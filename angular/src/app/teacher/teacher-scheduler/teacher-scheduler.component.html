@@ -33,7 +33,9 @@
                         <td>{{ timeScheduler.end  | date:'dd-MM-yyyy hh:mm a' }}</td>
                         <td>{{ timeScheduler.roomName }}</td>
                         <td>{{ timeScheduler.teacher.fullName }}</td>
-                        <td>{{ getTextByValue(statuses,timeScheduler.status) }}</td>                        
+                        <td>
+                            <span [class]="'customer-badge status-' + timeScheduler.status">{{ getTextByValue(statuses,timeScheduler.status) }}</span>                            
+                        </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="rowexpansion" let-timeScheduler>
@@ -55,10 +57,10 @@
                                         <tr>
                                             <td>{{timeSheetStudent.student.fullName}}</td>
                                             <td>
-                                                <span [class]="'customer-badge status-' + timeSheetStudent.attitude">{{ getTextByValue(statuses,timeSheetStudent.attitude) }}</span>
+                                                <span [class]="'customer-badge attitude-' + timeSheetStudent.attitude">{{ getTextByValue(attitudes,timeSheetStudent.attitude) }}</span>
                                             </td>
                                             <td>
-                                                <span [class]="'customer-badge status-' + timeSheetStudent.receptiveAbility">{{ getTextByValue(statuses,timeSheetStudent.receptiveAbility) }}</span>
+                                                <span [class]="'customer-badge attitude-' + timeSheetStudent.receptiveAbility">{{ getTextByValue(attitudes,timeSheetStudent.receptiveAbility) }}</span>
                                             </td>
                                             <td>{{timeSheetStudent.description}}</td>
                                             <!--TODO: Fee-->

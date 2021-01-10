@@ -5,3 +5,8 @@
   .timepicker-backdrop-overlay {
     z-index: 1100 !important;
   }
+
+.inputOnDataTable input
+{
+    width: 70px !important;   
+}

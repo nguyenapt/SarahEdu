@@ -23,12 +23,16 @@ namespace Sarah.Education.Students
         private readonly IRepository<Student, Guid> _studentRepository;
         private readonly IRepository<CourseSubject, Guid> _courseSubjectRepository;
         private readonly IRepository<StudentCourseSubject, Guid> _studentCourseSubjectRepository;
+        private readonly IRepository<TimeSheetEntry, Guid> _timeSheetRepository;
+        private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetStudentRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
+        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
         {
             _studentRepository = studentRepository;
             _courseSubjectRepository = courseSubjectRepository;
             _studentCourseSubjectRepository = studentCourseSubjectRepository;
+            _timeSheetRepository = timeSheetRepository;
+            _timeSheetStudentRepository = timeSheetStudentRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -73,7 +77,7 @@ namespace Sarah.Education.Students
         public async void CreateStudentCourseSubject(Guid studentId, Guid[] courseSubjectIds)
         {
             _studentCourseSubjectRepository.Delete(x => x.StudentId == studentId);
-            
+
             foreach (var courseSubjectId in courseSubjectIds)
             {
                 var courseSubject = _courseSubjectRepository.FirstOrDefault(x => x.Id == courseSubjectId);
@@ -86,7 +90,7 @@ namespace Sarah.Education.Students
                     await _studentCourseSubjectRepository.InsertAsync(studentCourseSubject);
                 }
             }
-        }        
+        }
 
         protected override StudentDto MapToEntityDto(Student entity)
         {
@@ -111,6 +115,28 @@ namespace Sarah.Education.Students
         {
             var students = Repository.GetAllList();
             return new ListResultDto<StudentDto>(ObjectMapper.Map<List<StudentDto>>(students));
+        }
+
+        public async Task<List<StudentFeeDto>> GetStudentFees(Guid studentId)
+        {
+            return _timeSheetStudentRepository.GetAllIncluding(
+                x => x.TimeSheetEntry,
+                x => x.TimeSheetEntry.Teacher,
+                x => x.TimeSheetEntry.Room,
+                x => x.TimeSheetEntry.CourseSubject.Course,
+                x => x.TimeSheetEntry.CourseSubject.Subject
+                ).Where(x => x.StudentId == studentId).Select(d => new StudentFeeDto
+                {
+                    SubjectName = d.TimeSheetEntry.CourseSubject.Subject.Name,
+                    CourseName = d.TimeSheetEntry.CourseSubject.Course.Name,
+                    RoomName = d.TimeSheetEntry.Room.Name,
+                    TeacherName = d.TimeSheetEntry.Teacher.FullName,
+                    StartDate = d.TimeSheetEntry.FromDate,
+                    EndDate = d.TimeSheetEntry.ToDate,
+                    Fee = d.Fee,
+                    IsPaid = d.isPaid,
+                    IsSingle = d.TimeSheetEntry.IsSingle
+                }).ToList();
         }
     }
 }

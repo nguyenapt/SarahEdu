@@ -1,1 +1,69 @@
-<p>student-scheduler-dialog works!</p>
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #studentFeeModal="ngForm"
+>
+  <abp-modal-header
+    [title]="'Student scheduler'"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">
+    <p-table [value]="studentFees" styleClass="p-datatable-gridlines">        
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 200px;">Start date</th>
+                <th style="width: 200px;">End date</th>
+                <th style="width: 100px;">Room</th>
+                <th>Course</th>
+                <th>Subject</th>
+                <th style="width: 200px;">Teacher</th>
+                <th>Is learn 1-1</th>
+                <th>Fee</th>
+                <th>Is paid</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fee>
+            <tr>
+                <td>{{fee.startDate | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{fee.endDate | date:'dd-MM-yyyy hh:mm a' }}</td>
+                <td>{{fee.roomName}}</td>
+                <td>{{fee.courseName}}</td>
+                <td>{{fee.subjectName}}</td>
+                <td>{{fee.teacherName}}</td>
+                <td>
+                    <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          disabled
+                          [checked]="fee.isSingle"
+                        />
+                        <label class="custom-control-label"></label>
+                    </div>
+                </td>
+                <td>{{fee.fee | currency: 'VND'}}</td>
+                <td>
+                    <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          disabled
+                          [checked]="fee.isPaid"
+                        />
+                        <label class="custom-control-label"></label>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="row">
+                <div class="p-text-right">Totals <span class="badge badge-success">{{total | currency: 'VND'}}</span> Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></div>
+            </div>
+        </ng-template>
+    </p-table>
+  </div>  
+  <abp-modal-footer
+    [saveVisibled]="false"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>

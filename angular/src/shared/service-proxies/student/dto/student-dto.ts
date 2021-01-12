@@ -241,3 +241,130 @@ export interface IStudentDtoPagedResultDto {
     items: StudentDto[] | undefined;
 }
 
+
+export class StudentFeeDto implements IStudentFeeDto {    
+    fee: number | undefined;
+    isSingle: boolean | undefined;
+    startDate: Date | undefined;
+    endDate?: Date | undefined;
+    roomName: string | undefined;
+    courseName: string | undefined;
+    subjectName: string | undefined;
+    teacherName: string | undefined;
+    isPaid: boolean | undefined;
+
+    constructor(data?: IStudentFeeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {            
+            this.fee = data["fee"];
+            this.isSingle = data["isSingle"];
+            this.startDate = data["startDate"];
+            this.endDate = data["endDate"];
+            this.roomName = data["roomName"];
+            this.courseName = data["courseName"];
+            this.subjectName = data["subjectName"];
+            this.teacherName = data["teacherName"];
+            this.isPaid = data["isPaid"];
+        }
+    }
+
+    static fromJS(data: any): StudentFeeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentFeeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};        
+        data["fee"] = this.fee;
+        data["isSingle"] = this.isSingle;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
+        data["roomName"] = this.roomName;
+        data["courseName"] = this.courseName;
+        data["subjectName"] = this.subjectName;
+        data["teacherName"] = this.teacherName;
+        data["isPaid"] = this.isPaid;
+        return data; 
+    }
+
+    clone(): StudentFeeDto {
+        const json = this.toJSON();
+        let result = new StudentFeeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+
+export interface IStudentFeeDto {    
+    fee: number | undefined;
+    isSingle: boolean | undefined;
+    startDate: Date | undefined;
+    endDate?: Date | undefined;
+    roomName: string | undefined;
+    courseName: string | undefined;
+    subjectName: string | undefined;
+    teacherName: string | undefined;
+    isPaid: boolean | undefined;
+}
+
+export class StudentFeeListResultDto implements IStudentFeeListResultDto {
+    items: StudentFeeDto[] | undefined;
+
+    constructor(data?: IStudentFeeListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data)) {
+                this.items = [] as any;
+                for (let item of data)
+                    this.items.push(StudentFeeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StudentFeeListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentFeeListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data = [];
+            for (let item of this.items)
+                data.push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): StudentFeeListResultDto {
+        const json = this.toJSON();
+        let result = new StudentFeeListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentFeeListResultDto {
+    items: StudentFeeDto[] | undefined;
+}

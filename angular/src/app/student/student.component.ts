@@ -85,11 +85,14 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
     );
   }
 
-  fee(student){
+  fee(student:StudentDto){
     this._modalService.show(
       StudentFeeDialogComponent,
       {
-        class: 'modal-lg',
+        class: 'modal-xxlg',
+        initialState: {
+          id: student.id,
+        },
       }
     );
   }
@@ -97,7 +100,7 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
     this._modalService.show(
       StudentSchedulerDialogComponent,
       {
-        class: 'modal-lg',
+        class: 'modal-xxlg',
       }
     );
   }

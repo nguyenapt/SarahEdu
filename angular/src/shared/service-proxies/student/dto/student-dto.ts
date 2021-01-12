@@ -319,6 +319,9 @@ export interface IStudentFeeDto {
 }
 
 export class StudentFeeListResultDto implements IStudentFeeListResultDto {
+    totalCount: number;
+    totalFee: number | undefined;
+    totalUnpaid: number | undefined;
     items: StudentFeeDto[] | undefined;
 
     constructor(data?: IStudentFeeListResultDto) {
@@ -332,9 +335,12 @@ export class StudentFeeListResultDto implements IStudentFeeListResultDto {
 
     init(data?: any) {
         if (data) {
-            if (Array.isArray(data)) {
+            this.totalCount = data["totalCount"];
+            this.totalFee = data["totalFee"];
+            this.totalUnpaid = data["totalUnpaid"];
+            if (Array.isArray(data["items"])) {
                 this.items = [] as any;
-                for (let item of data)
+                for (let item of data["items"])
                     this.items.push(StudentFeeDto.fromJS(item));
             }
         }
@@ -349,10 +355,13 @@ export class StudentFeeListResultDto implements IStudentFeeListResultDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        data["totalFee"] = this.totalFee;
+        data["totalUnpaid"] = this.totalUnpaid;
         if (Array.isArray(this.items)) {
-            data = [];
+            data["items"] = [];
             for (let item of this.items)
-                data.push(item.toJSON());
+                data["items"].push(item.toJSON());
         }
         return data; 
     }
@@ -366,5 +375,8 @@ export class StudentFeeListResultDto implements IStudentFeeListResultDto {
 }
 
 export interface IStudentFeeListResultDto {
+    totalCount: number;
+    totalFee: number | undefined;
+    totalUnpaid: number | undefined;
     items: StudentFeeDto[] | undefined;
 }

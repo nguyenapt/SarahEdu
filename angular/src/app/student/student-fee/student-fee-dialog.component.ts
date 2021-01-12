@@ -12,6 +12,14 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { StudentDto, StudentFeeDto } from '@shared/service-proxies/student/dto/student-dto';
 import * as moment from 'moment';
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
+import { PagedRequestDto } from '@shared/paged-listing-component-base';
+import { LazyLoadEvent } from 'primeng/api';
+
+class PagedStudentFeeRequestDto extends PagedRequestDto {
+  studentId: string;
+  fromDate: Date | null;
+  toDate: Date | null;
+}
 
 @Component({
   selector: 'app-student-fee-dialog',
@@ -24,6 +32,8 @@ implements OnInit {
   studentFees: StudentFeeDto[] = [];
   total:number;
   unpaid:number;
+  rows = 5;
+  totalRecords = 0;
   constructor(
     injector: Injector,
     public _studentService: StudentServiceProxy,
@@ -33,23 +43,47 @@ implements OnInit {
   }
 
   ngOnInit(): void {
-    this._studentService.getFees(this.id).subscribe((result) => {
+    this._studentService.getFees(this.id,0,5).subscribe((result) => {
         this.studentFees = result.items;
-        this.calculateTotal();
+        this.totalRecords = result.totalCount;
     });
   };
 
-  calculateTotal() {
-      let total = 0;
-      let unpaid = 0;
-      for(let fee of this.studentFees) {
-          total += fee.fee;
-          if(!fee.isPaid){
-            unpaid +=fee.fee;
-          }
-      }
+  protected list(
+    request: PagedStudentFeeRequestDto,
+    pageNumber: number,
+    finishedCallback: Function
+  ): void {
+    request.studentId = this.id;
 
-      this.total = total;
-      this.unpaid = unpaid;
+    this._studentService
+      .getFees(
+        request.studentId,
+        request.skipCount,
+        request.maxResultCount
+      )
+      .pipe(
+        finalize(() => {
+          finishedCallback();
+        })
+      )
+      .subscribe((result) => {
+        this.studentFees = result.items;
+        this.totalRecords = result.totalCount;
+        this.total = result.totalFee;
+        this.unpaid = result.totalUnpaid;
+    });
   }
+
+  loadFees(event: LazyLoadEvent) {  
+
+    setTimeout(() => {
+      this._studentService.getFees(this.id, event.first ,event.rows).subscribe((result) => {
+        this.studentFees = result.items;
+        this.totalRecords = result.totalCount;
+        this.total = result.totalFee;
+        this.unpaid = result.totalUnpaid;
+      })
+    }, 1000);
+} 
 }

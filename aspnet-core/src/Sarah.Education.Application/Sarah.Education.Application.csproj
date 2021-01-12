@@ -11,6 +11,9 @@
     <RootNamespace>Sarah.Education</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Students\StudentAppService.cs~RF80faeb.TMP" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Sarah.Education.Core\Sarah.Education.Core.csproj" />
   </ItemGroup>
 </Project>

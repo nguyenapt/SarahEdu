@@ -117,26 +117,35 @@ namespace Sarah.Education.Students
             return new ListResultDto<StudentDto>(ObjectMapper.Map<List<StudentDto>>(students));
         }
 
-        public async Task<List<StudentFeeDto>> GetStudentFees(Guid studentId)
+        public async Task<PagedStudentFeeDto> GetStudentFees(StudentFeeResultRequestDto input)
         {
-            return _timeSheetStudentRepository.GetAllIncluding(
+            var list = _timeSheetStudentRepository.GetAllIncluding(
                 x => x.TimeSheetEntry,
                 x => x.TimeSheetEntry.Teacher,
                 x => x.TimeSheetEntry.Room,
                 x => x.TimeSheetEntry.CourseSubject.Course,
-                x => x.TimeSheetEntry.CourseSubject.Subject
-                ).Where(x => x.StudentId == studentId).Select(d => new StudentFeeDto
-                {
-                    SubjectName = d.TimeSheetEntry.CourseSubject.Subject.Name,
-                    CourseName = d.TimeSheetEntry.CourseSubject.Course.Name,
-                    RoomName = d.TimeSheetEntry.Room.Name,
-                    TeacherName = d.TimeSheetEntry.Teacher.FullName,
-                    StartDate = d.TimeSheetEntry.FromDate,
-                    EndDate = d.TimeSheetEntry.ToDate,
-                    Fee = d.Fee,
-                    IsPaid = d.isPaid,
-                    IsSingle = d.TimeSheetEntry.IsSingle
-                }).ToList();
+                x => x.TimeSheetEntry.CourseSubject.Subject)
+                .Where(x => x.StudentId == input.StudentId)
+                .WhereIf(input.FromDate.HasValue, x => x.TimeSheetEntry.FromDate >= input.FromDate)
+                .WhereIf(input.FromDate.HasValue, x => x.TimeSheetEntry.FromDate >= input.FromDate).ToList();
+
+            var returnList = list
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount)
+            .Select(d => new StudentFeeDto
+            {
+                SubjectName = d.TimeSheetEntry.CourseSubject.Subject.Name,
+                CourseName = d.TimeSheetEntry.CourseSubject.Course.Name,
+                RoomName = d.TimeSheetEntry.Room.Name,
+                TeacherName = d.TimeSheetEntry.Teacher.FullName,
+                StartDate = d.TimeSheetEntry.FromDate,
+                EndDate = d.TimeSheetEntry.ToDate,
+                Fee = d.Fee,
+                IsPaid = d.isPaid,
+                IsSingle = d.TimeSheetEntry.IsSingle
+            }).ToList();
+
+            return new PagedStudentFeeDto() { TotalCount = list.Count, TotalFee = list.Sum(x=>x.Fee), TotalUnpaid = list.Where(x=>x.isPaid !=true).Sum(x=>x.Fee), Items = returnList };
         }
     }
 }

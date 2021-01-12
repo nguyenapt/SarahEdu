@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
@@ -11,9 +12,7 @@ namespace Sarah.Education.Students
     public interface IStudentAppService : IAsyncCrudAppService<StudentDto, Guid, StudentResultRequestDto, CreateStudentDto, StudentDto>
     {
         Task<ListResultDto<StudentDto>> GetStudents();
-
-        Task<List<StudentFeeDto>> GetStudentFees(Guid studentId);
-
+        Task<PagedStudentFeeDto> GetStudentFees(StudentFeeResultRequestDto input);
     }
 }
 

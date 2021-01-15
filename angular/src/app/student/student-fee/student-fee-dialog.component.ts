@@ -34,6 +34,7 @@ implements OnInit {
   unpaid:number;
   rows = 5;
   totalRecords = 0;
+  loading: boolean;
   constructor(
     injector: Injector,
     public _studentService: StudentServiceProxy,
@@ -43,9 +44,11 @@ implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this._studentService.getFees(this.id,0,5).subscribe((result) => {
         this.studentFees = result.items;
         this.totalRecords = result.totalCount;
+        this.loading = false;
     });
   };
 
@@ -76,14 +79,15 @@ implements OnInit {
   }
 
   loadFees(event: LazyLoadEvent) {  
-
+    this.loading = true;
     setTimeout(() => {
       this._studentService.getFees(this.id, event.first ,event.rows).subscribe((result) => {
         this.studentFees = result.items;
         this.totalRecords = result.totalCount;
         this.total = result.totalFee;
         this.unpaid = result.totalUnpaid;
+        this.loading = false;
       })
     }, 1000);
-} 
+  }
 }

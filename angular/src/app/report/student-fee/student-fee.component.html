@@ -1,1 +1,106 @@
-<p>student-fee works!</p>
+<div >
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="form-group row">
+            <div class="col-2">
+                <p-dropdown [options]="reportTypes" [style]="{'width':'100%'}" [(ngModel)]="selectedReportType" optionLabel="name" optionValue="value"></p-dropdown>
+            </div>
+            <div class="col-2">
+                <input class="form-control" 
+                    type="date" 
+                    name="startDate" 
+                    style="height: 42px;"
+                    [(ngModel)]="startDate" 
+                />
+            </div>
+            <div class="col-2">                
+                <input class="form-control" 
+                    type="date" 
+                    name="startDate" 
+                    style="height: 42px;"
+                    [(ngModel)]="endDate" 
+                />
+            </div>
+            <div class="col-5">
+                <p-dropdown [options]="students" autoWidth="false" [style]="{'width':'100%'}" name="students" [(ngModel)]="student" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a student">          
+                </p-dropdown>
+            </div>
+            <div class="col-1 text-right">
+                <button pButton label="Report" (click)="searchData()"></button>
+            </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-2">
+      <div class="container-fluid">
+        <div class="card">      
+            <div class="row">
+                <div class="col-6">
+                  
+                </div>        
+                <div class="col-6 text-right">
+                  <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+                </div>  
+            </div>
+
+            <div class="card-body table-responsive p-0" *ngIf="studentFees">
+                <p-table [value]="studentFees" [lazy]="true" (onLazyLoad)="loadFees($event)"
+                    [paginator]="true" [rows]="rows" [totalRecords]="totalRecords" [loading]="loading">    
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 200px;">Start date</th>
+                                <th style="width: 200px;">End date</th>
+                                <th style="width: 100px;">Room</th>
+                                <th>Course</th>
+                                <th>Subject</th>
+                                <th style="width: 200px;">Teacher</th>
+                                <th>Is learn 1-1</th>
+                                <th>Fee</th>
+                                <th>Is paid</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-fee>
+                            <tr>
+                                <td>{{fee.startDate | date:'dd-MM-yyyy hh:mm a' }}</td>
+                                <td>{{fee.endDate | date:'dd-MM-yyyy hh:mm a' }}</td>
+                                <td>{{fee.roomName}}</td>
+                                <td>{{fee.courseName}}</td>
+                                <td>{{fee.subjectName}}</td>
+                                <td>{{fee.teacherName}}</td>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        disabled
+                                        [checked]="fee.isSingle"
+                                        />
+                                        <label class="custom-control-label"></label>
+                                    </div>
+                                </td>
+                                <td>{{fee.fee | currency: 'VND'}}</td>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        disabled
+                                        [checked]="fee.isPaid"
+                                        />
+                                        <label class="custom-control-label"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="row">
+                                <div class="p-text-right">Totals <span class="badge badge-success">{{total | currency: 'VND'}}</span> Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></div>
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+      </div>
+    </section>
+  </div>
+  

@@ -54,27 +54,27 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         new MenuItem(
           'Room',
           '/app/room',
-          'far fa-circle'
+          'fas fa-border-style'
         ),        
         new MenuItem(
           'Class',
           '/app/class',
-          'far fa-circle'
+          'fas fa-users-class'
         ),
         new MenuItem(
           'Course',
           '/app/course',
-          'far fa-circle'
+          'fas fa-list'
         ),
         new MenuItem(
           'Subject',
           '/app/subject',
-          'far fa-circle'
+          'fas fa-book-reader'
         ),        
         new MenuItem(
           'Protector',
           '/app/protector',
-          'far fa-circle'
+          'fas fa-user-shield'
         ),
       ]),
       new MenuItem(this.l('Settings'), '', 'fas fa-cogs', '', [

@@ -285,3 +285,143 @@ export interface ITeacherDtoPagedResultDto {
     totalCount: number;
     items: TeacherDto[] | undefined;
 }
+
+
+export class TeacherProductivityDto implements ITeacherProductivityDto {    
+    fee: number | undefined;
+    paid: number | undefined;
+    hour: number | undefined;
+    startDate: Date | undefined;
+    endDate?: Date | undefined;
+    roomName: string | undefined;
+    courseName: string | undefined;
+    subjectName: string | undefined;
+
+    constructor(data?: ITeacherProductivityDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {            
+            this.fee = data["fee"];
+            this.paid = data["paid"];
+            this.hour = data["hour"];
+            this.startDate = data["startDate"];
+            this.endDate = data["endDate"];
+            this.roomName = data["roomName"];
+            this.courseName = data["courseName"];
+            this.subjectName = data["subjectName"];
+        }
+    }
+
+    static fromJS(data: any): TeacherProductivityDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TeacherProductivityDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};        
+        data["fee"] = this.fee;
+        data["paid"] = this.paid;
+        data["hour"] = this.hour;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
+        data["roomName"] = this.roomName;
+        data["courseName"] = this.courseName;
+        data["subjectName"] = this.subjectName;
+        return data; 
+    }
+
+    clone(): TeacherProductivityDto {
+        const json = this.toJSON();
+        let result = new TeacherProductivityDto();
+        result.init(json);
+        return result;
+    }
+}
+
+
+export interface ITeacherProductivityDto {    
+    fee: number | undefined;
+    paid: number | undefined;
+    hour: number | undefined;
+    startDate: Date | undefined;
+    endDate?: Date | undefined;
+    roomName: string | undefined;
+    courseName: string | undefined;
+    subjectName: string | undefined;
+}
+
+export class TeacherProductivityListResultDto implements ITeacherProductivityListResultDto {
+    totalCount: number;
+    totalFee: number | undefined;
+    totalUnpaid: number | undefined;
+    totalHour: number | undefined;
+    items: TeacherProductivityDto[] | undefined;
+
+    constructor(data?: ITeacherProductivityListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            this.totalFee = data["totalFee"];
+            this.totalUnpaid = data["totalUnpaid"];
+            this.totalHour = data["totalHour"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(TeacherProductivityDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TeacherProductivityListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TeacherProductivityListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        data["totalFee"] = this.totalFee;
+        data["totalUnpaid"] = this.totalUnpaid;
+        data["totalHour"] = this.totalHour;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): TeacherProductivityListResultDto {
+        const json = this.toJSON();
+        let result = new TeacherProductivityListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITeacherProductivityListResultDto {
+    totalCount: number;
+    totalFee: number | undefined;
+    totalUnpaid: number | undefined;
+    totalHour: number | undefined;
+    items: TeacherProductivityDto[] | undefined;
+}

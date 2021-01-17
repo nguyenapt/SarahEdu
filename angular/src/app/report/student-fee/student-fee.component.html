@@ -92,11 +92,12 @@
                                 </td>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="summary">
-                            <div class="row">
-                                <div class="p-text-right">Totals <span class="badge badge-success">{{total | currency: 'VND'}}</span> Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></div>
-                            </div>
-                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>                                
+                                <td colspan="8" class="text-right">Total <span class="badge badge-success">{{total | currency: 'VND'}}</span><br />Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></td>
+                                <td></td>
+                            </tr>
+                        </ng-template>                        
                     </p-table>
                 </div>
             </div>

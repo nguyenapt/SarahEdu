@@ -2,7 +2,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { CreateTeacherDto, TeacherDto, TeacherDtoPagedResultDto } from './dto/teacher-dto';
+import { CreateTeacherDto, TeacherDto, TeacherDtoPagedResultDto, TeacherProductivityListResultDto } from './dto/teacher-dto';
 import { ApiException } from '../api-exception';
 import { API_BASE_URL } from '../service-proxies';
 
@@ -350,6 +350,67 @@ export class TeacherServiceProxy {
             }));
         }
         return _observableOf<TeacherDtoPagedResultDto>(<any>null);
+    }
+
+    getProductivities(teacherId: string, skipCount: number | undefined, maxResultCount: number | undefined): Observable<TeacherProductivityListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Teacher/GetTeacherProductivity?";
+
+        if (teacherId === null)
+            throw new Error("The parameter 'teacherId' cannot be null.");
+        else if (teacherId !== undefined)
+            url_ += "teacherId=" + encodeURIComponent("" + teacherId) + "&";   
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProductivities(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProductivities(<any>response_);
+                } catch (e) {
+                    return <Observable<TeacherProductivityListResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TeacherProductivityListResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProductivities(response: HttpResponseBase): Observable<TeacherProductivityListResultDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TeacherProductivityListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TeacherProductivityListResultDto>(<any>null);
     }
 }
 

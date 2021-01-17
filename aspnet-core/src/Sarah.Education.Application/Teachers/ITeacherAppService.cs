@@ -10,7 +10,7 @@ namespace Sarah.Education.Teachers
     public interface ITeacherAppService : IAsyncCrudAppService<TeacherDto, Guid, TeacherResultRequestDto, CreateTeacherDto, TeacherDto>
     {
         Task<ListResultDto<TeacherDto>> GetTeachers();
-
+        Task<PagedTeacherProductivityDto> GetTeacherProductivity(TeacherProductivityResultRequestDto input);
     }
 }
 

@@ -22,8 +22,8 @@
         <p-table [value]="events" sortField="roomName" sortMode="single" (onSort)="onSort()" styleClass="p-datatable-gridlines">
           <ng-template pTemplate="header">
               <tr>
-                  <th></th>
-                  <th></th>
+                  <th style="width: 150px;"></th>
+                  <th style="width: 150px;"></th>
                   <th class="text-center">MONDAY</th>
                   <th class="text-center">TUESDAY</th>
                   <th class="text-center">WEDNESDAY</th>
@@ -38,8 +38,8 @@
                   <td *ngIf="rowGroupMetadata[event.roomName].index === rowIndex" [attr.rowspan]="rowGroupMetadata[event.roomName].size">
                       <span class="p-text-bold p-ml-2" style="font-weight: bold;">{{event.roomName}}</span>
                   </td>
-                  <td style="font-weight: bold;">
-                      {{event.fromHour + ' ' +  event.toHour}}
+                  <td style="font-weight: bold;" class="text-right">
+                      {{event.fromHour + ' - ' +  event.toHour}}
                   </td>
                   <td style="color: white;padding: 0;">
                       <div *ngIf="event.mon">
@@ -50,9 +50,15 @@
                         </div>
                       </div>
                   </td>                  
-                  <td>
-                      <span>{{event.tue}}</span>
-                  </td>
+                  <td style="color: white;padding: 0;">
+                    <div *ngIf="event.tue">
+                      <div *ngFor="let item of event.tue; let i = index">
+                        <div [ngStyle]="{'background-color': item.teacher.color ? item.teacher.color : 'gray','padding.px':10}">
+                          <span>{{item.teacher.fullName + ' - ' + item.courseSubject.courseName + ' - ' + item.courseSubject.subjectName}}</span>
+                        </div>
+                      </div>
+                    </div>
+                </td> 
                   <td>
                       <span>{{event.wed}}</span>
                   </td>

@@ -1,27 +1,19 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { Subject,fromEvent  } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 
-import { ITimeSheetDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
 import { EditTimeSheetDialogComponent } from './edit-timesheet/edit-timesheet-dialog.component';
 import * as moment from 'moment';
 
 import {
-  CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
   CalendarView,
-  CalendarViewPeriod,
-  CalendarMonthViewBeforeRenderEvent,
-  CalendarWeekViewBeforeRenderEvent,
-  CalendarDayViewBeforeRenderEvent,
   DAYS_OF_WEEK
 } from 'angular-calendar';
 
@@ -29,9 +21,7 @@ import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listin
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
 
 class PagedTimeSheetRequestDto extends PagedRequestDto {
-  roomId: string | undefined;
   fromDate: string | null;
-  toDate: string | null;
 }
 
 moment.updateLocale('en', {
@@ -41,35 +31,12 @@ moment.updateLocale('en', {
   },
 });
 
-// const colors: any = {
-//   red: {
-//     primary: '#ad2121',
-//     secondary: '#FAE3E3',
-//   },
-//   blue: {
-//     primary: '#1e90ff',
-//     secondary: '#D1E8FF',
-//   },
-//   yellow: {
-//     primary: '#e3bc08',
-//     secondary: '#FDF1BA',
-//   },
-// };
-
-function floorToNearest(amount: number, precision: number) {
-  return Math.floor(amount / precision) * precision;
-}
-
-function ceilToNearest(amount: number, precision: number) {
-  return Math.ceil(amount / precision) * precision;
-}
-
 @Component({
   templateUrl: './timesheet.component.html',
   styleUrls: ['./timesheet.component.css'],
   animations: [appModuleAnimation()]
 })
-export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto> 
+export class TimeSheetComponent extends AppComponentBase
   implements OnInit {
   rooms: RoomDto[]=[];
   selectedRoom : RoomDto;
@@ -82,32 +49,6 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
   dragToCreateActive = false;
 
   events: any[]=[];
-
-  weekStartsOn: 1 = 1;
-
-  period: CalendarViewPeriod;
-
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: ITimeSheetDto }): void => {
-        this.showCreateOrEditTimeSheetDialog();
-      },
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: ITimeSheetDto }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.showCreateOrEditTimeSheetDialog(event);
-      },
-    },
-  ];
-
-  activeDayIsOpen: boolean = true;
-
-  refreshEvents: Subject<any> = new Subject();
 
   constructor(
     injector: Injector,
@@ -123,60 +64,30 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
       this.rooms = result.items;
       this.selectedRoom = this.rooms[0];
       const req = new PagedTimeSheetRequestDto();
-      req.roomId = this.selectedRoom.id;
-      req.fromDate = this.period.start.toISOString();
-      req.toDate = this.period.end.toISOString();
-      this.isTableLoading = true;
+      req.fromDate = "2021-01-19";
       this.list(req, 0, () => {
-      this.isTableLoading = false;
       });
     });  
   }
 
-  beforeViewRender(
-    event:
-      | CalendarMonthViewBeforeRenderEvent
-      | CalendarWeekViewBeforeRenderEvent
-      | CalendarDayViewBeforeRenderEvent
-  ) {
-    if (!this.period || this.period.start.getTime() !== event.period.start.getTime() || this.period.end.getTime() !== event.period.end.getTime()) {
-      this.period = event.period;
-    }  
-  }
-
-  onChangeRoom(event) {    
-    const req = new PagedTimeSheetRequestDto();
-    req.roomId = event.value.id;
-    req.fromDate = this.period.start.toISOString();
-    req.toDate = this.period.end.toISOString();
-    this.isTableLoading = true;
-    this.list(req, 0, () => {
-        this.isTableLoading = false;
-    });
-  }
 
   protected list(
     request: PagedTimeSheetRequestDto, 
     pageNumber: number, 
     finishedCallback: Function): void {
-      request.roomId = this.selectedRoom.id;
       this._timesheetService
-      .getAllTimeSheetFromDateToDate(
-        request.roomId,
-        request.fromDate,
-        request.toDate
+      .getAllTimeSheetForWeek(
+        request.fromDate
       )
       .pipe(
         finalize(() => {
           finishedCallback();
         })
       )
-      .subscribe((result: TimeSheetDtoPagedResultDto) => {
+      .subscribe((result: RoomTimeSheetDtoPagedResultDto) => {
         var self = this;
         this.events = result.items;
         this.events.forEach(function (event) {
-          event.actions = self.actions;     
-//          event.color = colors.yellow;
           event.resizable = {
             beforeStart: true,
             afterEnd: true,
@@ -184,40 +95,6 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
           event.draggable = true;
         }); 
       });
-  }
-  protected delete(entity: TimeSheetDto): void {
-    throw new Error('Method not implemented.');
-  }
-
-  dayClicked({ date, events }: { date: Date; events: ITimeSheetDto[] }): void {
-    if (date.getMonth == this.viewDate.getMonth) {
-      if (
-        (this.viewDate.getDay ==  date.getDay && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
-    }
-  }
-
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd,
-  }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map((iEvent) => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd,
-        };
-      }
-      return iEvent;
-    });
   }
 
   createScheduler(): void {
@@ -228,9 +105,6 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
-  setView(view: CalendarView) {
-    this.view = view;
-  }
 
   private showCreateOrEditTimeSheetDialog(timeSheet?: ITimeSheetDto): void {
     let createOrEditTimeSheetDialog: BsModalRef;
@@ -261,10 +135,6 @@ export class TimeSheetComponent extends PagedListingComponentBase<TimeSheetDto>
     createOrEditTimeSheetDialog.content.onSave.subscribe(() => {
       this.refreshEvent();
     });
-  }
-
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
   }
 
   private refreshEvent() {

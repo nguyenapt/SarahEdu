@@ -17,12 +17,16 @@ namespace Sarah.Education.Entities
         public DateTime ToDate { get; set; }
         public Guid RoomId { get; set; }
         public Guid TeacherId { get; set; }
+        public Guid StudyTimeId { get; set; }
         public Guid CourseSubjectId { get; set; }
         public int Status { get; set; }
         public bool? IsSingle { get; set; }
 
         [ForeignKey(nameof(RoomId))]
         public virtual Room Room { get; set; }
+
+        [ForeignKey(nameof(StudyTimeId))]
+        public virtual StudyTime StudyTime { get; set; }
 
         [ForeignKey(nameof(TeacherId))]
         public virtual Teacher Teacher { get; set; }

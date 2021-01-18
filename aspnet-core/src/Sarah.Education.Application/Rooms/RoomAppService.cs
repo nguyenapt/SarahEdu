@@ -17,7 +17,7 @@ using Abp.Extensions;
 using Abp.Collections.Extensions;
 using Abp.Domain.Uow;
 
-namespace ET.Resources
+namespace Sarah.Education.Rooms
 {
     public class RoomAppService : AsyncCrudAppService<Room, RoomDto, Guid, RoomResultRequestDto, CreateRoomDto, RoomDto>, IRoomAppService
     {

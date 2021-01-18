@@ -324,3 +324,265 @@ export interface ITimeSheetStudentDto {
     student: StudentDto | undefined;
     isPaid: boolean | undefined;
 }
+
+
+export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedResultDto {
+    totalCount: number;
+    items: RoomTimeSheetDto[] | undefined;
+
+    constructor(data?: IRoomTimeSheetDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(RoomTimeSheetDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RoomTimeSheetDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoomTimeSheetDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): RoomTimeSheetDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new RoomTimeSheetDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRoomTimeSheetDtoPagedResultDto {
+    totalCount: number;
+    items: RoomTimeSheetDto[] | undefined;
+}
+
+
+export class RoomTimeSheetDto implements IRoomTimeSheetDto {    
+    id: string | undefined;
+    name: string | undefined;
+    studyTimes: StudyTimeDto[] | undefined;
+
+    constructor(data?: IRoomTimeSheetDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {            
+            this.id = data["id"];
+            this.name = data["name"];
+            if (Array.isArray(data["studyTimes"])) {
+                this.studyTimes = [] as any;
+                for (let item of data["studyTimes"])
+                    this.studyTimes.push(StudyTimeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): RoomTimeSheetDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoomTimeSheetDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};        
+        data["id"] = this.id;
+        data["name"] = this.name;
+        if (Array.isArray(this.studyTimes)) {
+            data["studyTimes"] = [];
+            for (let item of this.studyTimes)
+                data["studyTimes"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): RoomTimeSheetDto {
+        const json = this.toJSON();
+        let result = new RoomTimeSheetDto();
+        result.init(json);
+        return result;
+    }
+}
+
+
+export interface IRoomTimeSheetDto {    
+    id: string | undefined;
+    name: string | undefined;
+    studyTimes: StudyTimeDto[] | undefined;
+}
+
+
+export class StudyTimeDto implements IStudyTimeDto {    
+    id: string | undefined;
+    name: string | undefined;
+    fromHour: string | undefined;
+    toHour: string | undefined;
+    sortOrder: number | undefined;
+    mon: TimeSheetDto[] | undefined;
+    tue: TimeSheetDto[] | undefined;
+    wed: TimeSheetDto[] | undefined;
+    thu: TimeSheetDto[] | undefined;
+    fri: TimeSheetDto[] | undefined;
+    sat: TimeSheetDto[] | undefined;
+    sun: TimeSheetDto[] | undefined;    
+
+    constructor(data?: IStudyTimeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {            
+            this.id = data["id"];
+            this.name = data["studentId"];
+            this.fromHour = data["timeSheetEntryId"];
+            this.toHour = data["attitude"];
+            this.sortOrder = data["receptiveAbility"];
+            if (Array.isArray(data["mon"])) {
+                this.mon = [] as any;
+                for (let item of data["mon"])
+                    this.mon.push(TimeSheetDto.fromJS(item));
+            }
+            if (Array.isArray(data["tue"])) {
+                this.tue = [] as any;
+                for (let item of data["tue"])
+                    this.tue.push(TimeSheetDto.fromJS(item));
+            }
+            if (Array.isArray(data["wed"])) {
+                this.wed = [] as any;
+                for (let item of data["wed"])
+                    this.wed.push(TimeSheetDto.fromJS(item));
+            }
+            if (Array.isArray(data["thu"])) {
+                this.thu = [] as any;
+                for (let item of data["thu"])
+                    this.thu.push(TimeSheetDto.fromJS(item));
+            }
+            if (Array.isArray(data["fri"])) {
+                this.fri = [] as any;
+                for (let item of data["fri"])
+                    this.fri.push(TimeSheetDto.fromJS(item));
+            }
+            if (Array.isArray(data["sat"])) {
+                this.sat = [] as any;
+                for (let item of data["sat"])
+                    this.sat.push(TimeSheetDto.fromJS(item));
+            }
+            if (Array.isArray(data["sun"])) {
+                this.sun = [] as any;
+                for (let item of data["sun"])
+                    this.sun.push(TimeSheetDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StudyTimeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudyTimeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};        
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["fromHour"] = this.fromHour;
+        data["toHour"] = this.toHour;
+        data["sortOrder"] = this.sortOrder;
+        if (Array.isArray(this.mon)) {
+            data["mon"] = [];
+            for (let item of this.mon)
+                data["mon"].push(item.toJSON());
+        }
+        if (Array.isArray(this.tue)) {
+            data["tue"] = [];
+            for (let item of this.tue)
+                data["tue"].push(item.toJSON());
+        }
+        if (Array.isArray(this.wed)) {
+            data["wed"] = [];
+            for (let item of this.wed)
+                data["wed"].push(item.toJSON());
+        }
+        if (Array.isArray(this.thu)) {
+            data["thu"] = [];
+            for (let item of this.thu)
+                data["thu"].push(item.toJSON());
+        }
+        if (Array.isArray(this.fri)) {
+            data["fri"] = [];
+            for (let item of this.fri)
+                data["fri"].push(item.toJSON());
+        }
+        if (Array.isArray(this.sat)) {
+            data["sat"] = [];
+            for (let item of this.sat)
+                data["sat"].push(item.toJSON());
+        }
+        if (Array.isArray(this.sun)) {
+            data["sun"] = [];
+            for (let item of this.sun)
+                data["sun"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): StudyTimeDto {
+        const json = this.toJSON();
+        let result = new StudyTimeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+
+export interface IStudyTimeDto {    
+    id: string | undefined;
+    name: string | undefined;
+    fromHour: string | undefined;
+    toHour: string | undefined;
+    sortOrder: number | undefined;
+    mon: TimeSheetDto[] | undefined;
+    tue: TimeSheetDto[] | undefined;
+    wed: TimeSheetDto[] | undefined;
+    thu: TimeSheetDto[] | undefined;
+    fri: TimeSheetDto[] | undefined;
+    sat: TimeSheetDto[] | undefined;
+    sun: TimeSheetDto[] | undefined;    
+}

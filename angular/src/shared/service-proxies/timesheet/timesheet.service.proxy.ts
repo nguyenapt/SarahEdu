@@ -2,7 +2,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { CreateTimeSheetDto, TimeSheetDto, TimeSheetDtoPagedResultDto, TimeSheetStudentDto} from './dto/timesheet-dto';
+import { CreateTimeSheetDto, RoomTimeSheetDtoPagedResultDto, TimeSheetDto, TimeSheetDtoPagedResultDto, TimeSheetStudentDto} from './dto/timesheet-dto';
 import { ApiException } from '../api-exception';
 import { API_BASE_URL } from '../service-proxies';
 import { CourseDtoListResultDto } from '../course/dto/course-dto';
@@ -307,15 +307,15 @@ export class TimeSheetServiceProxy {
 
     //Get timesheet from date to date
     getAllTimeSheetFromDateToDate(roomId: string | undefined,fromDate: string | undefined, toDate: string | undefined): Observable<TimeSheetDtoPagedResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/GetTimeSheetFromDateToDate?";
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/GetTimeSheetFromDateToDate?";    
         if (roomId === null)
             throw new Error("The parameter 'roomId' cannot be null.");
         else if (roomId !== undefined)
-            url_ += "roomId=" + encodeURIComponent("" + roomId) + "&";         
+        url_ += "roomId=" + encodeURIComponent("" + roomId) + "&";               
         if (fromDate !== undefined)
-            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";         
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";
         if (toDate !== undefined)
-            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&";             
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&";               
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -360,6 +360,56 @@ export class TimeSheetServiceProxy {
             }));
         }
         return _observableOf<TimeSheetDtoPagedResultDto>(<any>null);
+    }
+
+    getAllTimeSheetForWeek(fromDate: string | undefined): Observable<RoomTimeSheetDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/GetTimeSheetForWeek?";          
+        if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";        
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTimeSheetForWeek(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTimeSheetForWeek(<any>response_);
+                } catch (e) {
+                    return <Observable<RoomTimeSheetDtoPagedResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RoomTimeSheetDtoPagedResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTimeSheetForWeek(response: HttpResponseBase): Observable<RoomTimeSheetDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RoomTimeSheetDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RoomTimeSheetDtoPagedResultDto>(<any>null);
     }
 
     /**

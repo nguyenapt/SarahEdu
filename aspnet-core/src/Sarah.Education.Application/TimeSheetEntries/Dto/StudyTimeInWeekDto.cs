@@ -9,6 +9,8 @@ namespace Sarah.Education.TimeSheetEntries.Dto
     public class StudyTimeInWeekDto
     {
         public Guid Id { get; set; }
+        public Guid RoomId { get; set; }
+        public string RoomName { get; set; }
         public string Name { get; set; }
         public string FromHour { get; set; }
         public string ToHour { get; set; }

@@ -148,7 +148,7 @@ namespace Sarah.Education.TimeSheetEntries
             return new ListResultDto<TimeSheetEntryDto>(timesheetEntries);
         }
 
-        public async Task<ListResultDto<RoomTimeSheetDto>> GetTimeSheetForWeek(RoomTimeSheetEntryResultRequestDto input)
+        public async Task<ListResultDto<StudyTimeInWeekDto>> GetTimeSheetForWeek(RoomTimeSheetEntryResultRequestDto input)
         {
             var userId = AbpSession.UserId;
             var currentUser = await _userManager.GetUserByIdAsync(userId.Value);
@@ -177,11 +177,20 @@ namespace Sarah.Education.TimeSheetEntries
                 FromHour = x.FromHour,
                 ToHour = x.ToHour,
                 SortOrder = x.SortOrder
-            });
+            }).OrderBy(x=>x.SortOrder);
 
             foreach(var room in rooms)
             {
-                room.StudyTimes.AddRange(studyTimes.ToList());
+                var studyTimeTemp = studyTimes.Select(x => new StudyTimeInWeekDto
+                {
+                    Id = x.Id,
+                    RoomId = room.Id,
+                    RoomName = room.Name,
+                    FromHour = x.FromHour,
+                    ToHour = x.ToHour,
+                    SortOrder = x.SortOrder
+                }).ToList();
+                room.StudyTimes.AddRange(studyTimeTemp);
             }
 
             var firstDayOfWeek = input.FromDate.Value.StartOfWeek(DayOfWeek.Monday);
@@ -216,9 +225,10 @@ namespace Sarah.Education.TimeSheetEntries
                     var sunData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(6).ToString("yyyy-MM-dd")).ToList();
                     studyTime.Sun = ObjectMapper.Map<List<TimeSheetEntryDto>>(sunData);
                 }
-            }            
+            }
 
-            return new ListResultDto<RoomTimeSheetDto>(rooms);
+            var listResult = rooms.SelectMany(x => x.StudyTimes).ToList();
+            return new ListResultDto<StudyTimeInWeekDto>(listResult);
         }
     }
 }

@@ -134,7 +134,7 @@ export class TimeSheetDto implements ITimeSheetDto {
                 this.timeSheetStudents = [] as any;
                 for (let item of data["timeSheetEntryStudents"]){
                     this.timeSheetStudents.push(item);
-                    title += item.student.fullName + "<br />";
+                    //title += item.student.fullName + "<br />";
                 }
             }
             var color: any = {
@@ -328,7 +328,7 @@ export interface ITimeSheetStudentDto {
 
 export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedResultDto {
     totalCount: number;
-    items: RoomTimeSheetDto[] | undefined;
+    items: StudyTimeDto[] | undefined;
 
     constructor(data?: IRoomTimeSheetDtoPagedResultDto) {
         if (data) {
@@ -345,7 +345,7 @@ export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedRes
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items.push(RoomTimeSheetDto.fromJS(item));
+                    this.items.push(StudyTimeDto.fromJS(item));
             }
         }
     }
@@ -378,7 +378,7 @@ export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedRes
 
 export interface IRoomTimeSheetDtoPagedResultDto {
     totalCount: number;
-    items: RoomTimeSheetDto[] | undefined;
+    items: StudyTimeDto[] | undefined;
 }
 
 
@@ -445,7 +445,9 @@ export interface IRoomTimeSheetDto {
 
 export class StudyTimeDto implements IStudyTimeDto {    
     id: string | undefined;
+    roomId :string | undefined;
     name: string | undefined;
+    roomName: string | undefined;
     fromHour: string | undefined;
     toHour: string | undefined;
     sortOrder: number | undefined;
@@ -469,9 +471,11 @@ export class StudyTimeDto implements IStudyTimeDto {
     init(data?: any) {
         if (data) {            
             this.id = data["id"];
+            this.roomId = data["roomId"];
+            this.roomName = data["roomName"];
             this.name = data["studentId"];
-            this.fromHour = data["timeSheetEntryId"];
-            this.toHour = data["attitude"];
+            this.fromHour = data["fromHour"];
+            this.toHour = data["toHour"];
             this.sortOrder = data["receptiveAbility"];
             if (Array.isArray(data["mon"])) {
                 this.mon = [] as any;
@@ -521,6 +525,8 @@ export class StudyTimeDto implements IStudyTimeDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};        
         data["id"] = this.id;
+        data["roomId"] = this.roomId;
+        data["roomName"] = this.roomName;
         data["name"] = this.name;
         data["fromHour"] = this.fromHour;
         data["toHour"] = this.toHour;
@@ -574,6 +580,8 @@ export class StudyTimeDto implements IStudyTimeDto {
 
 export interface IStudyTimeDto {    
     id: string | undefined;
+    roomId :string | undefined;
+    roomName: string | undefined;
     name: string | undefined;
     fromHour: string | undefined;
     toHour: string | undefined;

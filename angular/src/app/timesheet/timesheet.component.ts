@@ -49,6 +49,7 @@ export class TimeSheetComponent extends AppComponentBase
   dragToCreateActive = false;
 
   events: any[]=[];
+  rowGroupMetadata: any;
 
   constructor(
     injector: Injector,
@@ -66,6 +67,7 @@ export class TimeSheetComponent extends AppComponentBase
       const req = new PagedTimeSheetRequestDto();
       req.fromDate = "2021-01-19";
       this.list(req, 0, () => {
+        this.updateRowGroupMetaData();
       });
     });  
   }
@@ -105,6 +107,32 @@ export class TimeSheetComponent extends AppComponentBase
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
+  onSort() {
+    this.updateRowGroupMetaData();
+  }
+
+  updateRowGroupMetaData() {
+      this.rowGroupMetadata = {};
+
+      if (this.events) {
+          for (let i = 0; i < this.events.length; i++) {
+              let rowData = this.events[i];
+              let representativeName = rowData.roomName;
+              
+              if (i == 0) {
+                  this.rowGroupMetadata[representativeName] = { index: 0, size: 1 };
+              }
+              else {
+                  let previousRowData = this.events[i - 1];
+                  let previousRowGroup = previousRowData.roomName;
+                  if (representativeName === previousRowGroup)
+                      this.rowGroupMetadata[representativeName].size++;
+                  else
+                      this.rowGroupMetadata[representativeName] = { index: i, size: 1 };
+              }
+          }
+      }
+  }
 
   private showCreateOrEditTimeSheetDialog(timeSheet?: ITimeSheetDto): void {
     let createOrEditTimeSheetDialog: BsModalRef;

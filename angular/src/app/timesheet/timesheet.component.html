@@ -3,14 +3,14 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-4">
-          <h1>{{ "Time scheduler" | localize }}</h1>
+          <h1>Time scheduler</h1>
         </div>
         <div class="col-md-4 text-center">
         </div>
         <div class="col-4 text-right">
           <a href="javascript:;" class="btn bg-blue" (click)="createScheduler()">
             <i class="fa fa-plus-square"></i>
-            {{ "Create" | localize }}
+            Create
           </a>
         </div>
       </div>
@@ -18,8 +18,59 @@
   </section>
   <section class="content px-2">
     <div class="container-fluid">
-      <div class="row">
-        
+      <div class="row" *ngIf="events">
+        <p-table [value]="events" sortField="roomName" sortMode="single" (onSort)="onSort()" styleClass="p-datatable-gridlines">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th></th>
+                  <th></th>
+                  <th class="text-center">MONDAY</th>
+                  <th class="text-center">TUESDAY</th>
+                  <th class="text-center">WEDNESDAY</th>
+                  <th class="text-center">THURSDAY</th>
+                  <th class="text-center">FRIDAY</th>
+                  <th class="text-center">SATURDAY</th>
+                  <th class="text-center">SUNDAY</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-event let-rowIndex="rowIndex">
+              <tr>
+                  <td *ngIf="rowGroupMetadata[event.roomName].index === rowIndex" [attr.rowspan]="rowGroupMetadata[event.roomName].size">
+                      <span class="p-text-bold p-ml-2" style="font-weight: bold;">{{event.roomName}}</span>
+                  </td>
+                  <td style="font-weight: bold;">
+                      {{event.fromHour + ' ' +  event.toHour}}
+                  </td>
+                  <td style="color: white;padding: 0;">
+                      <div *ngIf="event.mon">
+                        <div *ngFor="let item of event.mon; let i = index">
+                          <div [ngStyle]="{'background-color': item.teacher.color ? item.teacher.color : 'gray','padding.px':10}">
+                            <span>{{item.teacher.fullName + ' - ' + item.courseSubject.courseName + ' - ' + item.courseSubject.subjectName}}</span>
+                          </div>
+                        </div>
+                      </div>
+                  </td>                  
+                  <td>
+                      <span>{{event.tue}}</span>
+                  </td>
+                  <td>
+                      <span>{{event.wed}}</span>
+                  </td>
+                  <td>
+                      <span>{{event.thu}}</span>
+                  </td>
+                  <td>
+                      <span>{{event.fri}}</span>
+                  </td>
+                  <td>
+                      <span>{{event.sat}}</span>
+                  </td>
+                  <td>
+                    <span>{{event.sun}}</span>
+                  </td>
+              </tr>
+          </ng-template>
+        </p-table>
       </div>      
     </div>
   </section>

@@ -18,36 +18,36 @@
   </section>
   <section class="content px-2">
     <div class="container-fluid">
-      <div class="row" *ngIf="events">
+      <div class="card" *ngIf="events">
         <p-table [value]="dayInWeeks" styleClass="p-datatable-gridlines">
           <ng-template pTemplate="header">
             <tr>
-              <th rowspan="3" style="width: 120px;"></th>              
+              <th rowspan="3" style="width: 100px;"></th>              
             </tr>
             <tr>
-              <th *ngFor="let item of rooms" [attr.colspan]="studyTimes.length" style="padding: 0;width: 300px;" class="text-center">
-                <h4>{{item.name}}</h4>
+              <th *ngFor="let item of rooms" [attr.colspan]="studyTimes.length" style="padding: 0;width: 500px !important;background-color:#17a2b8!important;" class="text-center">
+                <h4 style="color: #fff">{{item.name}}</h4>
               </th>
             </tr>
             <tr>
               <ng-container *ngFor="let room of rooms" >
-                <th *ngFor="let item of studyTimes" style="padding: 0" class="text-center">{{item.fromHour}} <br /> {{item.toHour}}</th>   
+                <th *ngFor="let item of studyTimes" style="padding: 0;width: 100px !important;background-color: #ffc107;" class="text-center">{{item.fromHour}} <br /> {{item.toHour}}</th>   
               </ng-container>               
             </tr>            
           </ng-template>
           <ng-template pTemplate="body" let-day>
             <tr>
-              <td style="width: 120px;">
+              <td style="width: 100px">
                 <h5 class="text-center">{{day | date:'E'}}</h5>
-                {{day | date:'dd-MM-yyyy'}}
+                <div class="text-center" style="font-size: 12px;font-weight: 600;">{{day | date:'dd-MM-yyyy'}}</div>
               </td>
               <ng-container *ngFor="let room of rooms" >
-                  <td *ngFor="let studyTime of studyTimes" style="padding: 0;color: whitesmoke;font-size: 10px;height: 100px;">
+                  <td *ngFor="let studyTime of studyTimes" style="padding: 0;color: whitesmoke;font-size: 10px;height: 100px;width: 100px !important;">
                     <ng-container *ngTemplateOutlet="memberTemplate; context:{o: getTimeScheduler(day,studyTime,room) }">
                     </ng-container>
                     <ng-template #memberTemplate let-scheduler="o">
                       <ng-container *ngIf="scheduler">
-                        <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100}">
+                        <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100,'padding.px':1}">
                           <div style="border-bottom: 1px solid gray;">{{scheduler.teacher.fullName}}</div>                          
                           <div>{{scheduler.courseSubject.courseName}}</div>
                           <div style="border-bottom: 1px solid gray;">{{scheduler.courseSubject.subjectName}}</div>

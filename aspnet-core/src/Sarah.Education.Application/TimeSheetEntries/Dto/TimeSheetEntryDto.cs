@@ -15,6 +15,7 @@ namespace Sarah.Education.TimeSheetEntries.Dto
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }        
         public Guid RoomId { get; set; }
+        public Guid StudyTimeId { get; set; }
         public string RoomName { get; set; }
         public Guid TeacherId { get; set; }
         public Guid CourseSubjectId { get; set; }

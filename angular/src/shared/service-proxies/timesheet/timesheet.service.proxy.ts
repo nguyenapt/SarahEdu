@@ -362,7 +362,7 @@ export class TimeSheetServiceProxy {
         return _observableOf<TimeSheetDtoPagedResultDto>(<any>null);
     }
 
-    getAllTimeSheetForWeek(fromDate: string | undefined): Observable<RoomTimeSheetDtoPagedResultDto> {
+    getAllTimeSheetForWeek(fromDate: string | undefined): Observable<TimeSheetDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/TimeSheetEntry/GetTimeSheetForWeek?";          
         if (fromDate !== undefined)
             url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";        
@@ -383,14 +383,14 @@ export class TimeSheetServiceProxy {
                 try {
                     return this.processGetAllTimeSheetForWeek(<any>response_);
                 } catch (e) {
-                    return <Observable<RoomTimeSheetDtoPagedResultDto>><any>_observableThrow(e);
+                    return <Observable<TimeSheetDtoPagedResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<RoomTimeSheetDtoPagedResultDto>><any>_observableThrow(response_);
+                return <Observable<TimeSheetDtoPagedResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllTimeSheetForWeek(response: HttpResponseBase): Observable<RoomTimeSheetDtoPagedResultDto> {
+    protected processGetAllTimeSheetForWeek(response: HttpResponseBase): Observable<TimeSheetDtoPagedResultDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -401,7 +401,7 @@ export class TimeSheetServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RoomTimeSheetDtoPagedResultDto.fromJS(resultData200);
+            result200 = TimeSheetDtoPagedResultDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -409,7 +409,7 @@ export class TimeSheetServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<RoomTimeSheetDtoPagedResultDto>(<any>null);
+        return _observableOf<TimeSheetDtoPagedResultDto>(<any>null);
     }
 
     /**

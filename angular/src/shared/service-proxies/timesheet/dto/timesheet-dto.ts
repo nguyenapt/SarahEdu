@@ -99,6 +99,7 @@ export class TimeSheetDto implements ITimeSheetDto {
     draggable?: boolean;
     meta?: any;
     roomId: string | undefined;
+    studyTimeId: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
     fee:number | undefined;
@@ -123,6 +124,7 @@ export class TimeSheetDto implements ITimeSheetDto {
             this.start = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
             this.end = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
             this.roomId = data["roomId"];
+            this.studyTimeId = data["studyTimeId"];
             this.teacherId = data["teacherId"];
             this.courseSubjectId = data["courseSubjectId"];
             this.fee = data["fee"];
@@ -159,6 +161,7 @@ export class TimeSheetDto implements ITimeSheetDto {
         data["fromDate"] = this.start ? new Date(this.start) : <any>undefined;
         data["toDate"] = this.start ? new Date(this.start) : <any>undefined;
         data["roomId"] = this.roomId;
+        data["studyTimeId"] = this.studyTimeId;
         data["teacherId"] = this.teacherId;
         data["courseSubjectId"] = this.courseSubjectId;
         data["fee"] = this.fee;
@@ -183,6 +186,7 @@ export class TimeSheetDto implements ITimeSheetDto {
 
 export interface ITimeSheetDto extends CalendarEvent {
     roomId?: string | undefined;
+    studyTimeId: string | undefined;
     teacherId?: string | undefined;
     courseSubjectId?: string | undefined;
     fee?:number | undefined;

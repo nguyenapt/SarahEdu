@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';  
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { finalize } from 'rxjs/operators';
@@ -18,7 +19,7 @@ import {
 } from 'angular-calendar';
 
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
-import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
+import { RoomDto, StudyTimeDto } from '@shared/service-proxies/room/dto/room-dto';
 
 class PagedTimeSheetRequestDto extends PagedRequestDto {
   fromDate: string | null;
@@ -39,15 +40,8 @@ moment.updateLocale('en', {
 export class TimeSheetComponent extends AppComponentBase
   implements OnInit {
   rooms: RoomDto[]=[];
-  selectedRoom : RoomDto;
-  view: CalendarView = CalendarView.Month;
-
-  CalendarView = CalendarView;
-
-  viewDate: Date = new Date();
-
-  dragToCreateActive = false;
-
+  studyTimes: StudyTimeDto[]=[];
+  dayInWeeks : Date[] = [];
   events: any[]=[];
   rowGroupMetadata: any;
 
@@ -61,32 +55,25 @@ export class TimeSheetComponent extends AppComponentBase
   }
 
   ngOnInit(): void {
-    this._roomService.getRoomByCurrentTenant().subscribe((result) => {
-      this.rooms = result.items;
-      this.selectedRoom = this.rooms[0];
-      const req = new PagedTimeSheetRequestDto();
+    const req = new PagedTimeSheetRequestDto();
       req.fromDate = "2021-01-19";
-      this.list(req, 0, () => {
-        this.updateRowGroupMetaData();
-      });
-    });  
-  }
-
-
-  protected list(
-    request: PagedTimeSheetRequestDto, 
-    pageNumber: number, 
-    finishedCallback: Function): void {
-      this._timesheetService
+    this._timesheetService
       .getAllTimeSheetForWeek(
-        request.fromDate
+        req.fromDate
       )
       .pipe(
         finalize(() => {
-          finishedCallback();
+          this.getDayInWeek(new Date());
+          this._roomService.getRoomByCurrentTenant().subscribe((result) => {
+            this.rooms = result.items;
+          });  
+
+          this._roomService.getStudyTime().subscribe((result) => {
+            this.studyTimes = result.items;      
+          }); 
         })
       )
-      .subscribe((result: RoomTimeSheetDtoPagedResultDto) => {
+      .subscribe((result: TimeSheetDtoPagedResultDto) => {
         var self = this;
         this.events = result.items;
         this.events.forEach(function (event) {
@@ -96,7 +83,26 @@ export class TimeSheetComponent extends AppComponentBase
           };
           event.draggable = true;
         }); 
-      });
+      });     
+  }
+
+  getDayInWeek(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6:1);
+    var monday = new Date(d.setDate(diff));
+    this.dayInWeeks.push(new Date(monday));    
+    this.dayInWeeks.push(this.addDays(new Date(monday),1));
+    this.dayInWeeks.push(this.addDays(new Date(monday),2));
+    this.dayInWeeks.push(this.addDays(new Date(monday),3));
+    this.dayInWeeks.push(this.addDays(new Date(monday),4));
+    this.dayInWeeks.push(this.addDays(new Date(monday),5));
+    this.dayInWeeks.push(this.addDays(new Date(monday),6));    
+  }
+
+  addDays(date: Date, days: number): Date {
+    var dt = new Date(date.setDate(date.getDate() + days));
+    return dt;
   }
 
   createScheduler(): void {
@@ -107,8 +113,10 @@ export class TimeSheetComponent extends AppComponentBase
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
-  onSort() {
-    this.updateRowGroupMetaData();
+  getTimeScheduler(day : Date,studyTime : StudyTimeDto,room : RoomDto) {
+    var dateString = day.toLocaleString().split(',')[0];
+    var event =  this.events.filter(p => p.start.toLocaleString().split(',')[0] == dateString && p.studyTimeId == studyTime.id && p.roomId == room.id)[0];
+    return event;
   }
 
   updateRowGroupMetaData() {
@@ -142,7 +150,6 @@ export class TimeSheetComponent extends AppComponentBase
         {
           class: 'modal-xlg',
           initialState: {
-            roomId: this.selectedRoom.id,
           },
         }
       );
@@ -153,7 +160,6 @@ export class TimeSheetComponent extends AppComponentBase
         {
           class: 'modal-xlg',
           initialState: {
-            roomId: this.selectedRoom.id,
             timeSheet: timeSheet,
           },
         }

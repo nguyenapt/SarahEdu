@@ -28,6 +28,12 @@ namespace Sarah.Education.StudyTimes
             _studytimeRepository = studytimeRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
+
+        public async Task<List<StudyTimeDto>> GetStudyTimes()
+        {
+            var studyTimes = await _studytimeRepository.GetAllListAsync();
+            return new List<StudyTimeDto>(ObjectMapper.Map<List<StudyTimeDto>>(studyTimes)).OrderBy(x => x.SortOrder).ToList();
+        }
     }
 }
 

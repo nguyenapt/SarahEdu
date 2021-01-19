@@ -14,6 +14,6 @@ namespace Sarah.Education.TimeSheetEntries
     public interface ITimeSheetEntryAppService : IAsyncCrudAppService<TimeSheetEntryDto, Guid, TimeSheetEntryResultRequestDto, CreateTimeSheetEntryDto, TimeSheetEntryDto>
     {
         Task<ListResultDto<TimeSheetEntryDto>> GetTimeSheetFromDateToDate(TimeSheetEntryResultRequestDto input);
-        Task<ListResultDto<StudyTimeInWeekDto>> GetTimeSheetForWeek(RoomTimeSheetEntryResultRequestDto input);
+        Task<ListResultDto<TimeSheetEntryDto>> GetTimeSheetForWeek(RoomTimeSheetEntryResultRequestDto input);
     }
 }

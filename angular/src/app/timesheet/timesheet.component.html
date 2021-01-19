@@ -19,62 +19,47 @@
   <section class="content px-2">
     <div class="container-fluid">
       <div class="row" *ngIf="events">
-        <p-table [value]="events" sortField="roomName" sortMode="single" (onSort)="onSort()" styleClass="p-datatable-gridlines">
+        <p-table [value]="dayInWeeks" styleClass="p-datatable-gridlines">
           <ng-template pTemplate="header">
-              <tr>
-                  <th style="width: 150px;"></th>
-                  <th style="width: 150px;"></th>
-                  <th class="text-center">MONDAY</th>
-                  <th class="text-center">TUESDAY</th>
-                  <th class="text-center">WEDNESDAY</th>
-                  <th class="text-center">THURSDAY</th>
-                  <th class="text-center">FRIDAY</th>
-                  <th class="text-center">SATURDAY</th>
-                  <th class="text-center">SUNDAY</th>
-              </tr>
+            <tr>
+              <th rowspan="3" style="width: 120px;"></th>              
+            </tr>
+            <tr>
+              <th *ngFor="let item of rooms" [attr.colspan]="studyTimes.length" style="padding: 0;width: 300px;" class="text-center">
+                <h4>{{item.name}}</h4>
+              </th>
+            </tr>
+            <tr>
+              <ng-container *ngFor="let room of rooms" >
+                <th *ngFor="let item of studyTimes" style="padding: 0" class="text-center">{{item.fromHour}} <br /> {{item.toHour}}</th>   
+              </ng-container>               
+            </tr>            
           </ng-template>
-          <ng-template pTemplate="body" let-event let-rowIndex="rowIndex">
-              <tr>
-                  <td *ngIf="rowGroupMetadata[event.roomName].index === rowIndex" [attr.rowspan]="rowGroupMetadata[event.roomName].size">
-                      <span class="p-text-bold p-ml-2" style="font-weight: bold;">{{event.roomName}}</span>
-                  </td>
-                  <td style="font-weight: bold;" class="text-right">
-                      {{event.fromHour + ' - ' +  event.toHour}}
-                  </td>
-                  <td style="color: white;padding: 0;">
-                      <div *ngIf="event.mon">
-                        <div *ngFor="let item of event.mon; let i = index">
-                          <div [ngStyle]="{'background-color': item.teacher.color ? item.teacher.color : 'gray','padding.px':10}">
-                            <span>{{item.teacher.fullName + ' - ' + item.courseSubject.courseName + ' - ' + item.courseSubject.subjectName}}</span>
+          <ng-template pTemplate="body" let-day>
+            <tr>
+              <td style="width: 120px;">
+                <h5 class="text-center">{{day | date:'E'}}</h5>
+                {{day | date:'dd-MM-yyyy'}}
+              </td>
+              <ng-container *ngFor="let room of rooms" >
+                  <td *ngFor="let studyTime of studyTimes" style="padding: 0;color: whitesmoke;font-size: 10px;height: 100px;">
+                    <ng-container *ngTemplateOutlet="memberTemplate; context:{o: getTimeScheduler(day,studyTime,room) }">
+                    </ng-container>
+                    <ng-template #memberTemplate let-scheduler="o">
+                      <ng-container *ngIf="scheduler">
+                        <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100}">
+                          <div style="border-bottom: 1px solid gray;">{{scheduler.teacher.fullName}}</div>                          
+                          <div>{{scheduler.courseSubject.courseName}}</div>
+                          <div style="border-bottom: 1px solid gray;">{{scheduler.courseSubject.subjectName}}</div>
+                          <div *ngFor="let studentTime of scheduler.timeSheetStudents">
+                            {{studentTime.student.fullName}}
                           </div>
                         </div>
-                      </div>
-                  </td>                  
-                  <td style="color: white;padding: 0;">
-                    <div *ngIf="event.tue">
-                      <div *ngFor="let item of event.tue; let i = index">
-                        <div [ngStyle]="{'background-color': item.teacher.color ? item.teacher.color : 'gray','padding.px':10}">
-                          <span>{{item.teacher.fullName + ' - ' + item.courseSubject.courseName + ' - ' + item.courseSubject.subjectName}}</span>
-                        </div>
-                      </div>
-                    </div>
-                </td> 
-                  <td>
-                      <span>{{event.wed}}</span>
+                      </ng-container>
+                    </ng-template>
                   </td>
-                  <td>
-                      <span>{{event.thu}}</span>
-                  </td>
-                  <td>
-                      <span>{{event.fri}}</span>
-                  </td>
-                  <td>
-                      <span>{{event.sat}}</span>
-                  </td>
-                  <td>
-                    <span>{{event.sun}}</span>
-                  </td>
-              </tr>
+              </ng-container>                                
+            </tr>
           </ng-template>
         </p-table>
       </div>      

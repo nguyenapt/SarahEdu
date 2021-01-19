@@ -9,6 +9,7 @@ namespace Sarah.Education.StudyTimes
 {
     public interface IStudyTimeAppService : IAsyncCrudAppService<StudyTimeDto, Guid, StudyTimeResultRequestDto, CreateStudyTimeDto, StudyTimeDto>
     {
+        Task<List<StudyTimeDto>> GetStudyTimes();
     }
 }
 

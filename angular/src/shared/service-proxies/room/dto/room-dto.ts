@@ -203,3 +203,114 @@ export class RoomDtoListResultDto implements IRoomDtoListResultDto {
 export interface IRoomDtoListResultDto {
     items: RoomDto[] | undefined;
 }
+
+
+export class StudyTimeListResultDto implements IStudyTimeListResultDto {
+    items: StudyTimeDto[] | undefined;
+
+    constructor(data?: IStudyTimeListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data)) {
+                this.items = [] as any;
+                for (let item of data)
+                    this.items.push(StudyTimeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StudyTimeListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudyTimeListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data = [];
+            for (let item of this.items)
+                data.push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): StudyTimeListResultDto {
+        const json = this.toJSON();
+        let result = new StudyTimeListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudyTimeListResultDto {
+    items: StudyTimeDto[] | undefined;
+}
+
+export class StudyTimeDto implements IStudyTimeDto {
+    name: string | undefined;
+    fromHour: string | undefined;
+    toHour: string | undefined;
+    sortOrder :number | undefined;
+    id: string;
+
+    constructor(data?: IStudyTimeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.fromHour = data["fromHour"];
+            this.toHour = data["toHour"];
+            this.sortOrder = data["sortOrder"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): StudyTimeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudyTimeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["fromHour"] = this.fromHour;
+        data["toHour"] = this.toHour;
+        data["sortOrder"] = this.sortOrder;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): StudyTimeDto {
+        const json = this.toJSON();
+        let result = new StudyTimeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudyTimeDto {
+    name: string | undefined;
+    fromHour: string | undefined;
+    toHour: string | undefined;
+    sortOrder :number | undefined;
+    id: string;
+}

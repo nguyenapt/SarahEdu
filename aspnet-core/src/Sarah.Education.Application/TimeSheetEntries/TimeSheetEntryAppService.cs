@@ -165,69 +165,59 @@ namespace Sarah.Education.TimeSheetEntries
                 catch { }
             }
 
-            var rooms = _roomService.GetRoomByCurrentTenant().Result.Select(x => new RoomTimeSheetDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                StudyTimes = new List<StudyTimeInWeekDto>()
-            }).ToList();
-            var studyTimes = _studyTimeRepository.GetAllListAsync().Result.Select(x=> new StudyTimeInWeekDto
+            var studyTimes = _studyTimeRepository.GetAllListAsync().Result.Select(x => new StudyTimeInWeekDto
             {
                 Id = x.Id,
                 FromHour = x.FromHour,
                 ToHour = x.ToHour,
                 SortOrder = x.SortOrder
-            }).OrderBy(x=>x.SortOrder);
+            }).OrderBy(x => x.SortOrder);
 
-            foreach(var room in rooms)
+            var firstDayOfWeek = input.FromDate.Value.StartOfWeek(DayOfWeek.Monday);
+
+            var weekDays = new List<DateTimeSheetDto>();
+            weekDays.Add(new DateTimeSheetDto
             {
-                var studyTimeTemp = studyTimes.Select(x => new StudyTimeInWeekDto
+                Date = firstDayOfWeek,
+                StudyTimeInWeeks = new List<StudyTimeInWeekDto>()
+            });
+            for (int i = 1; i < 7; i++)
+            {
+                weekDays.Add(new DateTimeSheetDto
+                {
+                    Date = firstDayOfWeek.AddDays(i),
+                    StudyTimeInWeeks = new List<StudyTimeInWeekDto>()
+                });
+            }
+
+            foreach (var weekDay in weekDays)
+            {
+                weekDay.StudyTimeInWeeks = studyTimes.Select(x => new StudyTimeInWeekDto
                 {
                     Id = x.Id,
-                    RoomId = room.Id,
-                    RoomName = room.Name,
+                    WeekDay = weekDay.Date,
                     FromHour = x.FromHour,
                     ToHour = x.ToHour,
                     SortOrder = x.SortOrder
                 }).ToList();
-                room.StudyTimes.AddRange(studyTimeTemp);
             }
-
-            var firstDayOfWeek = input.FromDate.Value.StartOfWeek(DayOfWeek.Monday);
 
             var timeSheets =  Repository.GetAllIncluding(x=>x.Teacher, x=>x.Room, x=> x.TimeSheetEntryStudents, x=>x.CourseSubject, x=>x.CourseSubject.Course, x=>x.CourseSubject.Subject)
                 .WhereIf(teacher !=null, x => x.TeacherId == teacher.Id)
                 .WhereIf(input.FromDate.HasValue, x => x.FromDate >= firstDayOfWeek)
                 .WhereIf(input.FromDate.HasValue, x => x.ToDate <= firstDayOfWeek.AddDays(6)).ToList();
             
-            foreach (var room in rooms)
+            foreach (var weekDay in weekDays)
             {
-                foreach(var studyTime in room.StudyTimes)
+                foreach(var studyTime in weekDay.StudyTimeInWeeks)
                 {
-                    var monData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Mon = ObjectMapper.Map<List<TimeSheetEntryDto>>(monData);
-
-                    var tueData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(1).ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Tue = ObjectMapper.Map<List<TimeSheetEntryDto>>(tueData);
-
-                    var wedData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(2).ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Wed = ObjectMapper.Map<List<TimeSheetEntryDto>>(wedData);
-
-                    var thuData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(3).ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Thu = ObjectMapper.Map<List<TimeSheetEntryDto>>(thuData);
-
-                    var friData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(4).ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Fri = ObjectMapper.Map<List<TimeSheetEntryDto>>(friData);
-
-                    var satData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(5).ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Sat = ObjectMapper.Map<List<TimeSheetEntryDto>>(satData);
-
-                    var sunData = timeSheets.Where(x => x.RoomId == room.Id && x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.AddDays(6).ToString("yyyy-MM-dd")).ToList();
-                    studyTime.Sun = ObjectMapper.Map<List<TimeSheetEntryDto>>(sunData);
+                    var monData = timeSheets.Where(x => x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.ToString("yyyy-MM-dd")).ToList();
+                    studyTime.TimeSheetEntries = ObjectMapper.Map<List<TimeSheetEntryDto>>(monData);
+                   
                 }
             }
 
-            var listResult = rooms.SelectMany(x => x.StudyTimes).ToList();
+            var listResult = weekDays.SelectMany(x => x.StudyTimeInWeeks).ToList();
             return new ListResultDto<StudyTimeInWeekDto>(listResult);
         }
     }

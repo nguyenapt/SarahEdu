@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';  
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { finalize } from 'rxjs/operators';
@@ -6,7 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 
-import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, StudyTimeDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
 import { EditTimeSheetDialogComponent } from './edit-timesheet/edit-timesheet-dialog.component';
@@ -117,14 +118,14 @@ export class TimeSheetComponent extends AppComponentBase
       if (this.events) {
           for (let i = 0; i < this.events.length; i++) {
               let rowData = this.events[i];
-              let representativeName = rowData.roomName;
+              let representativeName = rowData.weekDay;
               
               if (i == 0) {
                   this.rowGroupMetadata[representativeName] = { index: 0, size: 1 };
               }
               else {
                   let previousRowData = this.events[i - 1];
-                  let previousRowGroup = previousRowData.roomName;
+                  let previousRowGroup = previousRowData.weekDay;
                   if (representativeName === previousRowGroup)
                       this.rowGroupMetadata[representativeName].size++;
                   else
@@ -167,5 +168,11 @@ export class TimeSheetComponent extends AppComponentBase
 
   private refreshEvent() {
     this.events = [...this.events];
+  }
+
+  getTimeScheduler(day : Date,studyTime : StudyTimeDto,room : RoomDto) {
+    var dateString = day.toLocaleString().split(',')[0];
+    var event =  this.events.filter(p => p.start.toLocaleString().split(',')[0] == dateString && p.studyTimeId == studyTime.id && p.roomId == room.id)[0];
+    return event;
   }
 }

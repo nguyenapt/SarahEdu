@@ -445,19 +445,11 @@ export interface IRoomTimeSheetDto {
 
 export class StudyTimeDto implements IStudyTimeDto {    
     id: string | undefined;
-    roomId :string | undefined;
-    name: string | undefined;
-    roomName: string | undefined;
-    fromHour: string | undefined;
+    weekDay :string | undefined;
+    fromHour: string | undefined;    
     toHour: string | undefined;
     sortOrder: number | undefined;
-    mon: TimeSheetDto[] | undefined;
-    tue: TimeSheetDto[] | undefined;
-    wed: TimeSheetDto[] | undefined;
-    thu: TimeSheetDto[] | undefined;
-    fri: TimeSheetDto[] | undefined;
-    sat: TimeSheetDto[] | undefined;
-    sun: TimeSheetDto[] | undefined;    
+    timeSheetEntries: TimeSheetDto[] | undefined;    
 
     constructor(data?: IStudyTimeDto) {
         if (data) {
@@ -471,47 +463,15 @@ export class StudyTimeDto implements IStudyTimeDto {
     init(data?: any) {
         if (data) {            
             this.id = data["id"];
-            this.roomId = data["roomId"];
-            this.roomName = data["roomName"];
-            this.name = data["studentId"];
+            this.weekDay = data["weekDay"];
             this.fromHour = data["fromHour"];
             this.toHour = data["toHour"];
             this.sortOrder = data["receptiveAbility"];
-            if (Array.isArray(data["mon"])) {
-                this.mon = [] as any;
-                for (let item of data["mon"])
-                    this.mon.push(TimeSheetDto.fromJS(item));
-            }
-            if (Array.isArray(data["tue"])) {
-                this.tue = [] as any;
-                for (let item of data["tue"])
-                    this.tue.push(TimeSheetDto.fromJS(item));
-            }
-            if (Array.isArray(data["wed"])) {
-                this.wed = [] as any;
-                for (let item of data["wed"])
-                    this.wed.push(TimeSheetDto.fromJS(item));
-            }
-            if (Array.isArray(data["thu"])) {
-                this.thu = [] as any;
-                for (let item of data["thu"])
-                    this.thu.push(TimeSheetDto.fromJS(item));
-            }
-            if (Array.isArray(data["fri"])) {
-                this.fri = [] as any;
-                for (let item of data["fri"])
-                    this.fri.push(TimeSheetDto.fromJS(item));
-            }
-            if (Array.isArray(data["sat"])) {
-                this.sat = [] as any;
-                for (let item of data["sat"])
-                    this.sat.push(TimeSheetDto.fromJS(item));
-            }
-            if (Array.isArray(data["sun"])) {
-                this.sun = [] as any;
-                for (let item of data["sun"])
-                    this.sun.push(TimeSheetDto.fromJS(item));
-            }
+            if (Array.isArray(data["timeSheetEntries"])) {
+                this.timeSheetEntries = [] as any;
+                for (let item of data["timeSheetEntries"])
+                    this.timeSheetEntries.push(TimeSheetDto.fromJS(item));
+            }            
         }
     }
 
@@ -525,47 +485,15 @@ export class StudyTimeDto implements IStudyTimeDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};        
         data["id"] = this.id;
-        data["roomId"] = this.roomId;
-        data["roomName"] = this.roomName;
-        data["name"] = this.name;
+        data["weekDay"] = this.weekDay;
         data["fromHour"] = this.fromHour;
         data["toHour"] = this.toHour;
         data["sortOrder"] = this.sortOrder;
-        if (Array.isArray(this.mon)) {
-            data["mon"] = [];
-            for (let item of this.mon)
-                data["mon"].push(item.toJSON());
-        }
-        if (Array.isArray(this.tue)) {
-            data["tue"] = [];
-            for (let item of this.tue)
-                data["tue"].push(item.toJSON());
-        }
-        if (Array.isArray(this.wed)) {
-            data["wed"] = [];
-            for (let item of this.wed)
-                data["wed"].push(item.toJSON());
-        }
-        if (Array.isArray(this.thu)) {
-            data["thu"] = [];
-            for (let item of this.thu)
-                data["thu"].push(item.toJSON());
-        }
-        if (Array.isArray(this.fri)) {
-            data["fri"] = [];
-            for (let item of this.fri)
-                data["fri"].push(item.toJSON());
-        }
-        if (Array.isArray(this.sat)) {
-            data["sat"] = [];
-            for (let item of this.sat)
-                data["sat"].push(item.toJSON());
-        }
-        if (Array.isArray(this.sun)) {
-            data["sun"] = [];
-            for (let item of this.sun)
-                data["sun"].push(item.toJSON());
-        }
+        if (Array.isArray(this.timeSheetEntries)) {
+            data["timeSheetEntries"] = [];
+            for (let item of this.timeSheetEntries)
+                data["timeSheetEntries"].push(item.toJSON());
+        }        
         return data; 
     }
 
@@ -580,17 +508,9 @@ export class StudyTimeDto implements IStudyTimeDto {
 
 export interface IStudyTimeDto {    
     id: string | undefined;
-    roomId :string | undefined;
-    roomName: string | undefined;
-    name: string | undefined;
-    fromHour: string | undefined;
+    weekDay :string | undefined;
+    fromHour: string | undefined;    
     toHour: string | undefined;
     sortOrder: number | undefined;
-    mon: TimeSheetDto[] | undefined;
-    tue: TimeSheetDto[] | undefined;
-    wed: TimeSheetDto[] | undefined;
-    thu: TimeSheetDto[] | undefined;
-    fri: TimeSheetDto[] | undefined;
-    sat: TimeSheetDto[] | undefined;
-    sun: TimeSheetDto[] | undefined;    
+    timeSheetEntries: TimeSheetDto[] | undefined;   
 }

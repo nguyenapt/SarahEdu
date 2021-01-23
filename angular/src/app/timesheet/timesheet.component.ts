@@ -7,7 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 
-import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, StudyTimeDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, StudyTimeWeekDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
 import { EditTimeSheetDialogComponent } from './edit-timesheet/edit-timesheet-dialog.component';
@@ -20,10 +20,6 @@ import {
 
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
-
-class PagedTimeSheetRequestDto extends PagedRequestDto {
-  fromDate: string | null;
-}
 
 moment.updateLocale('en', {
   week: {
@@ -43,11 +39,7 @@ export class TimeSheetComponent extends AppComponentBase
   selectedRoom : RoomDto;
   view: CalendarView = CalendarView.Month;
 
-  CalendarView = CalendarView;
-
-  viewDate: Date = new Date();
-
-  dragToCreateActive = false;
+  fromDate:string;
 
   events: any[]=[];
   rowGroupMetadata: any;
@@ -65,22 +57,18 @@ export class TimeSheetComponent extends AppComponentBase
     this._roomService.getRoomByCurrentTenant().subscribe((result) => {
       this.rooms = result.items;
       this.selectedRoom = this.rooms[0];
-      const req = new PagedTimeSheetRequestDto();
-      req.fromDate = "2021-01-19";
-      this.list(req, 0, () => {
+      this.fromDate = moment().format('YYYY-MM-DD');
+      this.list(() => {
         this.updateRowGroupMetaData();
       });
     });  
   }
 
 
-  protected list(
-    request: PagedTimeSheetRequestDto, 
-    pageNumber: number, 
-    finishedCallback: Function): void {
+  protected list(finishedCallback: Function): void {
       this._timesheetService
       .getAllTimeSheetForWeek(
-        request.fromDate
+        this.fromDate
       )
       .pipe(
         finalize(() => {
@@ -167,12 +155,18 @@ export class TimeSheetComponent extends AppComponentBase
   }
 
   private refreshEvent() {
-    this.events = [...this.events];
+    this.list(() => {
+      this.updateRowGroupMetaData();
+    });
   }
 
-  getTimeScheduler(day : Date,studyTime : StudyTimeDto,room : RoomDto) {
+  getTimeScheduler(day : Date,studyTimeId,room : RoomDto) {
     var dateString = day.toLocaleString().split(',')[0];
-    var event =  this.events.filter(p => p.start.toLocaleString().split(',')[0] == dateString && p.studyTimeId == studyTime.id && p.roomId == room.id)[0];
-    return event;
+    var event =  this.events.filter(p => p.weekDay == dateString && p.id == studyTimeId)[0]
+    if(event !=null && event.timeSheetEntries.length >0){
+      var scheduler = event.timeSheetEntries.filter(p => p.roomId == room.id)[0]
+      if(scheduler !=null) return scheduler;
+    }      
+    return null;
   }
 }

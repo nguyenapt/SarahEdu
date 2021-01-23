@@ -14,6 +14,7 @@ import { CourseServiceProxy } from './course/course.service.proxy'
 import { StudentServiceProxy } from './student/student.service.proxy'
 import { ProtectorServiceProxy } from './protector/protector.service.proxy'
 import { TimeSheetServiceProxy } from './timesheet/timesheet.service.proxy'
+import { StudyTimeServiceProxy } from './study-time/studytime.service.proxy'
 
 @NgModule({
     providers: [
@@ -32,6 +33,7 @@ import { TimeSheetServiceProxy } from './timesheet/timesheet.service.proxy'
         StudentServiceProxy,
         ProtectorServiceProxy,
         TimeSheetServiceProxy,
+        StudyTimeServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

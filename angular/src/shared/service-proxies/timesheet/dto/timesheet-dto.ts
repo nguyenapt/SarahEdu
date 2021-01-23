@@ -7,8 +7,9 @@ import { EventColor, EventAction } from 'calendar-utils';
 import * as moment from 'moment';
 
 export class CreateTimeSheetDto implements ICreateTimeSheetDto {    
-    start: string;
-    end: string;    
+    fromDate: Date;
+    toDate: Date;    
+    studyTimeId: string | undefined;
     roomId: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
@@ -27,9 +28,10 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
 
     init(data?: any) {
         if (data) {            
-            this.start = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
-            this.end = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
+            this.fromDate = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
+            this.toDate = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
             this.roomId = data["roomId"];
+            this.studyTimeId = data["studyTimeId"];
             this.teacherId = data["teacherId"];
             this.courseSubjectId = data["courseSubjectId"];
             this.status = data["status"];
@@ -51,8 +53,9 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};        
-        data["fromDate"] = this.start;
-        data["toDate"] = this.end;
+        data["fromDate"] = this.fromDate;
+        data["toDate"] = this.toDate;
+        data["studyTimeId"] = this.studyTimeId;
         data["roomId"] = this.roomId;
         data["teacherId"] = this.teacherId;
         data["courseSubjectId"] = this.courseSubjectId;
@@ -76,8 +79,9 @@ export class CreateTimeSheetDto implements ICreateTimeSheetDto {
 
 
 export interface ICreateTimeSheetDto {    
-    start: string;
-    end: string;
+    fromDate: Date;
+    toDate: Date;
+    studyTimeId: string | undefined;
     roomId: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
@@ -87,17 +91,10 @@ export interface ICreateTimeSheetDto {
 }
 
 export class TimeSheetDto implements ITimeSheetDto {
-    id?: string | number;
-    start: Date;
-    end?: Date;
-    title: string;
-    color?: EventColor;
-    actions?: EventAction[];
-    allDay?: boolean;
-    cssClass?: string;
-    resizable?: { beforeStart?: boolean; afterEnd?: boolean; };
-    draggable?: boolean;
-    meta?: any;
+    id: string;
+    fromDate: Date;
+    toDate: Date;
+    studyTimeId?: string | undefined;
     roomId: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
@@ -120,8 +117,9 @@ export class TimeSheetDto implements ITimeSheetDto {
     init(data?: any) {
         if (data) {
             this.id = data["id"];
-            this.start = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
-            this.end = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
+            this.fromDate = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
+            this.toDate = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
+            this.studyTimeId = data["studyTimeId"];
             this.roomId = data["roomId"];
             this.teacherId = data["teacherId"];
             this.courseSubjectId = data["courseSubjectId"];
@@ -137,12 +135,6 @@ export class TimeSheetDto implements ITimeSheetDto {
                     //title += item.student.fullName + "<br />";
                 }
             }
-            var color: any = {
-                    primary: this.teacher.color,
-                    secondary: this.teacher.color,
-                }
-            this.color = color;
-            this.title = title;
         }
     }
 
@@ -156,8 +148,9 @@ export class TimeSheetDto implements ITimeSheetDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["fromDate"] = this.start ? new Date(this.start) : <any>undefined;
-        data["toDate"] = this.start ? new Date(this.start) : <any>undefined;
+        data["fromDate"] = this.fromDate ? new Date(this.fromDate) : <any>undefined;
+        data["toDate"] = this.toDate ? new Date(this.toDate) : <any>undefined;
+        data["studyTimeId"] = this.studyTimeId;
         data["roomId"] = this.roomId;
         data["teacherId"] = this.teacherId;
         data["courseSubjectId"] = this.courseSubjectId;
@@ -181,8 +174,12 @@ export class TimeSheetDto implements ITimeSheetDto {
     }
 }
 
-export interface ITimeSheetDto extends CalendarEvent {
+export interface ITimeSheetDto {
+    id: string | undefined;
+    fromDate : Date | undefined;
+    toDate : Date | undefined;
     roomId?: string | undefined;
+    studyTimeId?: string | undefined;
     teacherId?: string | undefined;
     courseSubjectId?: string | undefined;
     fee?:number | undefined;
@@ -328,7 +325,7 @@ export interface ITimeSheetStudentDto {
 
 export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedResultDto {
     totalCount: number;
-    items: StudyTimeDto[] | undefined;
+    items: StudyTimeWeekDto[] | undefined;
 
     constructor(data?: IRoomTimeSheetDtoPagedResultDto) {
         if (data) {
@@ -345,7 +342,7 @@ export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedRes
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items.push(StudyTimeDto.fromJS(item));
+                    this.items.push(StudyTimeWeekDto.fromJS(item));
             }
         }
     }
@@ -378,14 +375,14 @@ export class RoomTimeSheetDtoPagedResultDto implements IRoomTimeSheetDtoPagedRes
 
 export interface IRoomTimeSheetDtoPagedResultDto {
     totalCount: number;
-    items: StudyTimeDto[] | undefined;
+    items: StudyTimeWeekDto[] | undefined;
 }
 
 
 export class RoomTimeSheetDto implements IRoomTimeSheetDto {    
     id: string | undefined;
     name: string | undefined;
-    studyTimes: StudyTimeDto[] | undefined;
+    studyTimes: StudyTimeWeekDto[] | undefined;
 
     constructor(data?: IRoomTimeSheetDto) {
         if (data) {
@@ -403,7 +400,7 @@ export class RoomTimeSheetDto implements IRoomTimeSheetDto {
             if (Array.isArray(data["studyTimes"])) {
                 this.studyTimes = [] as any;
                 for (let item of data["studyTimes"])
-                    this.studyTimes.push(StudyTimeDto.fromJS(item));
+                    this.studyTimes.push(StudyTimeWeekDto.fromJS(item));
             }
         }
     }
@@ -439,11 +436,11 @@ export class RoomTimeSheetDto implements IRoomTimeSheetDto {
 export interface IRoomTimeSheetDto {    
     id: string | undefined;
     name: string | undefined;
-    studyTimes: StudyTimeDto[] | undefined;
+    studyTimes: StudyTimeWeekDto[] | undefined;
 }
 
 
-export class StudyTimeDto implements IStudyTimeDto {    
+export class StudyTimeWeekDto implements IStudyTimeWeekDto {    
     id: string | undefined;
     weekDay :string | undefined;
     fromHour: string | undefined;    
@@ -451,7 +448,7 @@ export class StudyTimeDto implements IStudyTimeDto {
     sortOrder: number | undefined;
     timeSheetEntries: TimeSheetDto[] | undefined;    
 
-    constructor(data?: IStudyTimeDto) {
+    constructor(data?: IStudyTimeWeekDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -475,9 +472,9 @@ export class StudyTimeDto implements IStudyTimeDto {
         }
     }
 
-    static fromJS(data: any): StudyTimeDto {
+    static fromJS(data: any): StudyTimeWeekDto {
         data = typeof data === 'object' ? data : {};
-        let result = new StudyTimeDto();
+        let result = new StudyTimeWeekDto();
         result.init(data);
         return result;
     }
@@ -497,16 +494,15 @@ export class StudyTimeDto implements IStudyTimeDto {
         return data; 
     }
 
-    clone(): StudyTimeDto {
+    clone(): StudyTimeWeekDto {
         const json = this.toJSON();
-        let result = new StudyTimeDto();
+        let result = new StudyTimeWeekDto();
         result.init(json);
         return result;
     }
 }
 
-
-export interface IStudyTimeDto {    
+export interface IStudyTimeWeekDto {    
     id: string | undefined;
     weekDay :string | undefined;
     fromHour: string | undefined;    

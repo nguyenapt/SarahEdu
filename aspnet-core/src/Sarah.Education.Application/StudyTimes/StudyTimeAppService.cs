@@ -16,6 +16,7 @@ using Abp.Extensions;
 using Abp.Collections.Extensions;
 using Abp.Domain.Uow;
 using Sarah.Education.StudyTimes.Dto;
+using Abp.Application.Services.Dto;
 
 namespace Sarah.Education.StudyTimes
 {
@@ -27,6 +28,12 @@ namespace Sarah.Education.StudyTimes
         {
             _studytimeRepository = studytimeRepository;
             _unitOfWorkManager = unitOfWorkManager;
+        }
+
+        public async Task<ListResultDto<StudyTimeDto>> GetStudyTimes()
+        {
+            var studyTimes = await _studytimeRepository.GetAllListAsync();
+            return new ListResultDto<StudyTimeDto>(ObjectMapper.Map<List<StudyTimeDto>>(studyTimes));
         }
     }
 }

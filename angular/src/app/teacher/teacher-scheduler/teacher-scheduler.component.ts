@@ -78,14 +78,7 @@ export class TeacherSchedulerComponent extends AppComponentBase {
       )
       .subscribe((result: TimeSheetDtoPagedResultDto) => {
         var self = this;
-        this.timeSchedulers = result.items;
-        this.timeSchedulers.forEach(function (event) {          
-          event.resizable = {
-            beforeStart: true,
-            afterEnd: true,
-          };
-          event.draggable = true;
-        }); 
+        this.timeSchedulers = result.items; 
       });
   }
 

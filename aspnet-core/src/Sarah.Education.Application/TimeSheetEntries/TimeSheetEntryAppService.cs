@@ -49,7 +49,7 @@ namespace Sarah.Education.TimeSheetEntries
         {            
             CheckCreatePermission();
 
-            var isAvailable = await CheckAvailable(input.RoomId, input.FromDate, input.ToDate);
+            var isAvailable = await CheckAvailable(input.RoomId, input.FromDate, input.StudyTimeId);
             if (!isAvailable){
                 
                 throw new UserFriendlyException("Error","The room is not available");
@@ -69,9 +69,9 @@ namespace Sarah.Education.TimeSheetEntries
             return MapToEntityDto(timeSheet);
         }
 
-        protected async Task<bool> CheckAvailable(Guid roomId, DateTime fromDate, DateTime toDate)
+        protected async Task<bool> CheckAvailable(Guid roomId, DateTime fromDate, Guid studytimeId)
         {
-            var timeScheduled = await Repository.FirstOrDefaultAsync(x => x.RoomId == roomId && ((x.FromDate <= fromDate && x.ToDate >= fromDate) || (x.FromDate <= toDate && x.ToDate >= toDate) || (x.FromDate >= fromDate && x.ToDate <= toDate) || (x.FromDate>= fromDate && x.ToDate >= toDate)));
+            var timeScheduled = await Repository.FirstOrDefaultAsync(x => x.RoomId == roomId && (x.FromDate.Year == fromDate.Year && x.FromDate.Month == fromDate.Month && x.FromDate.Day == fromDate.Day) && x.StudyTimeId == studytimeId);
             if(timeScheduled != null){
                 return false;
             }
@@ -206,14 +206,39 @@ namespace Sarah.Education.TimeSheetEntries
                 .WhereIf(teacher !=null, x => x.TeacherId == teacher.Id)
                 .WhereIf(input.FromDate.HasValue, x => x.FromDate >= firstDayOfWeek)
                 .WhereIf(input.FromDate.HasValue, x => x.ToDate <= firstDayOfWeek.AddDays(6)).ToList();
-            
+
+            var timesheetEntries = timeSheets.Select(x => new TimeSheetEntryDto()
+            {
+                CourseSubject = ObjectMapper.Map<Courses.Dto.CourseSubjectDto>(x.CourseSubject),
+                CourseSubjectId = x.CourseSubjectId,
+                FromDate = x.FromDate,     
+                StudyTimeId = x.StudyTimeId,
+                Id = x.Id,
+                RoomId = x.RoomId,
+                RoomName = x.Room.Name,
+                Status = x.Status,
+                Teacher = ObjectMapper.Map<TeacherDto>(x.Teacher),
+                TeacherId = x.TeacherId,
+                ToDate = x.ToDate,
+                TimeSheetEntryStudents = x.TimeSheetEntryStudents.Select(k => new TimeSheetEntryStudentDto()
+                {
+                    Attitude = k.Attitude,
+                    Description = k.Description,
+                    Fee = k.Fee,
+                    ReceptiveAbility = k.ReceptiveAbility,
+                    Id = k.Id,
+                    StudentId = k.StudentId,
+                    TimeSheetEntryId = k.TimeSheetEntryId,
+                    Student = ObjectMapper.Map<StudentDto>(_studentRepository.FirstOrDefault(st => st.Id == k.StudentId))
+                }).ToArray()
+            }).ToList();
+
             foreach (var weekDay in weekDays)
             {
                 foreach(var studyTime in weekDay.StudyTimeInWeeks)
                 {
-                    var monData = timeSheets.Where(x => x.StudyTimeId == studyTime.Id && x.FromDate.ToString("yyyy-MM-dd") == firstDayOfWeek.ToString("yyyy-MM-dd")).ToList();
-                    studyTime.TimeSheetEntries = ObjectMapper.Map<List<TimeSheetEntryDto>>(monData);
-                   
+                    var timeSheetData = timesheetEntries.Where(x => x.StudyTimeId == studyTime.Id && x.FromDate.ToString("dd-MM-yyyy") == weekDay.Date.ToString("dd-MM-yyyy")).ToList();
+                    studyTime.TimeSheetEntries = timeSheetData;
                 }
             }
 

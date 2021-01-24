@@ -19,7 +19,7 @@
   <section class="content px-2">
     <div class="container-fluid">
       <div class="row" *ngIf="events">
-        <p-table [value]="events" sortField="weekDay" sortMode="single" (onSort)="onSort()" styleClass="p-datatable-gridlines" [scrollable]="true" scrollHeight="650px">
+        <p-table [value]="events" sortField="weekDay" sortMode="single" (onSort)="onSort()" styleClass="p-datatable-gridlines" [scrollable]="true" scrollHeight="650px" [lazy]="true" [loading]="loading" >
           <ng-template pTemplate="header">
               <tr>
                   <th style="width: 150px;"></th>
@@ -48,12 +48,32 @@
                       </ng-container>
                       <ng-template #memberTemplate let-scheduler="o">
                         <ng-container *ngIf="scheduler">
-                          <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100,'padding.px':1}">
-                            <div style="border-bottom: 1px solid white;">{{scheduler.teacher.fullName}}</div>                          
-                            <div style="border-bottom: 1px solid white;">{{scheduler.courseSubject.courseName}} - {{scheduler.courseSubject.subjectName}}</div>
-                            <div *ngFor="let studentTime of scheduler.timeSheetStudents">
-                              {{studentTime.student.fullName}}
-                            </div>
+                          <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100,'padding.px':1,'cursor':'pointer','position':'relative'}">
+                            <div (click)="editScheduler(scheduler);">
+                              <span style="float: left;">{{scheduler.teacher.fullName}}</span>
+                              <span style="float: right">
+                                <i class="fas fa-edit"></i>
+                              </span>
+                            </div>                          
+                            <div style="border-bottom: 1px solid white;clear: both;">{{scheduler.courseSubject.courseName}} - {{scheduler.courseSubject.subjectName}}</div>
+                            <ng-template *ngIf="scheduler.timeSheetStudents.length < 4;then showBlock; else notShowBlock">
+                            </ng-template>
+                            <ng-template #showBlock>
+                              <div *ngFor="let studentTime of scheduler.timeSheetStudents;index as i" style="font-size: 9px;">                                
+                                  {{studentTime.student.fullName}}
+                              </div>
+                            </ng-template>
+                            <ng-template #notShowBlock>
+                              <div *ngFor="let studentTime of scheduler.timeSheetStudents;index as i" style="font-size: 9px;">  
+                                <div *ngIf="i<4">
+                                  {{studentTime.student.fullName}}
+                                </div>
+                              </div> 
+                              ...                             
+                            </ng-template>
+                            <span style="position:absolute; bottom:2px; right:2px;">
+                              <i class="fas fa-user-friends" (click)="setSelected(scheduler.timeSheetStudents);op.toggle($event)"></i>                              
+                            </span>
                           </div>
                         </ng-container>
                       </ng-template>
@@ -66,3 +86,11 @@
     </div>
   </section>
 </div>
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '450px'}">
+  <ng-template pTemplate>
+    <div *ngFor="let studentTime of students;index as i" style="font-size: 9px;">  
+        {{studentTime.student.fullName}}
+    </div>
+  </ng-template>
+</p-overlayPanel>

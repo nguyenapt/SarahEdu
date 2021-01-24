@@ -33,7 +33,7 @@ namespace Sarah.Education.StudyTimes
         public async Task<ListResultDto<StudyTimeDto>> GetStudyTimes()
         {
             var studyTimes = await _studytimeRepository.GetAllListAsync();
-            return new ListResultDto<StudyTimeDto>(ObjectMapper.Map<List<StudyTimeDto>>(studyTimes));
+            return new ListResultDto<StudyTimeDto>(ObjectMapper.Map<List<StudyTimeDto>>(studyTimes.OrderBy(x => x.SortOrder)));
         }
     }
 }

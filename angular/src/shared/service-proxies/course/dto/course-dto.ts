@@ -386,7 +386,9 @@ export interface ICourseSubjectDtoListResultDto {
 
 export class CourseSubjectDto implements ICourseSubjectDto {
     courseName: string | undefined;
-    subjectName: string | undefined;    
+    subjectName: string | undefined;  
+    courseId : string | undefined;  
+    subjectId : string | undefined;    
     id: string;
 
     constructor(data?: ICourseSubjectDto) {
@@ -402,6 +404,8 @@ export class CourseSubjectDto implements ICourseSubjectDto {
         if (data) {
             this.courseName = data["courseName"];
             this.subjectName = data["subjectName"];            
+            this.courseId = data["courseId"];    
+            this.subjectId = data["subjectId"];    
             this.id = data["id"];
         }
     }
@@ -416,7 +420,9 @@ export class CourseSubjectDto implements ICourseSubjectDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["courseName"] = this.courseName;
-        data["subjectName"] = this.subjectName;        
+        data["subjectName"] = this.subjectName;     
+        data["courseId"] = this.courseId;
+        data["subjectId"] = this.subjectId;       
         data["id"] = this.id;
         return data; 
     }
@@ -431,7 +437,9 @@ export class CourseSubjectDto implements ICourseSubjectDto {
 
 export interface ICourseSubjectDto {
     courseName: string | undefined;
-    subjectName: string | undefined;    
+    subjectName: string | undefined;  
+    courseId : string | undefined;  
+    subjectId : string | undefined;  
     id: string;
 }
 

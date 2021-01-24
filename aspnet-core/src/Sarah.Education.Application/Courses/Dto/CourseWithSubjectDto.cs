@@ -10,6 +10,7 @@ namespace Sarah.Education.Courses.Dto
 {
     public class CourseWithSubjectDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 

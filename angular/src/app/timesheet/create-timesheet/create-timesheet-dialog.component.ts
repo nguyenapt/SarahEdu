@@ -53,8 +53,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
 
   rooms:RoomDto[]=[];
   selectedRoom: RoomDto;
-
-
+  
   startHour = '00:00';
   endHour = '00:00';
   isSingle = false;

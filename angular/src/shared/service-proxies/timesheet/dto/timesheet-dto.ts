@@ -103,7 +103,7 @@ export class TimeSheetDto implements ITimeSheetDto {
     teacher?: TeacherDto | undefined;
     courseSubject?: CourseSubjectDto | undefined;
     timeSheetStudents?: TimeSheetStudentDto[] | undefined;
-
+    isSingle: boolean | undefined;
     constructor(data?: ITimeSheetDto) {
         if (data) {
             for (var property in data) {
@@ -127,6 +127,7 @@ export class TimeSheetDto implements ITimeSheetDto {
             this.status = data["status"];
             this.teacher = data["teacher"];
             this.courseSubject = data["courseSubject"];
+            this.isSingle = data["isSingle"];
             var title = data["teacher"].fullName  + " - " + data["courseSubject"].courseName + " - " + data["courseSubject"].subjectName+ "<br />";
             if (Array.isArray(data["timeSheetEntryStudents"])) {
                 this.timeSheetStudents = [] as any;
@@ -158,6 +159,7 @@ export class TimeSheetDto implements ITimeSheetDto {
         data["status"] = this.status;     
         data["teacher"] = this.teacher;
         data["courseSubject"] = this.courseSubject;
+        data["isSingle"] = this.isSingle;
         if (Array.isArray(this.timeSheetStudents)) {
             data["timeSheetEntryStudents"] = [];
             for (let item of this.timeSheetStudents)
@@ -186,6 +188,7 @@ export interface ITimeSheetDto {
     status?:number | undefined;
     teacher?: TeacherDto | undefined;
     courseSubject?: CourseSubjectDto | undefined;
+    isSingle: boolean | undefined;
     timeSheetStudents?: TimeSheetStudentDto[] | undefined;
 }
 

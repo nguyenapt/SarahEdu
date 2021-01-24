@@ -102,6 +102,7 @@ namespace Sarah.Education.Courses
 
             return courses.Select(x => new CourseWithSubjectDto()
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 CourseSubjects = x.CourseSubjects.Select(k => new CourseSubjectDto()

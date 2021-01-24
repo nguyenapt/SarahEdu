@@ -13,32 +13,35 @@
       <label class="col-md-3 col-form-label" for="startDate">
         Start Date
       </label>
-      <div class="col-md-6">
+      <div class="col-md-3">
         <input class="form-control" 
           type="date" 
           name="startDate" 
-          [(ngModel)]="timeSheet.start" 
+          required
+          [(ngModel)]="timeSheetDate" 
         />
       </div>
-      <div class="col-md-3">
-        <input placeholder="00:00" class="form-control"  [ngxTimepicker]="fullTimeStart" [format]="24"  readonly>
-        <ngx-material-timepicker #fullTimeStart></ngx-material-timepicker>
+      <label class="col-md-2 col-form-label">
+        Room
+      </label>
+      <div class="col-md-4">
+        <p-dropdown required [options]="rooms" [style]="{'width':'100%'}" [(ngModel)]="selectedRoom" name="rooms" optionLabel="name" placeholder="Select a Room"></p-dropdown>        
       </div>
     </div>
 
     <div class="form-group row ">
-      <label class="col-md-3 col-form-label" for="endDate">
-        End Date
-      </label>
-      <div class="col-md-6">
-        <input class="form-control" 
-          type="date" 
-          name="endDate" 
-          [(ngModel)]="timeSheet.end" 
-        />
+      <div class="col-md-3">
+
       </div>
       <div class="col-md-3">
-        <input placeholder="00:00" class="form-control" [ngxTimepicker]="fullTimeEnd" [format]="24"  readonly>
+        <p-dropdown required [options]="studyTimes" [style]="{'width':'100%'}" [(ngModel)]="selectedStudyTime" name="studyTimes" placeholder="Select a Time" optionLabel="name" (onChange)="changeStudyTime($event)"></p-dropdown>        
+      </div>
+      <div class="col-md-3">
+        <input placeholder="00:00" class="form-control" [(ngModel)]="startHour" name="startHour" [ngxTimepicker]="fullTimeStart" [format]="24" >
+        <ngx-material-timepicker #fullTimeStart></ngx-material-timepicker>
+      </div>
+      <div class="col-md-3">
+        <input placeholder="00:00" class="form-control" [(ngModel)]="endHour" name="endHour" [ngxTimepicker]="fullTimeEnd" [format]="24" >
         <ngx-material-timepicker #fullTimeEnd></ngx-material-timepicker>
       </div>
     </div>
@@ -48,28 +51,30 @@
         Course
       </label>
       <div class="col-md-3">
-        <ng-select [items]="courses"
-             bindLabel="name"
-             name="select_course"
-             placeholder="Select course"
-             appendTo="body"
-             multiple="false"
-             [(ngModel)]="selectCourse">
-        </ng-select>
+        <p-dropdown [options]="courses" autoWidth="false" [style]="{'width':'100%'}" name="courses" [(ngModel)]="selectCourse" (onChange)="changeCourse($event)" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a course">          
+        </p-dropdown>
       </div>
-
-      <label class="col-md-3 col-form-label">
+      
+      <label class="col-md-2 col-form-label">
         Subject
       </label>
-      <div class="col-md-3">
-        <ng-select [items]="courseSubjects"
-             bindLabel="name"
-             name="select_courseSubject"
-             placeholder="Select Subject"
-             appendTo="body"
-             multiple="false"
-             [(ngModel)]="selectSubject">
-        </ng-select>
+      <div class="col-md-4">
+        <p-dropdown required [options]="courseSubjects" autoWidth="false" [style]="{'width':'100%'}" name="courseSubjects" [(ngModel)]="selectSubject" placeholder="Select a subject" optionLabel="subjectName" [showClear]="true"></p-dropdown>        
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-3 offset-md-3">
+        <div class="p-field-checkbox" [style]="{'padding-top':'10px'}">
+          <p-checkbox [(ngModel)]="isSingle" binary="true" inputId="isSingle" name="isSingle" (onChange)="changeFee()"></p-checkbox>
+          <label for="isSingle">Is learn 1-1</label>
+        </div>
+      </div>
+      <label class="col-md-2 col-form-label">
+        Fee
+      </label>
+      <div class="col-md-4">
+        <p-inputNumber [(ngModel)]="fee" [style]="{'width':'100%'}" name="courseFee"></p-inputNumber>
       </div>
     </div>
 
@@ -78,36 +83,78 @@
         Teacher
       </label>
       <div class="col-md-9">
-        <ng-select [items]="teachers"
-             bindLabel="fullName"
-             name="select_teacher"
-             placeholder="Select Teacher"
-             appendTo="body"
-             multiple="false"
-             [(ngModel)]="selectedTeacher">
-        </ng-select>
+        <p-dropdown required [options]="teachers" autoWidth="false" [style]="{'width':'100%'}" name="teachers" [(ngModel)]="selectedTeacher" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a teacher">          
+        </p-dropdown>
       </div>
-    </div>
+    </div>    
 
-    <div class="form-group row ">
-      <label class="col-md-3 col-form-label">
-        Students
-      </label>
-      <div class="col-md-9">
-        <ng-select [items]="students"
-             bindLabel="fullName"
-             name="select_student"
-             placeholder="Select Students"
-             appendTo="body"
-             multiple="true"
-             [(ngModel)]="selectedStudents">
-        </ng-select>
+    <div class="form-group row">
+      <div class="col-md-3">
+        <label class="col-form-label" for="description">
+          Student
+        </label>
       </div>
+      <div class="col-md-9" *ngIf="isSingle; else isMultiple">
+        <p-dropdown [options]="students" autoWidth="false" [style]="{'width':'100%'}" name="students" [(ngModel)]="selectedStudent" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a student">          
+        </p-dropdown>          
+      </div>
+      <ng-template #isMultiple>
+        <div class="col-md-8">
+          <p-dropdown [options]="students" autoWidth="false" [style]="{'width':'100%'}" name="students" [(ngModel)]="selectedStudent" optionLabel="fullName" [filter]="true" filterBy="fullName" [showClear]="true" placeholder="Select a student">          
+          </p-dropdown>          
+        </div>
+        <div class="col-md-1 text-left">
+          <button
+            type="button"
+            class="btn btn-sm bg-success btn-full-width-height"
+            (click)="addStudent(selectedStudent)"
+          >
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </ng-template>      
+    </div>
+    
+    <div class="form-group row" style="overflow:auto;max-height: 250px;" *ngIf="!isSingle">
+      <table class="table table-hover text-nowrap">
+        <thead class="bg-light">
+          <tr>                  
+            <th>{{ "FullName" | localize }}</th>
+            <th style="width: 100px;">Date of birth</th>
+            <th style="width: 100px;">{{ "SchoolName" | localize }}</th>
+            <th>Fee</th>
+            <th style="width: 50px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let student of selectedStudents                  
+            "
+          >                  
+            <td>{{ student.student.fullName }}</td>
+            <td>{{ student.student.dateOfBirth | date :'dd-MM-yyyy'}}</td>
+            <td>{{ student.student.schoolName }}</td>
+            <td>        
+              <p-inputNumber [(ngModel)]="student.fee" styleClass="inputOnDataTable" name="studentFee"></p-inputNumber>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-sm bg-danger mx-2"
+                (click)="removeStudent(student)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"
-    [saveDisabled]="!editTimeSheetForm.form.valid || saving"
+    [saveDisabled]="!editTimeSheetForm.form.valid || selectedStudents.length == 0 || saving"
     (onCancelClick)="bsModalRef.hide()"
   ></abp-modal-footer>
 </form>

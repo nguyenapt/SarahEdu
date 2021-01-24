@@ -7,7 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TimeSheetServiceProxy } from '@shared/service-proxies/timesheet/timesheet.service.proxy';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 
-import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, StudyTimeWeekDto, TimeSheetDto, TimeSheetDtoPagedResultDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
+import { ITimeSheetDto, RoomTimeSheetDtoPagedResultDto, StudyTimeWeekDto, TimeSheetDto, TimeSheetDtoPagedResultDto, TimeSheetStudentDto } from '@shared/service-proxies/timesheet/dto/timesheet-dto';
 
 import { CreateTimeSheetDialogComponent } from './create-timesheet/create-timesheet-dialog.component';
 import { EditTimeSheetDialogComponent } from './edit-timesheet/edit-timesheet-dialog.component';
@@ -43,6 +43,8 @@ export class TimeSheetComponent extends AppComponentBase
 
   events: any[]=[];
   rowGroupMetadata: any;
+  loading: boolean;
+  students: TimeSheetStudentDto[]
 
   constructor(
     injector: Injector,
@@ -54,6 +56,7 @@ export class TimeSheetComponent extends AppComponentBase
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this._roomService.getRoomByCurrentTenant().subscribe((result) => {
       this.rooms = result.items;
       this.selectedRoom = this.rooms[0];
@@ -61,12 +64,13 @@ export class TimeSheetComponent extends AppComponentBase
       this.list(() => {
         this.updateRowGroupMetaData();
       });
-    });  
+    });      
   }
 
 
   protected list(finishedCallback: Function): void {
-      this._timesheetService
+    this.loading = true;
+    this._timesheetService
       .getAllTimeSheetForWeek(
         this.fromDate
       )
@@ -92,7 +96,16 @@ export class TimeSheetComponent extends AppComponentBase
     this.showCreateOrEditTimeSheetDialog(new TimeSheetDto);
   }
 
-  deleteEvent(eventToDelete: ITimeSheetDto) {
+  editScheduler(timeSheet:TimeSheetDto): void {
+    this.showCreateOrEditTimeSheetDialog(timeSheet);
+  }
+
+  setSelected(students: TimeSheetStudentDto[]){
+    this.students = students;
+  }
+
+
+  deleteScheduler(eventToDelete: ITimeSheetDto) {
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
@@ -121,6 +134,7 @@ export class TimeSheetComponent extends AppComponentBase
               }
           }
       }
+      this.loading = false;
   }
 
   private showCreateOrEditTimeSheetDialog(timeSheet?: ITimeSheetDto): void {
@@ -129,10 +143,7 @@ export class TimeSheetComponent extends AppComponentBase
       createOrEditTimeSheetDialog = this._modalService.show(
         CreateTimeSheetDialogComponent,
         {
-          class: 'modal-xlg',
-          initialState: {
-            roomId: this.selectedRoom.id,
-          },
+          class: 'modal-xlg'          
         }
       );
     } 
@@ -141,8 +152,7 @@ export class TimeSheetComponent extends AppComponentBase
         EditTimeSheetDialogComponent,
         {
           class: 'modal-xlg',
-          initialState: {
-            roomId: this.selectedRoom.id,
+          initialState: {            
             timeSheet: timeSheet,
           },
         }

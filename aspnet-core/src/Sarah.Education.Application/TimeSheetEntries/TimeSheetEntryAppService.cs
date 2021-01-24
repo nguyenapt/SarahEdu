@@ -49,11 +49,17 @@ namespace Sarah.Education.TimeSheetEntries
         {
             CheckCreatePermission();
 
-            var isAvailable = await CheckAvailable(input.RoomId, input.FromDate, input.StudyTimeId);
+            var isAvailable = await CheckAvailable(input.RoomId, input.FromDate, input.StudyTimeId,Guid.Empty);
             if (!isAvailable)
             {
+                throw new UserFriendlyException("Error", "The room is not available!!!");
+            }
 
-                throw new UserFriendlyException("Error", "The room is not available");
+            isAvailable = await CheckTeacherAvailable(input.TeacherId, input.FromDate, input.StudyTimeId, Guid.Empty);
+            if (!isAvailable)
+            {
+                var teacher = _teacherRepository.Get(input.TeacherId);
+                throw new UserFriendlyException("Error", $"{teacher.FullName} is not available!!!");
             }
 
             var timeSheet = ObjectMapper.Map<TimeSheetEntry>(input);
@@ -77,6 +83,19 @@ namespace Sarah.Education.TimeSheetEntries
             var timeSheetEntry = _timeSheetEntryRepository.FirstOrDefault(x => x.Id == input.Id);
 
             MapToEntity(input, timeSheetEntry);
+
+            var isAvailable = await CheckAvailable(input.RoomId, input.FromDate, input.StudyTimeId, input.Id);
+            if (!isAvailable)
+            {
+                throw new UserFriendlyException("Error", "The room is not available!!!");
+            }
+
+            isAvailable = await CheckTeacherAvailable(input.TeacherId, input.FromDate, input.StudyTimeId, input.Id);
+            if (!isAvailable)
+            {
+                var teacher = _teacherRepository.Get(input.TeacherId);
+                throw new UserFriendlyException("Error", $"{teacher.FullName} is not available!!!");
+            }
 
             await _timeSheetEntryRepository.UpdateAsync(timeSheetEntry);
 
@@ -103,14 +122,28 @@ namespace Sarah.Education.TimeSheetEntries
             }
         }
 
-        protected async Task<bool> CheckAvailable(Guid roomId, DateTime fromDate, Guid studytimeId)
+        protected Task<bool> CheckAvailable(Guid roomId, DateTime fromDate, Guid studytimeId, Guid timeSheetId)
         {
-            var timeScheduled = await Repository.FirstOrDefaultAsync(x => x.RoomId == roomId && (x.FromDate.Year == fromDate.Year && x.FromDate.Month == fromDate.Month && x.FromDate.Day == fromDate.Day) && x.StudyTimeId == studytimeId);
+            var timeScheduled = Repository.GetAllIncluding()
+                .Where(x => x.RoomId == roomId && (x.FromDate.Year == fromDate.Year && x.FromDate.Month == fromDate.Month && x.FromDate.Day == fromDate.Day) && x.StudyTimeId == studytimeId)
+                .WhereIf(timeSheetId != Guid.Empty, x => x.Id != timeSheetId).FirstOrDefault();
             if (timeScheduled != null)
             {
-                return false;
+                return Task.FromResult(false);
             }
-            return true;
+            return Task.FromResult(true);
+        }
+
+        protected Task<bool> CheckTeacherAvailable(Guid teacherId, DateTime fromDate, Guid studytimeId, Guid timeSheetId)
+        {
+            var timeScheduled = Repository.GetAllIncluding()
+                .Where(x => x.TeacherId == teacherId && (x.FromDate.Year == fromDate.Year && x.FromDate.Month == fromDate.Month && x.FromDate.Day == fromDate.Day) && x.StudyTimeId == studytimeId)
+                .WhereIf(timeSheetId != Guid.Empty, x => x.Id != timeSheetId).FirstOrDefault();
+            if (timeScheduled != null)
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
         }
 
         public async void CreateTimeSheetStudents(Guid timeSheetId, TimeSheetEntryStudentDto[] timeSheetEntryStudents)

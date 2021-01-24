@@ -39,6 +39,7 @@ export class TimeSheetComponent extends AppComponentBase
   selectedRoom : RoomDto;
   view: CalendarView = CalendarView.Month;
 
+  currentDate: string;
   fromDate:string;
 
   events: any[]=[];
@@ -60,19 +61,20 @@ export class TimeSheetComponent extends AppComponentBase
     this._roomService.getRoomByCurrentTenant().subscribe((result) => {
       this.rooms = result.items;
       this.selectedRoom = this.rooms[0];
+      this.currentDate = moment().format('YYYY-MM-DD');
       this.fromDate = moment().format('YYYY-MM-DD');
-      this.list(() => {
+      this.list(this.fromDate, () => {
         this.updateRowGroupMetaData();
       });
     });      
   }
 
 
-  protected list(finishedCallback: Function): void {
+  protected list(fromDate, finishedCallback: Function): void {
     this.loading = true;
     this._timesheetService
       .getAllTimeSheetForWeek(
-        this.fromDate
+        fromDate
       )
       .pipe(
         finalize(() => {
@@ -111,6 +113,25 @@ export class TimeSheetComponent extends AppComponentBase
 
   onSort() {
     this.updateRowGroupMetaData();
+  }
+
+  previousWeek(){
+    this.fromDate = moment(this.fromDate).add(-7,"days").format('YYYY-MM-DD');
+    this.list(this.fromDate, () => {
+      this.updateRowGroupMetaData();
+    });
+  }
+  currentWeek(){
+    this.fromDate = this.currentDate;
+    this.list(this.fromDate, () => {
+      this.updateRowGroupMetaData();
+    });
+  }
+  nextWeek(){    
+    this.fromDate = moment(this.fromDate).add(7,"days").format('YYYY-MM-DD');
+    this.list(this.fromDate, () => {
+      this.updateRowGroupMetaData();
+    });
   }
 
   updateRowGroupMetaData() {
@@ -165,7 +186,7 @@ export class TimeSheetComponent extends AppComponentBase
   }
 
   private refreshEvent() {
-    this.list(() => {
+    this.list(this.fromDate, () => {
       this.updateRowGroupMetaData();
     });
   }

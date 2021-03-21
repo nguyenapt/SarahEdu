@@ -14,6 +14,7 @@ namespace Sarah.Education.Entities
         {
             ProtectorStudents = new HashSet<ProtectorStudent>();
             StudentCourseSubjects = new HashSet<StudentCourseSubject>();
+            StudentPayments = new HashSet<StudentPayment>();
         }
 
         [Required]
@@ -41,5 +42,7 @@ namespace Sarah.Education.Entities
         public virtual ICollection<ProtectorStudent> ProtectorStudents { get; set; }
 
         public virtual ICollection<StudentCourseSubject> StudentCourseSubjects { get; set; }
+
+        public virtual ICollection<StudentPayment> StudentPayments { get; set; }
     }
 }

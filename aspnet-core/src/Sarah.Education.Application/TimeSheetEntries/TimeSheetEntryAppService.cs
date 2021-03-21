@@ -158,7 +158,6 @@ namespace Sarah.Education.TimeSheetEntries
                     Attitude = timeSheetStudent.Attitude,
                     ReceptiveAbility = timeSheetStudent.ReceptiveAbility,
                     Description = timeSheetStudent.Description,
-                    isPaid = timeSheetStudent.isPaid,
                     Fee = timeSheetStudent.Fee
                 };
                 await _timeSheetEntryStudentRepository.InsertAsync(obj);

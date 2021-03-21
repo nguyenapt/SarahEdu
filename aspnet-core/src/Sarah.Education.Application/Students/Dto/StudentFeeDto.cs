@@ -16,6 +16,5 @@ namespace Sarah.Education.Students.Dto
         public  string CourseName { get; set; }
         public string SubjectName { get; set; }
         public string TeacherName { get; set; }
-        public bool? IsPaid { get; set; }
     }
 }

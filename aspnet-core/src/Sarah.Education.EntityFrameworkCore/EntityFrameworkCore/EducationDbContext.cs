@@ -27,6 +27,7 @@ namespace Sarah.Education.EntityFrameworkCore
         public DbSet<TimeSheetEntryStudent> TimeSheetEntryStudents { get; set; }
         public DbSet<ProtectorStudentComment> ProtectorStudentComments { get; set; }
         public DbSet<StudyTime> StudyTimes { get; set; }
+        public DbSet<StudentPayment> StudentPayments { get; set; }
 
         public EducationDbContext(DbContextOptions<EducationDbContext> options)
             : base(options)

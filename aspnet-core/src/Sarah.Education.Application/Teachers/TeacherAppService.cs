@@ -68,13 +68,12 @@ namespace Sarah.Education.Teachers
                 CourseName = d.CourseSubject.Course.Name,
                 RoomName = d.Room.Name,
                 StartDate = d.FromDate,
-                Paid = d.TimeSheetEntryStudents.Where(x=>x.isPaid == true).Sum(x=>x.Fee),
                 EndDate = d.ToDate,
                 Fee = d.TimeSheetEntryStudents.Sum(x=>x.Fee),
                 Hour = (d.ToDate.Subtract(d.FromDate)).TotalHours
             }).ToList();
 
-            return new PagedTeacherProductivityDto() { TotalCount = list.Count, TotalFee = list.Sum(x => x.TimeSheetEntryStudents.Sum(k=>k.Fee)), TotalUnpaid = list.Sum(x => x.TimeSheetEntryStudents.Where(k=>k.isPaid != true).Sum(k => k.Fee)), TotalHour = list.Sum(x => (x.ToDate.Subtract(x.FromDate)).TotalHours), Items = returnList };
+            return new PagedTeacherProductivityDto() { TotalCount = list.Count, TotalFee = list.Sum(x => x.TimeSheetEntryStudents.Sum(k=>k.Fee)), TotalHour = list.Sum(x => (x.ToDate.Subtract(x.FromDate)).TotalHours), Items = returnList };
         }
     }
 }

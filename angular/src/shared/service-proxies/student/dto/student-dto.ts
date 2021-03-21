@@ -251,7 +251,6 @@ export class StudentFeeDto implements IStudentFeeDto {
     courseName: string | undefined;
     subjectName: string | undefined;
     teacherName: string | undefined;
-    isPaid: boolean | undefined;
 
     constructor(data?: IStudentFeeDto) {
         if (data) {
@@ -272,7 +271,6 @@ export class StudentFeeDto implements IStudentFeeDto {
             this.courseName = data["courseName"];
             this.subjectName = data["subjectName"];
             this.teacherName = data["teacherName"];
-            this.isPaid = data["isPaid"];
         }
     }
 
@@ -293,7 +291,6 @@ export class StudentFeeDto implements IStudentFeeDto {
         data["courseName"] = this.courseName;
         data["subjectName"] = this.subjectName;
         data["teacherName"] = this.teacherName;
-        data["isPaid"] = this.isPaid;
         return data; 
     }
 
@@ -315,7 +312,6 @@ export interface IStudentFeeDto {
     courseName: string | undefined;
     subjectName: string | undefined;
     teacherName: string | undefined;
-    isPaid: boolean | undefined;
 }
 
 export class StudentFeeListResultDto implements IStudentFeeListResultDto {

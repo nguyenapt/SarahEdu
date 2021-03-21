@@ -17,7 +17,6 @@ namespace Sarah.Education.TimeSheetEntryStudents.Dto
         public int? ReceptiveAbility { get; set; }
         public string Description { get; set; }
         public double Fee { get; set; }
-        public bool? isPaid { get; set; }
         public StudentDto Student { get; set; }
     }
 }

@@ -141,11 +141,10 @@ namespace Sarah.Education.Students
                 StartDate = d.TimeSheetEntry.FromDate,
                 EndDate = d.TimeSheetEntry.ToDate,
                 Fee = d.Fee,
-                IsPaid = d.isPaid,
                 IsSingle = d.TimeSheetEntry.IsSingle
             }).ToList();
 
-            return new PagedStudentFeeDto() { TotalCount = list.Count, TotalFee = list.Sum(x=>x.Fee), TotalUnpaid = list.Where(x=>x.isPaid !=true).Sum(x=>x.Fee), Items = returnList };
+            return new PagedStudentFeeDto() { TotalCount = list.Count, TotalFee = list.Sum(x=>x.Fee), Items = returnList };
         }
     }
 }

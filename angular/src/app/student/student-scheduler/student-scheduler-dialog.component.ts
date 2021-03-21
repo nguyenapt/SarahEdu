@@ -44,9 +44,6 @@ implements OnInit {
       let unpaid = 0;
       for(let fee of this.studentFees) {
           total += fee.fee;
-          if(!fee.isPaid){
-            unpaid +=fee.fee;
-          }
       }
 
       this.total = total;

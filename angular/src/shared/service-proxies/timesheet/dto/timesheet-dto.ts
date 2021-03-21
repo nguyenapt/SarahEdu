@@ -258,7 +258,6 @@ export class TimeSheetStudentDto implements ITimeSheetStudentDto {
     description: string | undefined;
     fee: number | undefined;
     student: StudentDto | undefined;
-    isPaid: boolean | undefined;
 
     constructor(data?: ICreateTimeSheetDto) {
         if (data) {
@@ -278,7 +277,6 @@ export class TimeSheetStudentDto implements ITimeSheetStudentDto {
             this.receptiveAbility = data["receptiveAbility"];
             this.description = data["description"];
             this.fee = data["fee"];
-            this.isPaid = data["isPaid"];
             this.student = data["student"];
         }
     }
@@ -299,7 +297,6 @@ export class TimeSheetStudentDto implements ITimeSheetStudentDto {
         data["receptiveAbility"] = this.receptiveAbility;
         data["description"] = this.description;
         data["fee"] = this.fee;        
-        data["isPaid"] = this.isPaid;        
         data["student"] = this.student;   
         return data; 
     }
@@ -322,7 +319,6 @@ export interface ITimeSheetStudentDto {
     description: string | undefined;
     fee: number | undefined;
     student: StudentDto | undefined;
-    isPaid: boolean | undefined;
 }
 
 

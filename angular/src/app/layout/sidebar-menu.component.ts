@@ -59,7 +59,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         new MenuItem(
           'Class',
           '/app/class',
-          'fas fa-users-class'
+          'fas fa-user-friends'
         ),
         new MenuItem(
           'Course',

@@ -376,3 +376,118 @@ export interface IStudentFeeListResultDto {
     totalUnpaid: number | undefined;
     items: StudentFeeDto[] | undefined;
 }
+
+
+export class CreateStudentPaymentDto implements ICreateStudentPaymentDto {
+    studentId: string | undefined;
+    paymentAmount: string | undefined;
+    dateOfPayment: string | undefined;
+    paidForMonth: string | undefined;
+
+    constructor(data?: ICreateStudentPaymentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.studentId = data["studentId"];
+            this.paymentAmount = data["paymentAmount"];
+            this.dateOfPayment = data["dateOfPayment"];
+            this.paidForMonth = data["paidForMonth"];
+        }
+    }
+
+    static fromJS(data: any): CreateStudentPaymentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateStudentPaymentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["paymentAmount"] = this.paymentAmount;
+        data["dateOfPayment"] = this.dateOfPayment;
+        data["paidForMonth"] = this.paidForMonth;
+        return data; 
+    }
+
+    clone(): CreateStudentPaymentDto {
+        const json = this.toJSON();
+        let result = new CreateStudentPaymentDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateStudentPaymentDto {
+    studentId: string | undefined;
+    paymentAmount: string | undefined;
+    dateOfPayment: string | undefined;
+    paidForMonth: string | undefined;
+}
+
+export class StudentPaymentDto implements IStudentPaymentDto {
+    studentId: string | undefined;
+    paymentAmount: string | undefined;
+    dateOfPayment: string | undefined;
+    paidForMonth: string | undefined;
+    id: string;
+
+    constructor(data?: IStudentPaymentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.studentId = data["studentId"];
+            this.paymentAmount = data["paymentAmount"];
+            this.dateOfPayment = data["dateOfPayment"];
+            this.paidForMonth = data["paidForMonth"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): StudentPaymentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentPaymentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["paymentAmount"] = this.paymentAmount;
+        data["dateOfPayment"] = this.dateOfPayment;
+        data["paidForMonth"] = this.paidForMonth;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): StudentPaymentDto {
+        const json = this.toJSON();
+        let result = new StudentPaymentDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentPaymentDto {
+    studentId: string | undefined;
+    paymentAmount: string | undefined;
+    dateOfPayment: string | undefined;
+    paidForMonth: string | undefined;
+    id: string;
+}

@@ -1,59 +1,47 @@
 <form
   class="form-horizontal"
   autocomplete="off"
-  #studentFeeModal="ngForm"
+  #createPaidForm="ngForm"
+  (ngSubmit)="save()"
 >
   <abp-modal-header
-    [title]="'Student fee'"
+    [title]="'Create new payment'"
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
-  <div class="modal-body">
-    <p-table [value]="studentFees" [lazy]="true" (onLazyLoad)="loadFees($event)"
-    [paginator]="true" [rows]="rows" [totalRecords]="totalRecords" [loading]="loading">    
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 200px;">Start date</th>
-                <th style="width: 200px;">End date</th>
-                <th style="width: 100px;">Room</th>
-                <th>Course</th>
-                <th>Subject</th>
-                <th style="width: 200px;">Teacher</th>
-                <th>Is learn 1-1</th>
-                <th>Fee</th>
-                <th>Is paid</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-fee>
-            <tr>
-                <td>{{fee.startDate | date:'dd-MM-yyyy hh:mm a' }}</td>
-                <td>{{fee.endDate | date:'dd-MM-yyyy hh:mm a' }}</td>
-                <td>{{fee.roomName}}</td>
-                <td>{{fee.courseName}}</td>
-                <td>{{fee.subjectName}}</td>
-                <td>{{fee.teacherName}}</td>
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          disabled
-                          [checked]="fee.isSingle"
-                        />
-                        <label class="custom-control-label"></label>
-                    </div>
-                </td>
-                <td>{{fee.fee | currency: 'VND'}}</td>               
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="row">
-                <div class="p-text-right">Totals <span class="badge badge-success">{{total | currency: 'VND'}}</span> Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></div>
-            </div>
-        </ng-template>
-    </p-table>
-  </div>  
+  <div class="modal-body">   
+      <div class="form-group row required">
+        <label class="col-md-3 col-form-label" for="paymentAmount">
+          {{ "Amount" | localize }}
+        </label>
+        <div class="col-md-9">
+            <p-inputNumber [(ngModel)]="payment.paymentAmount" [style]="{'width':'100%'}" name="paymentAmount"></p-inputNumber>
+        </div>
+      </div>       
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="dateOfPayment">
+          Payment Date
+        </label>
+        <div class="col-md-9">
+          <input class="form-control" 
+            type="date" 
+            name="dateOfPayment" 
+            [(ngModel)]="payment.dateOfPayment" 
+          />
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-md-3 col-form-label" for="paidForMonth">
+          Paid for month
+        </label>
+        <div class="col-md-9">
+            <input id="paid-month" type="month" name="paid-month" [(ngModel)]="payment.paidForMonth" class="form-control" >
+        </div>
+      </div>      
+
+  </div>
   <abp-modal-footer
-    [saveVisibled]="false"
+    [cancelDisabled]="saving"
+    [saveDisabled]="!createPaidForm.form.valid || saving"
     (onCancelClick)="bsModalRef.hide()"
   ></abp-modal-footer>
 </form>

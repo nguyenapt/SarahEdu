@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
 using Sarah.Education.Students.Dto;
 using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Sarah.Education.Subjects.Dto;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
@@ -21,14 +22,16 @@ namespace Sarah.Education.Students
     public class StudentAppService : AsyncCrudAppService<Student, StudentDto, Guid, StudentResultRequestDto, CreateStudentDto, StudentDto>, IStudentAppService
     {
         private readonly IRepository<Student, Guid> _studentRepository;
+        private readonly IRepository<StudentPayment, Guid> _studentPaymentRepository;
         private readonly IRepository<CourseSubject, Guid> _courseSubjectRepository;
         private readonly IRepository<StudentCourseSubject, Guid> _studentCourseSubjectRepository;
         private readonly IRepository<TimeSheetEntry, Guid> _timeSheetRepository;
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetStudentRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
+        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<StudentPayment, Guid> studentPaymentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
         {
             _studentRepository = studentRepository;
+            _studentPaymentRepository = studentPaymentRepository;
             _courseSubjectRepository = courseSubjectRepository;
             _studentCourseSubjectRepository = studentCourseSubjectRepository;
             _timeSheetRepository = timeSheetRepository;
@@ -145,6 +148,40 @@ namespace Sarah.Education.Students
             }).ToList();
 
             return new PagedStudentFeeDto() { TotalCount = list.Count, TotalFee = list.Sum(x=>x.Fee), Items = returnList };
+        }
+
+
+        public async Task<StudentPaymentDto> CreatePaymentAsync(CreateStudentPaymentDto input)
+        {
+            CheckCreatePermission();
+
+            StudentPayment studentPayment = ObjectMapper.Map<StudentPayment>(input);
+
+            await _studentPaymentRepository.InsertAsync(studentPayment);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            var entityDto =  ObjectMapper.Map<StudentPaymentDto>(studentPayment);
+            return entityDto;
+        }
+
+        public async Task<StudentPaymentDto> UpdatePaymentAsync(StudentPaymentDto input)
+        {
+            CheckUpdatePermission();
+
+            var studentPayment = _studentPaymentRepository.FirstOrDefault(x => x.Id == input.Id);
+            if (studentPayment != null)
+            {
+                studentPayment.PaymentAmount = input.PaymentAmount;
+                studentPayment.DateOfPayment = input.DateOfPayment;
+                studentPayment.PaidForMonth = input.PaidForMonth;
+            }
+
+            await _studentPaymentRepository.UpdateAsync(studentPayment);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return ObjectMapper.Map<StudentPaymentDto>(studentPayment);
         }
     }
 }

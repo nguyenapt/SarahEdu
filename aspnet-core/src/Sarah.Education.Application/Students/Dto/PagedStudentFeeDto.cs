@@ -10,7 +10,7 @@ namespace Sarah.Education.Students.Dto
     {
         public int TotalCount { get; set; }
         public double TotalFee { get; set; }
-        public double TotalUnpaid { get; set; }
+        public double TotalPayment { get; set; }
         public List<StudentFeeDto> Items { get; set; }
     }
 }

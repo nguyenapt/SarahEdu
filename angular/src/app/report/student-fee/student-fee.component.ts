@@ -31,6 +31,7 @@ export class StudentFeeComponent extends AppComponentBase
   student : StudentDto;
   studentFees: StudentFeeDto[] = [];
   total:number;
+  totalPayment:number;
   unpaid:number;
   rows = 5;
   totalRecords = 0;
@@ -97,7 +98,8 @@ export class StudentFeeComponent extends AppComponentBase
         this.studentFees = result.items;
         this.totalRecords = result.totalCount;
         this.total = result.totalFee;
-        this.unpaid = result.totalUnpaid;
+        this.totalPayment = result.totalPayment;
+        this.unpaid = result.totalFee - result.totalPayment;
     });
   }
   loadFees(event: LazyLoadEvent) {  
@@ -108,7 +110,8 @@ export class StudentFeeComponent extends AppComponentBase
           this.studentFees = result.items;
           this.totalRecords = result.totalCount;
           this.total = result.totalFee;
-          this.unpaid = result.totalUnpaid;
+          this.totalPayment = result.totalPayment;
+          this.unpaid = result.totalFee - result.totalPayment;
           this.loading = false;
         })
       }, 1000);

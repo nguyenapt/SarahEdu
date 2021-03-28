@@ -33,7 +33,6 @@ teacher : TeacherDto;
 teacherProductivities: TeacherProductivityDto[] = [];
 total:number;
 totalHour:number;
-unpaid:number;
 rows = 5;
 totalRecords = 0;
 loading: boolean;
@@ -99,7 +98,6 @@ searchData(
       this.teacherProductivities = result.items;
       this.totalRecords = result.totalCount;
       this.total = result.totalFee;
-      this.unpaid = result.totalUnpaid;
       this.totalHour = result.totalHour;
   });
 }
@@ -111,7 +109,6 @@ loadProductivities(event: LazyLoadEvent) {
         this.teacherProductivities = result.items;
         this.totalRecords = result.totalCount;
         this.total = result.totalFee;
-        this.unpaid = result.totalUnpaid;
         this.totalHour = result.totalHour;
         this.loading = false;
       })

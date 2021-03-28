@@ -2,7 +2,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { CreateStudentDto, StudentDto, StudentDtoPagedResultDto, StudentFeeListResultDto, CreateStudentPaymentDto, StudentPaymentDto } from './dto/student-dto';
+import { CreateStudentDto, StudentDto, StudentDtoPagedResultDto, StudentFeeListResultDto, CreateStudentPaymentDto, StudentPaymentDto, StudentPaymentPagedResultDto } from './dto/student-dto';
 import { ApiException } from '../api-exception';
 import { API_BASE_URL } from '../service-proxies';
 
@@ -526,6 +526,63 @@ export class StudentServiceProxy {
             }));
         }
         return _observableOf<StudentPaymentDto>(<any>null);
+    }
+
+    getPayments(studentId: string | undefined,fromDate: string | undefined, toDate: string | undefined): Observable<StudentPaymentPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Student/GetStudentPayments?";
+        if (studentId === null)
+            throw new Error("The parameter 'studentId' cannot be null.");
+        else if (studentId !== undefined)
+        url_ += "studentId=" + encodeURIComponent("" + studentId) + "&";   
+                    
+        if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&";
+        if (toDate !== undefined)
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayments(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentPaymentPagedResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentPaymentPagedResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPayments(response: HttpResponseBase): Observable<StudentPaymentPagedResultDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentPaymentPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentPaymentPagedResultDto>(<any>null);
     }
 }
 

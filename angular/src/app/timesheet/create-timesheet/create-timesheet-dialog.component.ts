@@ -14,9 +14,9 @@ import { TeacherServiceProxy } from '@shared/service-proxies/teacher/teacher.ser
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
 import { CourseServiceProxy } from '@shared/service-proxies/course/course.service.proxy';
 import { StudyTimeServiceProxy } from '@shared/service-proxies/study-time/studytime.service.proxy';
+import { ClassServiceProxy } from '@shared/service-proxies/class/class.service.proxy';
 
 import { CreateTimeSheetDto, TimeSheetDto, TimeSheetStudentDto} from '@shared/service-proxies/timesheet/dto/timesheet-dto';
-
 
 import { forEach as _forEach, map as _map } from 'lodash-es';
 import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
@@ -25,6 +25,7 @@ import { CourseSubjectDto, CourseWithSubjectDto } from '@shared/service-proxies/
 import { StudyTimeDto } from '@shared/service-proxies/study-time/dto/studytime-dto';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
+import { ClassStudentDto } from '@shared/service-proxies/class/dto/class-dto';
 
 @Component({
   templateUrl: 'create-timesheet-dialog.component.html',
@@ -54,6 +55,9 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   rooms:RoomDto[]=[];
   selectedRoom: RoomDto;
   
+  classWithStudents:ClassStudentDto[]=[];
+  selectedClass:ClassStudentDto;
+
   startHour = '00:00';
   endHour = '00:00';
   isSingle = false;
@@ -69,6 +73,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     private _courseService: CourseServiceProxy,
     private _studyTimeService: StudyTimeServiceProxy,
     private _roomService: RoomServiceProxy,
+    private _classService: ClassServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -90,6 +95,9 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this._roomService.getRoomByCurrentTenant().subscribe((result) => {
       this.rooms = result.items;
     }); 
+    this._classService.getClassWithStudents().subscribe((result) => {
+      this.classWithStudents = result.items;
+    }); 
   }
 
   changeCourse($event){
@@ -107,6 +115,24 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     if($event != null){      
       this.startHour = $event.value.fromHour;
       this.endHour = $event.value.toHour;
+    }
+  }
+
+  changeClass($event){
+    if($event != null){      
+      this.selectedClass = $event.value;
+
+      if(this.selectedClass != undefined && this.selectedClass.students != undefined){
+        this.selectedStudents = [];          
+
+        this.selectedClass.students.forEach(function (student) {          
+            var timeSheetStudent = new TimeSheetStudentDto();
+            timeSheetStudent.studentId = student.id;
+            timeSheetStudent.student = student;
+            timeSheetStudent.fee = this.fee;
+            this.selectedStudents.push(timeSheetStudent);             
+        }.bind(this));
+      }
     }
   }
 

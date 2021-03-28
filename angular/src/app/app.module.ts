@@ -93,7 +93,8 @@ import { StudentFeeComponent } from './report/student-fee/student-fee.component'
 import { TeacherSchedulerComponent } from './teacher/teacher-scheduler/teacher-scheduler.component';
 import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dialog/teacher-scheduler-dialog.component';
 import { StudentSchedulerDialogComponent } from './student/student-scheduler/student-scheduler-dialog.component';
-import { StudentFeeDialogComponent } from './student/student-fee/student-fee-dialog.component';
+import { CreateStudentPaymentDialogComponent } from './student/create-student-payment/create-student-payment-dialog.component';
+import { StudentPaymentListDialogComponent } from './student/student-payment-list-dialog/student-payment-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -161,7 +162,8 @@ import { StudentFeeDialogComponent } from './student/student-fee/student-fee-dia
     TeacherSchedulerComponent,
     TeacherSchedulerDialogComponent,
     StudentSchedulerDialogComponent,
-    StudentFeeDialogComponent
+    CreateStudentPaymentDialogComponent,
+    StudentPaymentListDialogComponent
   ],
   imports: [
     CommonModule,    
@@ -223,7 +225,8 @@ import { StudentFeeDialogComponent } from './student/student-fee/student-fee-dia
     CreateStudentDialogComponent,
     EditStudentDialogComponent,
     StudentSchedulerDialogComponent,
-    StudentFeeDialogComponent,
+    CreateStudentPaymentDialogComponent,
+    StudentPaymentListDialogComponent,
     //protector
     CreateProtectorDialogComponent,
     EditProtectorDialogComponent,

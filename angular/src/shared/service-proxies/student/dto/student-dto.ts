@@ -317,7 +317,7 @@ export interface IStudentFeeDto {
 export class StudentFeeListResultDto implements IStudentFeeListResultDto {
     totalCount: number;
     totalFee: number | undefined;
-    totalUnpaid: number | undefined;
+    totalPayment: number | undefined;
     items: StudentFeeDto[] | undefined;
 
     constructor(data?: IStudentFeeListResultDto) {
@@ -333,7 +333,7 @@ export class StudentFeeListResultDto implements IStudentFeeListResultDto {
         if (data) {
             this.totalCount = data["totalCount"];
             this.totalFee = data["totalFee"];
-            this.totalUnpaid = data["totalUnpaid"];
+            this.totalPayment = data["totalPayment"];
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
@@ -353,7 +353,7 @@ export class StudentFeeListResultDto implements IStudentFeeListResultDto {
         data = typeof data === 'object' ? data : {};
         data["totalCount"] = this.totalCount;
         data["totalFee"] = this.totalFee;
-        data["totalUnpaid"] = this.totalUnpaid;
+        data["totalPayment"] = this.totalPayment;
         if (Array.isArray(this.items)) {
             data["items"] = [];
             for (let item of this.items)
@@ -373,7 +373,7 @@ export class StudentFeeListResultDto implements IStudentFeeListResultDto {
 export interface IStudentFeeListResultDto {
     totalCount: number;
     totalFee: number | undefined;
-    totalUnpaid: number | undefined;
+    totalPayment: number | undefined;
     items: StudentFeeDto[] | undefined;
 }
 
@@ -435,7 +435,7 @@ export interface ICreateStudentPaymentDto {
 
 export class StudentPaymentDto implements IStudentPaymentDto {
     studentId: string | undefined;
-    paymentAmount: string | undefined;
+    paymentAmount: number;
     dateOfPayment: string | undefined;
     paidForMonth: string | undefined;
     id: string;
@@ -486,8 +486,63 @@ export class StudentPaymentDto implements IStudentPaymentDto {
 
 export interface IStudentPaymentDto {
     studentId: string | undefined;
-    paymentAmount: string | undefined;
+    paymentAmount: number;
     dateOfPayment: string | undefined;
     paidForMonth: string | undefined;
     id: string;
+}
+
+export class StudentPaymentPagedResultDto implements IStudentPaymentPagedResultDto {
+    totalCount: number;    
+    items: StudentPaymentDto[] | undefined;
+
+    constructor(data?: IStudentPaymentPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(StudentPaymentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StudentPaymentPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentPaymentPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): StudentPaymentPagedResultDto {
+        const json = this.toJSON();
+        let result = new StudentPaymentPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentPaymentPagedResultDto {
+    totalCount: number;
+    items: StudentPaymentDto[] | undefined;
 }

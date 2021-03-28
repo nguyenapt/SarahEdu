@@ -82,8 +82,10 @@
                         </ng-template>
                         <ng-template pTemplate="footer">
                             <tr>                                
-                                <td colspan="8" class="text-right">Total <span class="badge badge-success">{{total | currency: 'VND'}}</span><br />Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></td>
-                                <td></td>
+                                <td colspan="8" class="text-right">Total <span class="badge badge-success">{{total | currency: 'VND'}}</span><br />
+                                    Paid <span class="badge badge-danger">{{totalPayment | currency: 'VND'}}</span><br />
+                                    Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span>
+                                </td>                                
                             </tr>
                         </ng-template>                        
                     </p-table>

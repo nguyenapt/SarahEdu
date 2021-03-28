@@ -13,11 +13,11 @@ import { StudentServiceProxy } from '@shared/service-proxies/student/student.ser
 import { CreateStudentPaymentDto } from '@shared/service-proxies/student/dto/student-dto';
 
 @Component({
-  selector: 'student-fee-dialog',
-  templateUrl: './student-fee-dialog.component.html',
-  styleUrls: ['./student-fee-dialog.component.css']
+  selector: 'create-student-payment-dialog',
+  templateUrl: './create-student-payment-dialog.component.html',
+  styleUrls: ['./create-student-payment-dialog.component.css']
 })
-export class StudentFeeDialogComponent extends AppComponentBase
+export class CreateStudentPaymentDialogComponent extends AppComponentBase
 implements OnInit {
   saving = false;
   payment: CreateStudentPaymentDto = new CreateStudentPaymentDto();

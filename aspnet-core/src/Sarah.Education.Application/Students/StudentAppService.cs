@@ -126,11 +126,17 @@ namespace Sarah.Education.Students
                 x => x.TimeSheetEntry,
                 x => x.TimeSheetEntry.Teacher,
                 x => x.TimeSheetEntry.Room,
+                x => x.Student.StudentPayments,
                 x => x.TimeSheetEntry.CourseSubject.Course,
                 x => x.TimeSheetEntry.CourseSubject.Subject)
                 .Where(x => x.StudentId == input.StudentId)
                 .WhereIf(input.FromDate.HasValue, x => x.TimeSheetEntry.FromDate >= input.FromDate)
-                .WhereIf(input.FromDate.HasValue, x => x.TimeSheetEntry.FromDate >= input.FromDate).ToList();
+                .WhereIf(input.ToDate.HasValue, x => x.TimeSheetEntry.ToDate <= input.ToDate).ToList();
+
+            var payments = _studentPaymentRepository.GetAllIncluding()
+                .Where(x => x.StudentId == input.StudentId)
+                .WhereIf(input.FromDate.HasValue, x => x.PaidForMonth >= input.FromDate)
+                .WhereIf(input.ToDate.HasValue, x => x.PaidForMonth <= input.ToDate).ToList();
 
             var returnList = list
             .Skip(input.SkipCount)
@@ -147,7 +153,26 @@ namespace Sarah.Education.Students
                 IsSingle = d.TimeSheetEntry.IsSingle
             }).ToList();
 
-            return new PagedStudentFeeDto() { TotalCount = list.Count, TotalFee = list.Sum(x=>x.Fee), Items = returnList };
+            return new PagedStudentFeeDto() { TotalCount = list.Count, TotalFee = list.Sum(x=>x.Fee), TotalPayment = payments.Sum(x=>x.PaymentAmount), Items = returnList };
+        }
+
+        public async Task<ListResultDto<StudentPaymentDto>> GetStudentPayments(StudentPaymentResultRequestDto input)
+        {
+            var studentPayments = _studentPaymentRepository.GetAllIncluding()
+                .Where(x => x.StudentId == input.StudentId)
+                .WhereIf(input.FromDate.HasValue, x => x.PaidForMonth >= input.FromDate)
+                .WhereIf(input.ToDate.HasValue, x => x.PaidForMonth <= input.ToDate)
+                .Select(x =>
+                  new StudentPaymentDto
+                  {
+                      Id = x.Id,
+                      StudentId = x.StudentId,
+                      PaymentAmount = x.PaymentAmount,
+                      DateOfPayment = x.DateOfPayment,
+                      PaidForMonth = x.PaidForMonth
+                  }
+                );
+            return new ListResultDto<StudentPaymentDto>(ObjectMapper.Map<List<StudentPaymentDto>>(studentPayments));
         }
 
 

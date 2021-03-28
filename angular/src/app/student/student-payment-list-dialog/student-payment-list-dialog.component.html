@@ -1,0 +1,64 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #studentPaymentModal="ngForm"
+>
+  <abp-modal-header
+    [title]="'Student payments'"
+    (onCloseClick)="bsModalRef.hide()"
+  ></abp-modal-header>
+  <div class="modal-body">
+    <div class="row form-group ">
+      <div class="col-12 text-left">
+        <a href="javascript:;" class="btn bg-blue" (click)="createPayment()">
+          <i class="fa fa-plus-square"></i>
+          {{ "Make payment" | localize }}
+        </a>
+      </div>
+    </div>
+
+    <p-table [value]="studentPayments" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="5">        
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Payment amount</th>
+                <th style="width: 200px;">Payment date</th>
+                <th style="width: 200px;">Pay for month</th>
+                <th style="width: 150px;"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-payment>
+            <tr>
+                <td>{{payment.paymentAmount}}</td>
+                <td>{{payment.dateOfPayment | date:'dd-MM-yyyy' }}</td>
+                <td>{{payment.paidForMonth | date:'MM-yyyy' }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm bg-secondary"
+                    (click)="editPayment(payment)"
+                  >
+                    <i class="fas fa-pencil-alt"></i>                    
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm bg-danger mx-2"
+                    (click)="deletePayment(payment)"
+                  >
+                    <i class="fas fa-trash"></i>                    
+                  </button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="row">
+                <div class="p-text-right">Totals <span class="badge badge-success">{{total | currency: 'VND'}}</span> 
+                </div>
+            </div>
+        </ng-template>
+    </p-table>
+  </div>  
+  <abp-modal-footer
+    [saveVisibled]="false"
+    (onCancelClick)="bsModalRef.hide()"
+  ></abp-modal-footer>
+</form>

@@ -10,6 +10,7 @@ using Sarah.Education.ClassCentrals.Dto;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Sarah.Education.Students.Dto;
+using System.Collections.Generic;
 
 namespace Sarah.Education.ClassCentrals
 {
@@ -99,6 +100,27 @@ namespace Sarah.Education.ClassCentrals
                 };
                 await _classStudentRepository.InsertAsync(obj);
             }
+        }
+
+        public async Task<List<ClassWithStudentDto>> GetClassWithStudents()
+        {
+            var classes = _classCentralRepository.GetAllIncluding(x => x.ClassStudents);
+
+            return classes.Select(x => new ClassWithStudentDto()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Students = x.ClassStudents.Select(k => new StudentDto()
+                {
+                    Id = k.Student.Id,
+                    FullName = k.Student.FullName,
+                    DateOfBirth = k.Student.DateOfBirth,
+                    Email = k.Student.Email,
+                    PhoneNumber = k.Student.PhoneNumber,
+                    SchoolName = k.Student.SchoolName
+                }).ToArray()
+            }).ToList();
         }
     }
 }

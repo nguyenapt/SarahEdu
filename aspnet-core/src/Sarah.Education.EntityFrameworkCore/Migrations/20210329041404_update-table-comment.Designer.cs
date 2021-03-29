@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sarah.Education.EntityFrameworkCore;
 
 namespace Sarah.Education.Migrations
 {
     [DbContext(typeof(EducationDbContext))]
-    partial class EducationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210329041404_update-table-comment")]
+    partial class updatetablecomment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1533,9 +1535,6 @@ namespace Sarah.Education.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("ClassCentral");
@@ -1692,7 +1691,7 @@ namespace Sarah.Education.Migrations
                     b.Property<DateTime?>("CommentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ProtectorId")
+                    b.Property<Guid>("ProtectorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("StudentId")
@@ -2358,7 +2357,9 @@ namespace Sarah.Education.Migrations
                 {
                     b.HasOne("Sarah.Education.Entities.Protector", "Protector")
                         .WithMany("ProtectorStudentComments")
-                        .HasForeignKey("ProtectorId");
+                        .HasForeignKey("ProtectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Sarah.Education.Entities.Student", "Student")
                         .WithMany("ProtectorStudentComments")

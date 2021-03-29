@@ -23,15 +23,19 @@ namespace Sarah.Education.Students
     {
         private readonly IRepository<Student, Guid> _studentRepository;
         private readonly IRepository<StudentPayment, Guid> _studentPaymentRepository;
+        private readonly IRepository<ProtectorStudentComment, Guid> _protectorStudentCommentRepository;
+        private readonly IRepository<ProtectorStudent, Guid> _protectorStudentRepository;
         private readonly IRepository<CourseSubject, Guid> _courseSubjectRepository;
         private readonly IRepository<StudentCourseSubject, Guid> _studentCourseSubjectRepository;
         private readonly IRepository<TimeSheetEntry, Guid> _timeSheetRepository;
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetStudentRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<StudentPayment, Guid> studentPaymentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
+        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<StudentPayment, Guid> studentPaymentRepository, IRepository<ProtectorStudentComment, Guid> protectorStudentCommentRepository, IRepository<ProtectorStudent, Guid> protectorStudentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
         {
             _studentRepository = studentRepository;
             _studentPaymentRepository = studentPaymentRepository;
+            _protectorStudentCommentRepository = protectorStudentCommentRepository;
+            _protectorStudentRepository = protectorStudentRepository;
             _courseSubjectRepository = courseSubjectRepository;
             _studentCourseSubjectRepository = studentCourseSubjectRepository;
             _timeSheetRepository = timeSheetRepository;
@@ -207,6 +211,68 @@ namespace Sarah.Education.Students
             CurrentUnitOfWork.SaveChanges();
 
             return ObjectMapper.Map<StudentPaymentDto>(studentPayment);
+        }
+
+
+
+        public async Task<ListResultDto<StudentCommentDto>> GetStudentComments(StudentCommentResultRequestDto input)
+        {
+            var studentComments = _protectorStudentCommentRepository.GetAllIncluding()
+                .WhereIf(input.StudentId.HasValue, x => x.StudentId == input.StudentId)
+                .WhereIf(input.ProtectorId.HasValue, x => x.ProtectorId == input.ProtectorId)
+                .OrderByDescending(x=>x.CommentDate)
+                .Select(x =>
+                  new StudentCommentDto
+                  {
+                      Id = x.Id,
+                      StudentId = x.StudentId,
+                      ProtectorId = x.ProtectorId,
+                      CommentDate = x.CommentDate,
+                      Comment = x.Comment
+                  }
+                );
+            return new ListResultDto<StudentCommentDto>(ObjectMapper.Map<List<StudentCommentDto>>(studentComments));
+        }
+
+
+        public async Task<StudentCommentDto> CreateCommentAsync(CreateStudentCommentDto input)
+        {
+            CheckCreatePermission();
+
+            ProtectorStudentComment studentComment = ObjectMapper.Map<ProtectorStudentComment>(input);
+
+            var protector = _protectorStudentRepository.GetAllIncluding().Where(x => x.StudentId == input.StudentId && x.Protector.IsActive).FirstOrDefault();
+            if(protector != null)
+            {
+                studentComment.ProtectorId = protector.ProtectorId;
+            }
+
+            await _protectorStudentCommentRepository.InsertAsync(studentComment);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            var entityDto = ObjectMapper.Map<StudentCommentDto>(studentComment);
+            return entityDto;
+        }
+
+        public async Task<StudentCommentDto> UpdateCommentAsync(StudentCommentDto input)
+        {
+            CheckUpdatePermission();
+
+            var studentComment = _protectorStudentCommentRepository.FirstOrDefault(x => x.Id == input.Id);
+            if (studentComment != null)
+            {
+                studentComment.StudentId = input.StudentId;
+                studentComment.ProtectorId = input.ProtectorId;
+                studentComment.CommentDate = input.CommentDate;
+                studentComment.Comment = input.Comment;
+            }
+
+            await _protectorStudentCommentRepository.UpdateAsync(studentComment);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return ObjectMapper.Map<StudentCommentDto>(studentComment);
         }
     }
 }

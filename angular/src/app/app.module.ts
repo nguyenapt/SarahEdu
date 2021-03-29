@@ -95,6 +95,8 @@ import { TeacherSchedulerDialogComponent } from './teacher/teacher-scheduler-dia
 import { StudentSchedulerDialogComponent } from './student/student-scheduler/student-scheduler-dialog.component';
 import { CreateStudentPaymentDialogComponent } from './student/create-student-payment/create-student-payment-dialog.component';
 import { StudentPaymentListDialogComponent } from './student/student-payment-list-dialog/student-payment-list-dialog.component';
+import { StudentCommentListDialogComponent } from './student/student-comment-list-dialog/student-comment-list-dialog.component';
+import { CreateStudentCommentDialogComponent } from './student/create-student-comment/create-student-comment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -163,7 +165,9 @@ import { StudentPaymentListDialogComponent } from './student/student-payment-lis
     TeacherSchedulerDialogComponent,
     StudentSchedulerDialogComponent,
     CreateStudentPaymentDialogComponent,
-    StudentPaymentListDialogComponent
+    StudentPaymentListDialogComponent,
+    StudentCommentListDialogComponent,
+    CreateStudentCommentDialogComponent
   ],
   imports: [
     CommonModule,    
@@ -227,6 +231,7 @@ import { StudentPaymentListDialogComponent } from './student/student-payment-lis
     StudentSchedulerDialogComponent,
     CreateStudentPaymentDialogComponent,
     StudentPaymentListDialogComponent,
+    CreateStudentCommentDialogComponent,
     //protector
     CreateProtectorDialogComponent,
     EditProtectorDialogComponent,

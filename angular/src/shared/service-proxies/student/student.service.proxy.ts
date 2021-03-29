@@ -2,7 +2,7 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { CreateStudentDto, StudentDto, StudentDtoPagedResultDto, StudentFeeListResultDto, CreateStudentPaymentDto, StudentPaymentDto, StudentPaymentPagedResultDto } from './dto/student-dto';
+import { CreateStudentDto, StudentDto, StudentDtoPagedResultDto, StudentFeeListResultDto, CreateStudentPaymentDto, StudentPaymentDto, StudentPaymentPagedResultDto, StudentCommentDto, CreateStudentCommentDto, StudentCommentPagedResultDto } from './dto/student-dto';
 import { ApiException } from '../api-exception';
 import { API_BASE_URL } from '../service-proxies';
 
@@ -583,6 +583,175 @@ export class StudentServiceProxy {
             }));
         }
         return _observableOf<StudentPaymentPagedResultDto>(<any>null);
+    }
+
+    //comment
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+     createComment(body: CreateStudentCommentDto | undefined): Observable<StudentCommentDto> {
+        let url_ = this.baseUrl + "/api/services/app/Student/CreateComment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateComment(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentCommentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentCommentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateComment(response: HttpResponseBase): Observable<StudentCommentDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentCommentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentCommentDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateComment(body: StudentCommentDto | undefined): Observable<StudentCommentDto> {
+        let url_ = this.baseUrl + "/api/services/app/Student/UpdateComment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateComment(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentCommentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentCommentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateComment(response: HttpResponseBase): Observable<StudentCommentDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentCommentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentCommentDto>(<any>null);
+    }
+
+    getComments(studentId: string | undefined, protectorId: string | undefined): Observable<StudentCommentPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Student/GetStudentComments?";
+        
+        if (studentId !== undefined)
+        url_ += "studentId=" + encodeURIComponent("" + studentId) + "&";   
+                    
+        if (protectorId !== undefined)
+            url_ += "protectorId=" + encodeURIComponent("" + protectorId) + "&";
+
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetComments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetComments(<any>response_);
+                } catch (e) {
+                    return <Observable<StudentCommentPagedResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StudentCommentPagedResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetComments(response: HttpResponseBase): Observable<StudentCommentPagedResultDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StudentCommentPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StudentCommentPagedResultDto>(<any>null);
     }
 }
 

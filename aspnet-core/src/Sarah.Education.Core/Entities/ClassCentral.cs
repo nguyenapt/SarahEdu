@@ -7,7 +7,7 @@ using System.Text;
 namespace Sarah.Education.Entities
 {
     [Table("ClassCentral")]
-    public class ClassCentral : Entity<Guid>
+    public class ClassCentral : Entity<Guid>, IMustHaveTenant
     {
         public ClassCentral()
         {
@@ -17,6 +17,6 @@ namespace Sarah.Education.Entities
         public string Description { get; set; }
 
         public virtual ICollection<ClassStudent> ClassStudents { get; set; }
-
+        public int TenantId { get; set; }
     }
 }

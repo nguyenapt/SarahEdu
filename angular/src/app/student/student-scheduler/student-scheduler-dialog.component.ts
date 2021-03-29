@@ -20,7 +20,7 @@ import { StudentServiceProxy } from '@shared/service-proxies/student/student.ser
 })
 export class StudentSchedulerDialogComponent extends AppComponentBase
 implements OnInit {
-  id: string;
+  studentId: string;
   studentFees: StudentFeeDto[] = [];
   total:number;
   unpaid:number;
@@ -33,7 +33,7 @@ implements OnInit {
   }
 
   ngOnInit(): void {
-    this._studentService.getFees(this.id,0,10).subscribe((result) => {
+    this._studentService.getFees(this.studentId,0,10).subscribe((result) => {
         this.studentFees = result.items;
         this.calculateTotal();
     });

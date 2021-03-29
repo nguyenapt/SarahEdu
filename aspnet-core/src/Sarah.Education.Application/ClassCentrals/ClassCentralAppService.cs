@@ -33,6 +33,8 @@ namespace Sarah.Education.ClassCentrals
 
             var classCentral = ObjectMapper.Map<ClassCentral>(input);
 
+            classCentral.TenantId = AbpSession.TenantId ?? 1;
+
             var classCentralId = await _classCentralRepository.InsertAndGetIdAsync(classCentral);
 
             if (input.Students != null)
@@ -49,9 +51,11 @@ namespace Sarah.Education.ClassCentrals
         {
             CheckUpdatePermission();
 
-            var classCentral = _classCentralRepository.FirstOrDefault(x => x.Id == input.Id);
+            var classCentral = _classCentralRepository.FirstOrDefault(x => x.Id == input.Id);            
 
             MapToEntity(input, classCentral);
+
+            classCentral.TenantId = AbpSession.TenantId ?? 1;
 
             await _classCentralRepository.UpdateAsync(classCentral);
 
@@ -68,6 +72,15 @@ namespace Sarah.Education.ClassCentrals
         protected override IQueryable<ClassCentral> ApplySorting(IQueryable<ClassCentral> query, ClassCentralResultRequestDto input)
         {
             return query.OrderBy(r => r.Name);
+        }
+
+        [UnitOfWork]
+        public virtual List<ClassCentral> GetClassCentrals(int tenantId)
+        {
+            using (_unitOfWorkManager.Current.SetTenantId(tenantId))
+            {
+                return Repository.GetAllList();
+            }
         }
 
         protected override IQueryable<ClassCentral> CreateFilteredQuery(ClassCentralResultRequestDto input)
@@ -104,9 +117,9 @@ namespace Sarah.Education.ClassCentrals
 
         public async Task<List<ClassWithStudentDto>> GetClassWithStudents()
         {
-            var classes = _classCentralRepository.GetAllIncluding(x => x.ClassStudents);
+            var tenantId = AbpSession.TenantId ?? 1;
 
-            return classes.Select(x => new ClassWithStudentDto()
+            var classes = _classCentralRepository.GetAllIncluding(x => x.ClassStudents).Where(x => x.TenantId == tenantId)?.Select(x => new ClassWithStudentDto()
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -121,6 +134,8 @@ namespace Sarah.Education.ClassCentrals
                     SchoolName = k.Student.SchoolName
                 }).ToArray()
             }).ToList();
+
+            return classes;
         }
     }
 }

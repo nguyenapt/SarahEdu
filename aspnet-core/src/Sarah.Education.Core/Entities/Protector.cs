@@ -13,6 +13,7 @@ namespace Sarah.Education.Entities
         public Protector()
         {
             ProtectorStudents = new HashSet<ProtectorStudent>();
+            ProtectorStudentComments = new HashSet<ProtectorStudentComment>();
         }
 
         [Required]
@@ -27,5 +28,7 @@ namespace Sarah.Education.Entities
 
         public virtual ICollection<ProtectorStudent> ProtectorStudents { get; set; }
         public bool IsActive { get; set; }
+
+        public virtual ICollection<ProtectorStudentComment> ProtectorStudentComments { get; set; }
     }
 }

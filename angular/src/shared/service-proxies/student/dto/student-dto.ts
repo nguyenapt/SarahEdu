@@ -377,6 +377,7 @@ export interface IStudentFeeListResultDto {
     items: StudentFeeDto[] | undefined;
 }
 
+//Student Payment
 
 export class CreateStudentPaymentDto implements ICreateStudentPaymentDto {
     studentId: string | undefined;
@@ -545,4 +546,176 @@ export class StudentPaymentPagedResultDto implements IStudentPaymentPagedResultD
 export interface IStudentPaymentPagedResultDto {
     totalCount: number;
     items: StudentPaymentDto[] | undefined;
+}
+
+//Student comment
+
+
+export class CreateStudentCommentDto implements ICreateStudentCommentDto {
+    studentId: string | undefined;
+    protectorId: number;
+    commentDate: string | undefined;
+    comment: string | undefined;
+
+    constructor(data?: ICreateStudentCommentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.studentId = data["studentId"];
+            this.protectorId = data["protectorId"];
+            this.commentDate = data["commentDate"];
+            this.comment = data["comment"];
+        }
+    }
+
+    static fromJS(data: any): CreateStudentCommentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateStudentCommentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["protectorId"] = this.protectorId;
+        data["commentDate"] = this.commentDate;
+        data["comment"] = this.comment;
+        return data; 
+    }
+
+    clone(): CreateStudentCommentDto {
+        const json = this.toJSON();
+        let result = new CreateStudentCommentDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateStudentCommentDto {
+    studentId: string | undefined;
+    protectorId: number;
+    commentDate: string | undefined;
+    comment: string | undefined;
+}
+
+export class StudentCommentDto implements IStudentCommentDto {
+    studentId: string | undefined;
+    protectorId: number;
+    commentDate: string | undefined;
+    comment: string | undefined;
+    id: string;
+
+    constructor(data?: IStudentCommentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.studentId = data["studentId"];
+            this.protectorId = data["protectorId"];
+            this.commentDate = data["commentDate"];
+            this.comment = data["comment"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): StudentCommentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentCommentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["studentId"] = this.studentId;
+        data["protectorId"] = this.protectorId;
+        data["commentDate"] = this.commentDate;
+        data["comment"] = this.comment;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): StudentCommentDto {
+        const json = this.toJSON();
+        let result = new StudentCommentDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentCommentDto {
+    studentId: string | undefined;
+    protectorId: number;
+    commentDate: string | undefined;
+    comment: string | undefined;
+    id: string;
+}
+
+export class StudentCommentPagedResultDto implements IStudentCommentPagedResultDto {
+    totalCount: number;    
+    items: StudentCommentDto[] | undefined;
+
+    constructor(data?: IStudentCommentPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(StudentCommentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StudentCommentPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentCommentPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): StudentCommentPagedResultDto {
+        const json = this.toJSON();
+        let result = new StudentCommentPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentCommentPagedResultDto {
+    totalCount: number;
+    items: StudentCommentDto[] | undefined;
 }

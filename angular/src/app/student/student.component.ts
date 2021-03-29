@@ -11,6 +11,7 @@ import { EditStudentDialogComponent } from './edit-student/edit-student-dialog.c
 import { CreateStudentPaymentDialogComponent } from './create-student-payment/create-student-payment-dialog.component';
 import { StudentSchedulerDialogComponent } from './student-scheduler/student-scheduler-dialog.component';
 import { StudentPaymentListDialogComponent } from './student-payment-list-dialog/student-payment-list-dialog.component';
+import { StudentCommentListDialogComponent } from './student-comment-list-dialog/student-comment-list-dialog.component';
 
 class PagedUsersRequestDto extends PagedRequestDto {
   keyword: string;
@@ -102,6 +103,21 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
       StudentSchedulerDialogComponent,
       {
         class: 'modal-xxlg',
+        initialState: {
+          studentId: student.id,
+        },
+      }
+    );
+  }
+
+  comment(student){
+    this._modalService.show(
+      StudentCommentListDialogComponent,
+      {
+        class: 'modal-xxlg',
+        initialState: {
+          studentId: student.id,
+        },
       }
     );
   }

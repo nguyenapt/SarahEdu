@@ -213,6 +213,11 @@ namespace Sarah.Education.Students
             return ObjectMapper.Map<StudentPaymentDto>(studentPayment);
         }
 
+        public async Task DeletePaymentAsync(EntityDto<Guid> input)
+        {
+            var payment = await _studentPaymentRepository.GetAsync(input.Id);
+            await _studentPaymentRepository.DeleteAsync(payment);
+        }
 
 
         public async Task<ListResultDto<StudentCommentDto>> GetStudentComments(StudentCommentResultRequestDto input)
@@ -273,6 +278,12 @@ namespace Sarah.Education.Students
             CurrentUnitOfWork.SaveChanges();
 
             return ObjectMapper.Map<StudentCommentDto>(studentComment);
+        }
+
+        public async Task DeleteCommentAsync(EntityDto<Guid> input)
+        {
+            var comment = await _protectorStudentCommentRepository.GetAsync(input.Id);
+            await _protectorStudentCommentRepository.DeleteAsync(comment);
         }
     }
 }

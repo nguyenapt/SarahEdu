@@ -437,8 +437,8 @@ export interface ICreateStudentPaymentDto {
 export class StudentPaymentDto implements IStudentPaymentDto {
     studentId: string | undefined;
     paymentAmount: number;
-    dateOfPayment: string | undefined;
-    paidForMonth: string | undefined;
+    dateOfPayment: moment.Moment | undefined;
+    paidForMonth: moment.Moment | undefined;
     id: string;
 
     constructor(data?: IStudentPaymentDto) {
@@ -454,8 +454,8 @@ export class StudentPaymentDto implements IStudentPaymentDto {
         if (data) {
             this.studentId = data["studentId"];
             this.paymentAmount = data["paymentAmount"];
-            this.dateOfPayment = data["dateOfPayment"];
-            this.paidForMonth = data["paidForMonth"];
+            this.dateOfPayment = data["dateOfPayment"] ? moment(data["dateOfPayment"].toString()) : <any>undefined;            
+            this.paidForMonth = data["paidForMonth"] ? moment(data["paidForMonth"].toString()) : <any>undefined;
             this.id = data["id"];
         }
     }
@@ -471,8 +471,8 @@ export class StudentPaymentDto implements IStudentPaymentDto {
         data = typeof data === 'object' ? data : {};
         data["studentId"] = this.studentId;
         data["paymentAmount"] = this.paymentAmount;
-        data["dateOfPayment"] = this.dateOfPayment;
-        data["paidForMonth"] = this.paidForMonth;
+        data["dateOfPayment"] = this.dateOfPayment ? this.dateOfPayment : <any>undefined;
+        data["paidForMonth"] = this.paidForMonth ? this.paidForMonth : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -488,8 +488,8 @@ export class StudentPaymentDto implements IStudentPaymentDto {
 export interface IStudentPaymentDto {
     studentId: string | undefined;
     paymentAmount: number;
-    dateOfPayment: string | undefined;
-    paidForMonth: string | undefined;
+    dateOfPayment: moment.Moment | undefined;
+    paidForMonth: moment.Moment | undefined;
     id: string;
 }
 
@@ -609,7 +609,7 @@ export interface ICreateStudentCommentDto {
 export class StudentCommentDto implements IStudentCommentDto {
     studentId: string | undefined;
     protectorId: number;
-    commentDate: string | undefined;
+    commentDate: moment.Moment | undefined;
     comment: string | undefined;
     id: string;
 
@@ -626,7 +626,7 @@ export class StudentCommentDto implements IStudentCommentDto {
         if (data) {
             this.studentId = data["studentId"];
             this.protectorId = data["protectorId"];
-            this.commentDate = data["commentDate"];
+            this.commentDate = data["commentDate"] ? moment(data["commentDate"].toString()) : <any>undefined;      
             this.comment = data["comment"];
             this.id = data["id"];
         }
@@ -643,7 +643,7 @@ export class StudentCommentDto implements IStudentCommentDto {
         data = typeof data === 'object' ? data : {};
         data["studentId"] = this.studentId;
         data["protectorId"] = this.protectorId;
-        data["commentDate"] = this.commentDate;
+        data["commentDate"] = this.commentDate ? this.commentDate : <any>undefined;
         data["comment"] = this.comment;
         data["id"] = this.id;
         return data; 
@@ -660,7 +660,7 @@ export class StudentCommentDto implements IStudentCommentDto {
 export interface IStudentCommentDto {
     studentId: string | undefined;
     protectorId: number;
-    commentDate: string | undefined;
+    commentDate: moment.Moment | undefined;
     comment: string | undefined;
     id: string;
 }

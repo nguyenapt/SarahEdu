@@ -97,6 +97,8 @@ import { CreateStudentPaymentDialogComponent } from './student/create-student-pa
 import { StudentPaymentListDialogComponent } from './student/student-payment-list-dialog/student-payment-list-dialog.component';
 import { StudentCommentListDialogComponent } from './student/student-comment-list-dialog/student-comment-list-dialog.component';
 import { CreateStudentCommentDialogComponent } from './student/create-student-comment/create-student-comment-dialog.component';
+import { EditStudentCommentDialogComponent } from './student/edit-student-comment-dialog/edit-student-comment-dialog.component';
+import { EditStudentPaymentDialogComponent } from './student/edit-student-payment-dialog/edit-student-payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -167,7 +169,9 @@ import { CreateStudentCommentDialogComponent } from './student/create-student-co
     CreateStudentPaymentDialogComponent,
     StudentPaymentListDialogComponent,
     StudentCommentListDialogComponent,
-    CreateStudentCommentDialogComponent
+    CreateStudentCommentDialogComponent,
+    EditStudentCommentDialogComponent,
+    EditStudentPaymentDialogComponent
   ],
   imports: [
     CommonModule,    

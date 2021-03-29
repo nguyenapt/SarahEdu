@@ -19,7 +19,6 @@
                 <th style="width: 200px;">Teacher</th>
                 <th>Is learn 1-1</th>
                 <th>Fee</th>
-                <th>Is paid</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-fee>
@@ -43,11 +42,6 @@
                 </td>
                 <td>{{fee.fee | currency: 'VND'}}</td>                
             </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="row">
-                <div class="p-text-right">Totals <span class="badge badge-success">{{total | currency: 'VND'}}</span> Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span></div>
-            </div>
         </ng-template>
     </p-table>
   </div>  

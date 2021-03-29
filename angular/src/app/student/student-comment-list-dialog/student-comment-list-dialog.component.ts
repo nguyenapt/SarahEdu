@@ -4,6 +4,7 @@ import { StudentCommentDto, StudentDto, StudentPaymentDto } from '@shared/servic
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateStudentCommentDialogComponent } from '../create-student-comment/create-student-comment-dialog.component';
+import { EditStudentCommentDialogComponent } from '../edit-student-comment-dialog/edit-student-comment-dialog.component';
 
 
 @Component({
@@ -27,13 +28,18 @@ implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadComments();
+  }
+
+  loadComments(){
     this._studentService.getComments(this.studentId,undefined).subscribe((result) => {
       this.studentComments = result.items;
     });
   }
 
   createComment(){
-    this._modalService.show(
+    let createCommentDialog: BsModalRef;
+    createCommentDialog = this._modalService.show(
       CreateStudentCommentDialogComponent,
       {
         class: 'modal-lg',
@@ -42,11 +48,37 @@ implements OnInit {
         },
       }
     );
+    createCommentDialog.content.onSave.subscribe(() => {
+      this.loadComments();
+    });
   }
   editComment(comment: StudentCommentDto){
-
+    let editCommentDialog: BsModalRef;
+    editCommentDialog = this._modalService.show(
+      EditStudentCommentDialogComponent,
+      {
+        class: 'modal-lg',
+        initialState: {
+          comment: comment,
+        },
+      }
+    );
+    editCommentDialog.content.onSave.subscribe(() => {
+      this.loadComments();
+    });
   }
   deleteComment(comment: StudentCommentDto){
-    
+    abp.message.confirm(
+      'Are you sure to delete this item?',
+      undefined,
+      (result: boolean) => {
+        if (result) {
+          this._studentService.deleteComment(comment.id).subscribe(() => {
+            abp.notify.success(this.l('SuccessfullyDeleted'));
+            this.loadComments();
+          });
+        }
+      }
+    );
   }
 }

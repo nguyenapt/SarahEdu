@@ -25,6 +25,8 @@ import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.prox
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
 import { StudyTimeDto } from '@shared/service-proxies/study-time/dto/studytime-dto';
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
+import { ClassStudentDto } from '@shared/service-proxies/class/dto/class-dto';
+import { ClassServiceProxy } from '@shared/service-proxies/class/class.service.proxy';
 
 @Component({
   templateUrl: 'edit-timesheet-dialog.component.html'
@@ -53,6 +55,9 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
   rooms:RoomDto[]=[];
   selectedRoom: RoomDto;
 
+  classWithStudents:ClassStudentDto[]=[];
+  selectedClass:ClassStudentDto;
+
   startHour = '00:00';
   endHour = '00:00';
   isSingle = false;
@@ -67,6 +72,7 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
     private _courseService: CourseServiceProxy,
     private _studyTimeService: StudyTimeServiceProxy,
     private _roomService: RoomServiceProxy,
+    private _classService: ClassServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
@@ -101,6 +107,10 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
     }); 
     this.timeSheetDate = moment(this.timeSheet.fromDate).format("YYYY-MM-DD");
     this.selectedStudents = this.timeSheet.timeSheetStudents;   
+
+    this._classService.getClassWithStudents().subscribe((result) => {
+      this.classWithStudents = result.items;
+    }); 
   }
 
   changeCourse($event){
@@ -118,6 +128,24 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
     if($event != null){      
       this.startHour = $event.value.fromHour;
       this.endHour = $event.value.toHour;
+    }
+  }
+
+  changeClass($event){
+    if($event != null){      
+      this.selectedClass = $event.value;
+
+      if(this.selectedClass != undefined && this.selectedClass.students != undefined){
+        this.selectedStudents = [];          
+
+        this.selectedClass.students.forEach(function (student) {          
+            var timeSheetStudent = new TimeSheetStudentDto();
+            timeSheetStudent.studentId = student.id;
+            timeSheetStudent.student = student;
+            timeSheetStudent.fee = this.fee;
+            this.selectedStudents.push(timeSheetStudent);             
+        }.bind(this));
+      }
     }
   }
 

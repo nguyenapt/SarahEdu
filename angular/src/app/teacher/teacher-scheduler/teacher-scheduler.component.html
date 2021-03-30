@@ -29,8 +29,8 @@
                         <td>
                             <button type="button" pButton pRipple [pRowToggler]="timeScheduler" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></button>
                         </td>
-                        <td>{{ timeScheduler.start  | date:'dd-MM-yyyy hh:mm a' }}</td>                        
-                        <td>{{ timeScheduler.end  | date:'dd-MM-yyyy hh:mm a' }}</td>
+                        <td>{{ timeScheduler.fromDate  | date:'dd-MM-yyyy hh:mm a' }}</td>                        
+                        <td>{{ timeScheduler.toDate  | date:'dd-MM-yyyy hh:mm a' }}</td>
                         <td>{{ timeScheduler.roomName }}</td>
                         <td>{{ timeScheduler.teacher.fullName }}</td>
                         <td>

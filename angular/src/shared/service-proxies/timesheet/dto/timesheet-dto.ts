@@ -96,6 +96,7 @@ export class TimeSheetDto implements ITimeSheetDto {
     toDate: Date;
     studyTimeId?: string | undefined;
     roomId: string | undefined;
+    roomName: string | undefined;
     teacherId: string | undefined;
     courseSubjectId: string | undefined;
     fee:number | undefined;
@@ -121,6 +122,7 @@ export class TimeSheetDto implements ITimeSheetDto {
             this.toDate = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;
             this.studyTimeId = data["studyTimeId"];
             this.roomId = data["roomId"];
+            this.roomName = data["roomName"];
             this.teacherId = data["teacherId"];
             this.courseSubjectId = data["courseSubjectId"];
             this.fee = data["fee"];
@@ -153,6 +155,7 @@ export class TimeSheetDto implements ITimeSheetDto {
         data["toDate"] = this.toDate ? new Date(this.toDate) : <any>undefined;
         data["studyTimeId"] = this.studyTimeId;
         data["roomId"] = this.roomId;
+        data["roomName"] = this.roomName;
         data["teacherId"] = this.teacherId;
         data["courseSubjectId"] = this.courseSubjectId;
         data["fee"] = this.fee;
@@ -181,6 +184,7 @@ export interface ITimeSheetDto {
     fromDate : Date | undefined;
     toDate : Date | undefined;
     roomId?: string | undefined;
+    roomName: string | undefined;
     studyTimeId?: string | undefined;
     teacherId?: string | undefined;
     courseSubjectId?: string | undefined;

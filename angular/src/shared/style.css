@@ -69,3 +69,11 @@ label:not(.form-check-label):not(.custom-file-label) {
 .modal-xxlg, .modal-xxxl {
   max-width: 1200px;
 }
+
+.margin-top-10{
+  margin-top: 10px;
+}
+
+.padding-top-10{
+  padding-top: 10px;
+}

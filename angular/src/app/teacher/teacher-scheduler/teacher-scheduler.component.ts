@@ -34,6 +34,7 @@ export class TeacherSchedulerComponent extends AppComponentBase {
   toDate: string;
   timeSchedulers: TimeSheetDto[]=[];
   isTableLoading = true;
+  expanded = true;
   constructor(
     injector: Injector,
     private _timesheetService: TimeSheetServiceProxy,

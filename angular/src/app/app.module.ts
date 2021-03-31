@@ -86,6 +86,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule} from 'primeng/tooltip';
 import { OverlayPanelModule} from 'primeng/overlaypanel';
+import { PanelModule} from 'primeng/panel';
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
@@ -190,6 +191,7 @@ import { EditStudentPaymentDialogComponent } from './student/edit-student-paymen
     ColorPickerModule,
     InputNumberModule,
     OverlayPanelModule,
+    PanelModule,
     TooltipModule,
     CollapseModule,
     TabsModule,

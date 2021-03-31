@@ -87,6 +87,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule} from 'primeng/tooltip';
 import { OverlayPanelModule} from 'primeng/overlaypanel';
 import { PanelModule} from 'primeng/panel';
+import { TabViewModule} from 'primeng/tabview';
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
@@ -100,6 +101,8 @@ import { StudentCommentListDialogComponent } from './student/student-comment-lis
 import { CreateStudentCommentDialogComponent } from './student/create-student-comment/create-student-comment-dialog.component';
 import { EditStudentCommentDialogComponent } from './student/edit-student-comment-dialog/edit-student-comment-dialog.component';
 import { EditStudentPaymentDialogComponent } from './student/edit-student-payment-dialog/edit-student-payment-dialog.component';
+import { TeacherPerformanceComponent } from './home/teacher-performance/teacher-performance.component';
+import { StudentNoteComponent } from './home/student-note/student-note.component';
 
 @NgModule({
   declarations: [
@@ -172,7 +175,9 @@ import { EditStudentPaymentDialogComponent } from './student/edit-student-paymen
     StudentCommentListDialogComponent,
     CreateStudentCommentDialogComponent,
     EditStudentCommentDialogComponent,
-    EditStudentPaymentDialogComponent
+    EditStudentPaymentDialogComponent,
+    TeacherPerformanceComponent,
+    StudentNoteComponent
   ],
   imports: [
     CommonModule,    
@@ -192,6 +197,7 @@ import { EditStudentPaymentDialogComponent } from './student/edit-student-paymen
     InputNumberModule,
     OverlayPanelModule,
     PanelModule,
+    TabViewModule,
     TooltipModule,
     CollapseModule,
     TabsModule,

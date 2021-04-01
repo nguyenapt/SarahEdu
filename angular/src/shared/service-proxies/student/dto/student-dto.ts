@@ -1,3 +1,5 @@
+import { CourseSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 import * as moment from 'moment';
 
 export class CreateStudentDto implements ICreateStudentDto {    
@@ -718,4 +720,146 @@ export class StudentCommentPagedResultDto implements IStudentCommentPagedResultD
 export interface IStudentCommentPagedResultDto {
     totalCount: number;
     items: StudentCommentDto[] | undefined;
+}
+
+
+//Student status
+export class StudentStatusDto implements IStudentStatusDto {
+    id: string | undefined;
+    fromDate : Date | undefined;
+    toDate : Date | undefined;
+    roomName: string | undefined;
+    teacher?: TeacherDto | undefined;
+    courseSubject?: CourseSubjectDto | undefined;
+    studentId:string | undefined;
+    attitude:number | undefined;
+    receptiveAbility:number | undefined;
+    description:string | undefined;
+    student:StudentDto | undefined;
+
+    constructor(data?: StudentStatusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+    
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.fromDate = data["fromDate"] ? new Date(data["fromDate"]) : <any>undefined;
+            this.toDate = data["toDate"] ? new Date(data["toDate"]) : <any>undefined;            
+            this.roomName = data["roomName"];            
+            this.teacher = data["teacher"];
+            this.courseSubject = data["courseSubject"];
+            this.studentId = data["studentId"];
+            this.attitude = data["attitude"];
+            this.receptiveAbility = data["receptiveAbility"];
+            this.description = data["description"];
+            this.student = data["student"];
+        }
+    }
+
+    static fromJS(data: any): StudentStatusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentStatusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fromDate"] = this.fromDate ? new Date(this.fromDate) : <any>undefined;
+        data["toDate"] = this.toDate ? new Date(this.toDate) : <any>undefined;        
+        data["roomName"] = this.roomName;        
+        data["teacher"] = this.teacher;
+        data["courseSubject"] = this.courseSubject;
+        data["studentId"] = this.studentId;
+        data["attitude"] = this.attitude;
+        data["receptiveAbility"] = this.receptiveAbility;
+        data["description"] = this.description;
+        data["student"] = this.student;
+        return data; 
+    }
+
+    clone(): StudentStatusDto {
+        const json = this.toJSON();
+        let result = new StudentStatusDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentStatusDto {
+    id: string | undefined;
+    fromDate : Date | undefined;
+    toDate : Date | undefined;
+    roomName: string | undefined;
+    teacher?: TeacherDto | undefined;
+    courseSubject?: CourseSubjectDto | undefined;
+    studentId:string | undefined;
+    attitude:number | undefined;
+    receptiveAbility:number | undefined;
+    description:string | undefined;
+    student:StudentDto | undefined;
+}
+
+
+export class StudentStatusPagedResultDto implements IStudentStatusPagedResultDto {
+    totalCount: number;
+    items: StudentStatusDto[] | undefined;
+
+    constructor(data?: StudentStatusPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(StudentStatusDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StudentStatusPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StudentStatusPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): StudentStatusPagedResultDto {
+        const json = this.toJSON();
+        let result = new StudentStatusPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStudentStatusPagedResultDto {
+    totalCount: number;
+    items: IStudentStatusDto[] | undefined;
 }

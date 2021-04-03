@@ -1,4 +1,4 @@
-<p-table [value]="teacherProductivities">
+<p-table [value]="teacherProductivities" styleClass="p-datatable-sm">
     <ng-template pTemplate="header">
         <tr>            
             <th>Name</th>
@@ -8,9 +8,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-teacher>
         <tr>
-            <td>{{teacher.teacher.fullName}}</td>
+            <td><div [ngStyle]="{'color': teacher.teacher.color ? teacher.teacher.color : 'gray'}">{{teacher.teacher.fullName}}</div></td>
             <td>{{teacher.hour}}</td>
-            <td>{{teacher.fee}}</td>
+            <td>{{teacher.fee | currency: 'VND'}}</td>
         </tr>
     </ng-template>
 </p-table>

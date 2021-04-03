@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <p-panel header="Teacher scheduler">
           <div class="card-body table-responsive p-0">
-            <p-table [value]="timeSchedulers" dataKey="id" [autoLayout]="true">
+            <p-table [value]="timeSchedulers" dataKey="id" [autoLayout]="true" styleClass="p-datatable-sm">
               <ng-template pTemplate="header">
                   <tr>
                       <th style="width: 3rem"></th>
@@ -33,7 +33,7 @@
                   <tr>
                       <td colspan="7">
                           <div class="p-p-3">
-                              <p-table [value]="timeScheduler.timeSheetStudents" dataKey="id">
+                              <p-table [value]="timeScheduler.timeSheetStudents" dataKey="id" styleClass="p-datatable-sm">
                                   <ng-template pTemplate="header">
                                       <tr>
                                           <th style="width: 300px;" pSortableColumn="student.fullName">Student <p-sortIcon field="student.fullName"></p-sortIcon></th>
@@ -81,7 +81,7 @@
         <p-panel header="Teachers">
             <p-tabView>
               <p-tabPanel header="This week" [selected]="true">
-                 <!-- <app-teacher-performance [period]="'THISWEEK'"></app-teacher-performance> -->
+                 <app-teacher-performance [period]="'THISWEEK'"></app-teacher-performance>
               </p-tabPanel>
               <p-tabPanel header="This month">
                 <app-teacher-performance [period]="'THISMONTH'"></app-teacher-performance>

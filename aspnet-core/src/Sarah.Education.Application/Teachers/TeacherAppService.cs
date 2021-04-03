@@ -13,6 +13,7 @@ using Sarah.Education.Teachers.Dto;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.Application.Services.Dto;
+using Sarah.Education.Rooms;
 
 namespace Sarah.Education.Teachers
 {
@@ -20,11 +21,13 @@ namespace Sarah.Education.Teachers
     {
         private readonly IRepository<Teacher, Guid> _teacherRepository;
         private readonly IRepository<TimeSheetEntry, Guid> _timesheetRepository;
+        private readonly RoomAppService _roomService;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public TeacherAppService(IRepository<Teacher, Guid> teacherRepository, IRepository<TimeSheetEntry, Guid> timesheetRepository, IUnitOfWorkManager unitOfWorkManager) : base(teacherRepository)
+        public TeacherAppService(IRepository<Teacher, Guid> teacherRepository, RoomAppService roomService, IRepository<TimeSheetEntry, Guid> timesheetRepository, IUnitOfWorkManager unitOfWorkManager) : base(teacherRepository)
         {
             _teacherRepository = teacherRepository;
             _timesheetRepository = timesheetRepository;
+            _roomService = roomService;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -95,9 +98,11 @@ namespace Sarah.Education.Teachers
         {
             var list = _timesheetRepository.GetAllIncluding(
                 x => x.Teacher,
+                x => x.Room,
                 x => x.TimeSheetEntryStudents)
                 .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate)
-                .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate).ToList();
+                .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate)
+                .ToList();
 
             var returnList = list.GroupBy(x => x.TeacherId)
             .Select(d => new TeacherProductivityTotalDto

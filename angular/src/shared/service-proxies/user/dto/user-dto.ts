@@ -1,3 +1,4 @@
+import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 import * as moment from 'moment';
 
 export class CreateUserDto implements ICreateUserDto {
@@ -86,6 +87,7 @@ export class UserDto implements IUserDto {
     creationTime: moment.Moment;
     roleNames: string[] | undefined;
     id: number;
+    teacher:TeacherDto | undefined;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -106,6 +108,7 @@ export class UserDto implements IUserDto {
             this.fullName = data["fullName"];
             this.lastLoginTime = data["lastLoginTime"] ? moment(data["lastLoginTime"].toString()) : <any>undefined;
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.teacher = data["teacher"];
             if (Array.isArray(data["roleNames"])) {
                 this.roleNames = [] as any;
                 for (let item of data["roleNames"])
@@ -130,6 +133,7 @@ export class UserDto implements IUserDto {
         data["emailAddress"] = this.emailAddress;
         data["isActive"] = this.isActive;
         data["fullName"] = this.fullName;
+        data["teacher"] = this.teacher;
         data["lastLoginTime"] = this.lastLoginTime ? this.lastLoginTime.toISOString() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         if (Array.isArray(this.roleNames)) {
@@ -160,6 +164,7 @@ export interface IUserDto {
     creationTime: moment.Moment;
     roleNames: string[] | undefined;
     id: number;
+    teacher:TeacherDto | undefined;
 }
 
 export class ChangeUserLanguageDto implements IChangeUserLanguageDto {
@@ -354,6 +359,62 @@ export class UserDtoPagedResultDto implements IUserDtoPagedResultDto {
 }
 
 export interface IUserDtoPagedResultDto {
+    totalCount: number;
+    items: UserDto[] | undefined;
+}
+
+
+export class UserPagedResultDto implements IUserPagedResultDto {
+    totalCount: number;
+    items: UserDto[] | undefined;
+
+    constructor(data?: UserPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(UserDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UserPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): UserPagedResultDto {
+        const json = this.toJSON();
+        let result = new UserPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserPagedResultDto {
     totalCount: number;
     items: UserDto[] | undefined;
 }

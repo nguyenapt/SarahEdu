@@ -4,6 +4,7 @@ using Abp.Application.Services.Dto;
 using Abp.Authorization.Users;
 using Abp.AutoMapper;
 using Sarah.Education.Authorization.Users;
+using Sarah.Education.Teachers.Dto;
 
 namespace Sarah.Education.Users.Dto
 {
@@ -36,5 +37,7 @@ namespace Sarah.Education.Users.Dto
         public DateTime CreationTime { get; set; }
 
         public string[] RoleNames { get; set; }
+
+        public TeacherDto Teacher { get; set; }
     }
 }

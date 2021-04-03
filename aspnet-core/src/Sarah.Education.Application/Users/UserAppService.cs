@@ -21,6 +21,9 @@ using Sarah.Education.Roles.Dto;
 using Sarah.Education.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Sarah.Education.Entities;
+using System;
+using Sarah.Education.Teachers.Dto;
 
 namespace Sarah.Education.Users
 {
@@ -28,6 +31,7 @@ namespace Sarah.Education.Users
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
     {
         private readonly UserManager _userManager;
+        private readonly IRepository<Teacher, Guid> _teacherRepository;
         private readonly RoleManager _roleManager;
         private readonly IRepository<Role> _roleRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -39,6 +43,7 @@ namespace Sarah.Education.Users
             UserManager userManager,
             RoleManager roleManager,
             IRepository<Role> roleRepository,
+            IRepository<Teacher, Guid> teacherRepository,
             IPasswordHasher<User> passwordHasher,
             IAbpSession abpSession,
             LogInManager logInManager)
@@ -46,6 +51,7 @@ namespace Sarah.Education.Users
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _teacherRepository = teacherRepository;
             _roleRepository = roleRepository;
             _passwordHasher = passwordHasher;
             _abpSession = abpSession;
@@ -162,6 +168,20 @@ namespace Sarah.Education.Users
             return Repository.GetAllIncluding(x => x.Roles)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword))
                 .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive);
+        }
+
+        public async Task<ListResultDto<UserDto>> GetUsers()
+        {
+            var users = Repository.GetAllList().Select(x => new UserDto() {
+                Id = x.Id,
+                EmailAddress=x.EmailAddress,
+                FullName=x.FullName,
+                Name = x.Name,
+                Surname=x.Surname,
+                UserName = x.UserName,
+                Teacher = ObjectMapper.Map<TeacherDto>(_teacherRepository.FirstOrDefault(st => st.UserId == x.Id))
+            });
+            return new ListResultDto<UserDto>(ObjectMapper.Map<List<UserDto>>(users));
         }
 
         protected override async Task<User> GetEntityByIdAsync(long id)

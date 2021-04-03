@@ -28,6 +28,21 @@ namespace Sarah.Education.Teachers
             _unitOfWorkManager = unitOfWorkManager;
         }
 
+        public override async Task<TeacherDto> CreateAsync(CreateTeacherDto input)
+        {
+            CheckCreatePermission();
+
+            var teacher = ObjectMapper.Map<Teacher>(input);
+
+            teacher.UserId = input.UserId;
+
+            await Repository.InsertAsync(teacher);            
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return MapToEntityDto(teacher);
+        }
+
         public async Task<ListResultDto<TeacherDto>> GetTeachers()
         {
             var teachers = Repository.GetAllList();

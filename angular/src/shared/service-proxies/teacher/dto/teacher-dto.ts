@@ -11,7 +11,7 @@ export class CreateTeacherDto implements ICreateTeacherDto {
     endDate: moment.Moment | undefined;
     isActive: boolean | undefined;
     color: string | undefined;
-
+    userId: number | undefined;
     constructor(data?: ICreateTeacherDto) {
         if (data) {
             for (var property in data) {
@@ -33,6 +33,7 @@ export class CreateTeacherDto implements ICreateTeacherDto {
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.isActive = data["isActive"];
             this.color = data["color"];
+            this.userId = data["userId"];
         }
     }
 
@@ -55,6 +56,7 @@ export class CreateTeacherDto implements ICreateTeacherDto {
         data["endDate"] = this.endDate ? moment.utc(this.dateOfBirth).format(): <any>undefined;
         data["isActive"] = this.isActive;
         data["color"] = this.color;
+        data["userId"] = this.userId;
         return data; 
     }
 
@@ -77,6 +79,7 @@ export interface ICreateTeacherDto {
     endDate: moment.Moment | undefined;
     isActive: boolean | undefined;
     color: string | undefined;
+    userId: number | undefined;
 }
 
 export class TeacherDto implements ITeacherDto {    
@@ -92,6 +95,7 @@ export class TeacherDto implements ITeacherDto {
     salaries: TeacherSalaryDto[] | undefined;
     color: string | undefined;
     id: string;
+    userId: number | undefined;
 
     constructor(data?: ITeacherDto) {
         if (data) {
@@ -115,6 +119,7 @@ export class TeacherDto implements ITeacherDto {
             this.isActive = data["isActive"];
             this.color = data["color"];
             this.id = data["id"];
+            this.userId = data["userId"];
             if (Array.isArray(data["salaries"])) {
                 this.salaries = [] as any;
                 for (let item of data["salaries"])
@@ -143,6 +148,7 @@ export class TeacherDto implements ITeacherDto {
         data["isActive"] = this.isActive;
         data["color"] = this.color;
         data["id"] = this.id;
+        data["userId"] = this.userId;
         if (Array.isArray(this.salaries)) {
             data["salaries"] = [];
             for (let item of this.salaries)
@@ -172,6 +178,7 @@ export interface ITeacherDto {
     salaries :TeacherSalaryDto[] | undefined;
     color: string | undefined;
     id: string;
+    userId: number | undefined;
 }
 
 //salary

@@ -78,7 +78,25 @@
 
     <div class="row padding-top-10">
       <div class="col-12 col-sm-6 col-md-6">
-        <app-teacher-performance></app-teacher-performance>
+        <p-panel header="Teachers">
+            <p-tabView>
+              <p-tabPanel header="This week" [selected]="true">
+                 <!-- <app-teacher-performance [period]="'THISWEEK'"></app-teacher-performance> -->
+              </p-tabPanel>
+              <p-tabPanel header="This month">
+                <app-teacher-performance [period]="'THISMONTH'"></app-teacher-performance>
+              </p-tabPanel>
+              <p-tabPanel header="Last month">
+                <app-teacher-performance [period]="'LASTMONTH'"></app-teacher-performance>
+              </p-tabPanel>
+              <p-tabPanel header="This year">
+                <app-teacher-performance [period]="'THISYEAR'"></app-teacher-performance>
+              </p-tabPanel>
+              <p-tabPanel header="Last year">
+                <app-teacher-performance [period]="'LASTYEAR'"></app-teacher-performance>
+              </p-tabPanel>
+            </p-tabView>
+          </p-panel>
       </div>
 
       <div class="col-12 col-sm-6 col-md-6">

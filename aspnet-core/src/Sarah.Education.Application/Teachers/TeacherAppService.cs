@@ -90,5 +90,24 @@ namespace Sarah.Education.Teachers
 
             return new PagedTeacherProductivityDto() { TotalCount = list.Count, TotalFee = list.Sum(x => x.TimeSheetEntryStudents.Sum(k=>k.Fee)), TotalHour = list.Sum(x => (x.ToDate.Subtract(x.FromDate)).TotalHours), Items = returnList };
         }
+
+        public async Task<PagedTeacherProductivityTotalDto> GetTeacherProductivityTotalAsync(TeacherProductivityTotalResultRequestDto input)
+        {
+            var list = _timesheetRepository.GetAllIncluding(
+                x => x.Teacher,
+                x => x.TimeSheetEntryStudents)
+                .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate)
+                .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate).ToList();
+
+            var returnList = list.GroupBy(x => x.TeacherId)
+            .Select(d => new TeacherProductivityTotalDto
+            {
+                Teacher = ObjectMapper.Map<TeacherDto>(_teacherRepository.FirstOrDefault(st => st.Id == d.Key)),
+                Fee = d.Sum(x => x.TimeSheetEntryStudents.Sum(k=>k.Fee)),
+                Hour = d.Sum(x => x.ToDate.Subtract(x.FromDate).TotalHours)
+            }).ToList();
+
+            return new PagedTeacherProductivityTotalDto() { TotalCount = list.Count, TotalFee = list.Sum(x => x.TimeSheetEntryStudents.Sum(k => k.Fee)), TotalHour = list.Sum(x => (x.ToDate.Subtract(x.FromDate)).TotalHours), Items = returnList };
+        }
     }
 }

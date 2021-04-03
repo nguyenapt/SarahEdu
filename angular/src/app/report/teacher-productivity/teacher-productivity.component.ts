@@ -53,8 +53,8 @@ reportTypes = [] = [
   {
     name: 'This year',
     value: 2,
-    fromDate: moment().startOf('month'),
-    toDate: moment().endOf('month')
+    fromDate: moment().startOf('year'),
+    toDate: moment().endOf('year')
   },
   {
     name: 'Last year',
@@ -71,48 +71,50 @@ reportTypes = [] = [
 ];
 
 
-constructor(
-  injector: Injector,
-  private _teacherService: TeacherServiceProxy,
-  private _modalService: BsModalService
-) {
-  super(injector);
-}
-ngOnInit(): void {
-  this._teacherService
-    .getTeachers()            
-    .subscribe((result) => {
-      this.teachers = result.items;        
-  });
-}
+  constructor(
+    injector: Injector,
+    private _teacherService: TeacherServiceProxy,
+    private _modalService: BsModalService
+  ) {
+    super(injector);
+  }
 
-searchData(    
-): void {    
-  this._teacherService
-    .getProductivities(        
-      this.teacher.id,
-      0,
-      this.rows
-    )      
-    .subscribe((result) => {
-      this.teacherProductivities = result.items;
-      this.totalRecords = result.totalCount;
-      this.total = result.totalFee;
-      this.totalHour = result.totalHour;
-  });
-}
-loadProductivities(event: LazyLoadEvent) {  
-  if(this.teacher != null){
-    this.loading = true;
-    setTimeout(() => {
-      this._teacherService.getProductivities(this.teacher.id, event.first ,event.rows).subscribe((result) => {
+  ngOnInit(): void {
+    this._teacherService
+      .getTeachers()            
+      .subscribe((result) => {
+        this.teachers = result.items;        
+    });
+  }
+
+  searchData(    
+  ): void {    
+    this._teacherService
+      .getProductivities(        
+        this.teacher.id,
+        0,
+        this.rows
+      )      
+      .subscribe((result) => {
         this.teacherProductivities = result.items;
         this.totalRecords = result.totalCount;
         this.total = result.totalFee;
         this.totalHour = result.totalHour;
-        this.loading = false;
-      })
-    }, 1000);
+    });
   }
-}
+
+  loadProductivities(event: LazyLoadEvent) {  
+    if(this.teacher != null){
+      this.loading = true;
+      setTimeout(() => {
+        this._teacherService.getProductivities(this.teacher.id, event.first ,event.rows).subscribe((result) => {
+          this.teacherProductivities = result.items;
+          this.totalRecords = result.totalCount;
+          this.total = result.totalFee;
+          this.totalHour = result.totalHour;
+          this.loading = false;
+        })
+      }, 1000);
+    }
+  }
 }

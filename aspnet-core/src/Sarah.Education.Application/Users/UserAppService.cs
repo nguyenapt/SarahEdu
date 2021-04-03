@@ -172,7 +172,7 @@ namespace Sarah.Education.Users
 
         public async Task<ListResultDto<UserDto>> GetUsers()
         {
-            var users = Repository.GetAllList().Select(x => new UserDto() {
+            var users = Repository.GetAllList().Where(x=>x.IsActive == true).Select(x => new UserDto() {
                 Id = x.Id,
                 EmailAddress=x.EmailAddress,
                 FullName=x.FullName,

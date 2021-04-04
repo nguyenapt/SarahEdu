@@ -103,6 +103,7 @@ import { EditStudentCommentDialogComponent } from './student/edit-student-commen
 import { EditStudentPaymentDialogComponent } from './student/edit-student-payment-dialog/edit-student-payment-dialog.component';
 import { TeacherPerformanceComponent } from './home/teacher-performance/teacher-performance.component';
 import { StudentNoteComponent } from './home/student-note/student-note.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -177,7 +178,8 @@ import { StudentNoteComponent } from './home/student-note/student-note.component
     EditStudentCommentDialogComponent,
     EditStudentPaymentDialogComponent,
     TeacherPerformanceComponent,
-    StudentNoteComponent
+    StudentNoteComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,    

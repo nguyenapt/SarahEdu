@@ -21,7 +21,7 @@ export class SettingServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    update(body: SettingDto | undefined): Observable<SettingDto> {
+    update(body: SettingDto[] | undefined): Observable<SettingDto> {
         let url_ = this.baseUrl + "/api/services/app/SiteSetting/ChangeSiteSettingDefinitions";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -37,7 +37,7 @@ export class SettingServiceProxy {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {

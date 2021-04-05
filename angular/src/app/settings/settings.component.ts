@@ -15,14 +15,13 @@ import { SettingListDto, SettingPagedResultDto } from '@shared/service-proxies/s
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent extends AppComponentBase {
-
+  saving = false;
   settings:SettingListDto[]=[];
   isLoading: boolean = true;
+  itemChange:any[]=[];
   constructor(
     injector: Injector,
     private _settingService: SettingServiceProxy,
-    private _roomService: RoomServiceProxy,
-    private _modalService: BsModalService
   ) {
     super(injector);
   }
@@ -46,6 +45,29 @@ export class SettingsComponent extends AppComponentBase {
     });
   }
   Save(){
-    
+    this._settingService
+    .update(this.itemChange)
+    .pipe(
+      finalize(() => {
+        this.saving = false;
+      })
+    )
+    .subscribe(() => {
+      this.notify.info(this.l('SavedSuccessfully'));
+    });
+  }
+
+  settingChange(name,$event){
+    if($event != null){      
+      var currentItem = this.itemChange.find(e => e.name === name);         
+      if(currentItem !=null) {
+        let index = this.itemChange.indexOf(currentItem);
+        this.itemChange[index] = {name:name,value:$event};
+      }
+      else{
+        let item = {name:name,value:$event};
+        this.itemChange.push(item);
+      }
+    }
   }
 }

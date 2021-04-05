@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Authorization;
 using Abp.Configuration;
@@ -27,15 +28,13 @@ namespace Sarah.Education.SiteSetting
                     Name = x.Key, Value = x.Select(s => new SarahSiteSetting(s.Name, GetDisplayName(s.Name), s.Value)).ToList()
             }).ToList();
         }
-
         [HttpPost]
-        public bool ChangeSiteSettingDefinitions(IEnumerable<KeyValueDto> changeValues)
+        public async void ChangeSiteSettingDefinitions(KeyValueDto[] changeValues)
         {
             foreach (var changeValue in changeValues)
             {
                 _settingManager.ChangeSettingForApplication(changeValue.Name, changeValue.Value);
             }
-            return true;
         }
 
         private string RuleForGroupBy(ISettingValue setting)

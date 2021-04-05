@@ -113,7 +113,7 @@ namespace Sarah.Education.Courses
                     CourseName = k.Course.Name,
                     SubjectName = k.Subject.Name
                 }).ToArray(),
-                CourseFees = x.CourseFees.Where(x => x.IsActive != false).Select(k => new CourseFeeDto()
+                CourseFees = x.CourseFees.Where(y => y.IsActive != false).Select(k => new CourseFeeDto()
                 {
                     Id = k.Id,
                     Fee = k.Fee,

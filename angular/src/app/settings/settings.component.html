@@ -23,8 +23,7 @@
                                 name="value"
                                 id="value"                                
                                 [(ngModel)]="item.value"
-                                #nameModel="ngModel"
-                                #nameEl
+                                (ngModelChange)="settingChange(item.name,$event)"
                               />
                             </div>
                         </div>

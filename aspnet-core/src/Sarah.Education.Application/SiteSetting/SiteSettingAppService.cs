@@ -20,10 +20,12 @@ namespace Sarah.Education.SiteSetting
             _settingManager = settingManager;
         }
         
-        public Dictionary<string, List<SarahSiteSetting>> GetSiteSettingDefinitions()
+        public List<SarahListSiteSetting> GetSiteSettingDefinitions()
         {
-            return _settingManager.GetAllSettingValues().GroupBy(RuleForGroupBy)
-                .ToDictionary(x => x.Key, x => x.Select(s => new SarahSiteSetting(s.Name, GetDisplayName(s.Name), s.Value)).ToList());
+            return _settingManager.GetAllSettingValues().GroupBy(RuleForGroupBy).Select(x=> new SarahListSiteSetting
+            {
+                    Name = x.Key, Value = x.Select(s => new SarahSiteSetting(s.Name, GetDisplayName(s.Name), s.Value)).ToList()
+            }).ToList();
         }
 
         [HttpPost]

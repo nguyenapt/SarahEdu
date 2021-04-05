@@ -6,7 +6,7 @@ namespace Sarah.Education.SiteSetting
 {
     public interface ISiteSettingAppService
     {
-        public Dictionary<string, List<SarahSiteSetting>> GetSiteSettingDefinitions();
-        public bool ChangeSiteSettingDefinitions(IEnumerable<KeyValueDto> changeValues);
+        List<SarahListSiteSetting> GetSiteSettingDefinitions();
+        bool ChangeSiteSettingDefinitions(IEnumerable<KeyValueDto> changeValues);
     }
 }

@@ -5,7 +5,7 @@ using Abp.Dependency;
 
 namespace Sarah.Education.Email.Helper
 {
-    public interface IETEmailHelper : ITransientDependency
+    public interface IEmailHelper : ITransientDependency
     {
         Task<bool> SendMailGenericAsync<T>(
             string emailTemplateType,

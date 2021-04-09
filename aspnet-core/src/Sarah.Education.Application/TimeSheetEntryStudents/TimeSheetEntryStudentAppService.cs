@@ -9,10 +9,12 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Sarah.Education.Entities;
 using Microsoft.EntityFrameworkCore;
+using Sarah.Education.Email.Dto;
 using Sarah.Education.Students.Dto;
 using Sarah.Education.Teachers.Dto;
 using Task = System.Threading.Tasks.Task;
 using Sarah.Education.TimeSheetEntryStudents.Dto;
+using Sarah.Education.Email.Helper;
 
 namespace Sarah.Education.TimeSheetEntryStudents
 {
@@ -21,10 +23,12 @@ namespace Sarah.Education.TimeSheetEntryStudents
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetEntryStudentRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IRepository<Student, Guid> _studentRepository;
-        public TimeSheetEntryStudentAppService(IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Student, Guid> studentRepository, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryStudentRepository)
+        private readonly IEmailHelper _emailHelper;
+        public TimeSheetEntryStudentAppService(IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Student, Guid> studentRepository, IEmailHelper emailHelper, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryStudentRepository)
         {
             _timeSheetEntryStudentRepository = timeSheetEntryStudentRepository;
             _studentRepository = studentRepository;
+            _emailHelper = emailHelper;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -75,6 +79,27 @@ namespace Sarah.Education.TimeSheetEntryStudents
                 }).ToList();
 
             return new ListResultDto<TimeSheetEntryStudentStatusDto>(students);
+        }
+
+        public async void SendWarningAsync()
+        {
+            var warningEmailDto = new WarningEmailDto
+            {
+                ProtectorFullName = "Lo Nguyen",
+                StudentFullName = "San San",
+                Month = "4",
+                Year= "2021",
+                EmailSupport = "thanh.mien@gmail.com",
+                PhoneSupport = "0934.678.595",
+                Detail = "sieu quay"
+            };
+
+            _emailHelper.SendMailAsync(SarahConsts.SarahEmailSettings.SendWarningTemplateResourceName,
+                new List<string> { "lo.nguyen@gmail.com" },
+                null,
+                null,
+                warningEmailDto,
+                null);
         }
     }
 }

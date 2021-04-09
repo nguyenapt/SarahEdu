@@ -10,7 +10,7 @@ using Abp.Net.Mail.Smtp;
 
 namespace Sarah.Education.Email.Helper
 {
-    public class ETEmailHelper : IETEmailHelper
+    public class EmailHelper : IEmailHelper
     {
         private readonly IEmailSender _emailSender;
         private readonly ISmtpEmailSenderConfiguration _configuration;
@@ -19,7 +19,7 @@ namespace Sarah.Education.Email.Helper
         protected virtual string ReplacementKeyStartsWith { get; set; } = "{{";
         protected virtual string ReplacementKeyEndsWith { get; set; } = "}}";
 
-        public ETEmailHelper(
+        public EmailHelper(
             IEmailSender emailSender,
             ISmtpEmailSenderConfiguration configuration,
             ISettingManager settingManager)

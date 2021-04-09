@@ -63,7 +63,7 @@
 			<td colspan='2' style='padding:30px 20px; background:#fff; font-size:12px;'>
 				<h2>Dear {{ProtectorFullName}},</h2>
 				<br/>
-                <p>Chúng tôi xin gửi đến quý phụ huynh thông báo tiền học phí của con: {{StudentFullName}} trong tháng {{Month}}, thông tin chi tiết quý phụ huynh có thể xem trong bảng sau:</p>
+                <p>Chúng tôi xin gửi đến quý phụ huynh thông báo tiền học phí của con: {{StudentFullName}} trong tháng {{Month}}/{{Year}}, thông tin chi tiết quý phụ huynh có thể xem trong bảng sau:</p>
 		        <br/>	
                 {{Detail}}
                 <p>Có bất kỳ câu hỏi nào xin quý phụ huynh vui lòng liên hệ theo thông tin sau</p>
@@ -124,7 +124,7 @@
 			<td colspan='2' style='padding:30px 20px; background:#fff; font-size:12px;'>
 				<h2>Dear {{ProtectorFullName}},</h2>
 				<br/>
-                <p>Chúng tôi xin gửi đến quý phụ huynh tình hình học tập của con: {{StudentFullName}} trong tháng {{Month}}, thông tin chi tiết quý phụ huynh có thể xem trong bảng sau:</p>
+                <p>Chúng tôi xin gửi đến quý phụ huynh tình hình học tập của con: {{StudentFullName}} trong tháng {{Month}}/{{Year}}, thông tin chi tiết quý phụ huynh có thể xem trong bảng sau:</p>
 		        <br/>	
                 {{Detail}}
                 <p>Có bất kỳ câu hỏi nào xin quý phụ huynh vui lòng liên hệ theo thông tin sau</p>

@@ -80,7 +80,6 @@ namespace Sarah.Education.TimeSheetEntryStudents
                     StudentId = x.StudentId,
                     Teacher = x.TimeSheetEntry.Teacher != null ? ObjectMapper.Map<TeacherDto>(x.TimeSheetEntry.Teacher): null                    
                 }).ToList();
-            SendWarningAsync();
             return new ListResultDto<TimeSheetEntryStudentStatusDto>(students);
         }
 

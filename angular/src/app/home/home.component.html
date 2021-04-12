@@ -1,107 +1,176 @@
 ﻿<section class="content px-2">
   <div class="container-fluid">
-    <div class="row padding-top-10">
-      <div class="col-md-12">
-        <p-panel header="Teacher scheduler">
-          <div class="card-body table-responsive p-0">
-            <p-table [value]="timeSchedulers" dataKey="id" [autoLayout]="true" styleClass="p-datatable-sm">
-              <ng-template pTemplate="header">
-                  <tr>
-                      <th style="width: 3rem"></th>
-                      <th style="width: 200px;" pSortableColumn="start">From <p-sortIcon field="start"></p-sortIcon></th>
-                      <th style="width: 200px;" pSortableColumn="end">To <p-sortIcon field="end"></p-sortIcon></th>
-                      <th style="width: 250px;" pSortableColumn="roomName">Room <p-sortIcon field="roomName"></p-sortIcon></th>
-                      <th pSortableColumn="teacher.fullName">Teacher <p-sortIcon field="teacher.fullName"></p-sortIcon></th>
-                      <th style="width: 250px;" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-                  </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-timeScheduler let-expanded="expanded">
-                  <tr>
-                      <td>
-                          <button type="button" pButton pRipple [pRowToggler]="timeScheduler" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></button>
-                      </td>
-                      <td>{{ timeScheduler.fromDate  | date:'dd-MM-yyyy hh:mm a' }}</td>                        
-                      <td>{{ timeScheduler.toDate  | date:'dd-MM-yyyy hh:mm a' }}</td>
-                      <td>{{ timeScheduler.roomName }}</td>
-                      <td>{{ timeScheduler.teacher.fullName }}</td>
-                      <td>
-                          <span [class]="'customer-badge status-' + timeScheduler.status">{{ getTextByValue(statuses,timeScheduler.status) }}</span>
-                      </td>
-                  </tr>
-              </ng-template>
-              <ng-template pTemplate="rowexpansion" let-timeScheduler>
-                  <tr>
-                      <td colspan="7">
-                          <div class="p-p-3">
-                              <p-table [value]="timeScheduler.timeSheetStudents" dataKey="id" styleClass="p-datatable-sm">
-                                  <ng-template pTemplate="header">
-                                      <tr>
-                                          <th style="width: 300px;" pSortableColumn="student.fullName">Student <p-sortIcon field="student.fullName"></p-sortIcon></th>
-                                          <th style="width: 300px;" pSortableColumn="attitude">Attitude <p-sortIcon field="attitude"></p-sortIcon></th>
-                                          <th style="width: 300px;" pSortableColumn="receptiveAbility">Receptive Ability <p-sortIcon field="receptiveAbility"></p-sortIcon></th>
-                                          <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
-                                          <!--TODO: Fee-->
-                                          <th style="width: 4rem"></th>
-                                      </tr>
-                                  </ng-template>
-                                  <ng-template pTemplate="body" let-timeSheetStudent>
-                                      <tr>
-                                          <td>{{timeSheetStudent.student.fullName}}</td>
-                                          <td>
-                                              <span [class]="'customer-badge attitude-' + timeSheetStudent.attitude">{{ getTextByValue(attitudes,timeSheetStudent.attitude) }}</span>
-                                          </td>
-                                          <td>
-                                              <span [class]="'customer-badge attitude-' + timeSheetStudent.receptiveAbility">{{ getTextByValue(attitudes,timeSheetStudent.receptiveAbility) }}</span>
-                                          </td>
-                                          <td>{{timeSheetStudent.description}}</td>
-                                          <!--TODO: Fee-->
-                                          <td>
-                                              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="showCreateOrEditTeacherDialog(timeSheetStudent)"></button>                            
-                                          </td>
-                                      </tr>
-                                  </ng-template>
-                                  <ng-template pTemplate="emptymessage">
-                                      <tr>
-                                          <td colspan="6">There are no student for this time scheduler yet.</td>
-                                      </tr>
-                                  </ng-template>
-                              </p-table>
-                          </div>
-                      </td>
-                  </tr>
-              </ng-template>
-          </p-table>
-          </div>
-        </p-panel>
-      </div>
-    </div>
 
-    <div class="row padding-top-10">
-      <div class="col-12 col-sm-6 col-md-6">
-        <p-panel header="Teachers">
-            <p-tabView>
-              <p-tabPanel header="This week" [selected]="true">
-                 <app-teacher-performance [period]="'THISWEEK'"></app-teacher-performance>
-              </p-tabPanel>
-              <p-tabPanel header="This month">
-                <app-teacher-performance [period]="'THISMONTH'"></app-teacher-performance>
-              </p-tabPanel>
-              <p-tabPanel header="Last month">
-                <app-teacher-performance [period]="'LASTMONTH'"></app-teacher-performance>
-              </p-tabPanel>
-              <p-tabPanel header="This year">
-                <app-teacher-performance [period]="'THISYEAR'"></app-teacher-performance>
-              </p-tabPanel>
-              <p-tabPanel header="Last year">
-                <app-teacher-performance [period]="'LASTYEAR'"></app-teacher-performance>
-              </p-tabPanel>
-            </p-tabView>
+    <div *ngIf="checkRoleIsAdmin(); else notAdmin">
+      <div class="row padding-top-10">
+        <div class="col-md-8">
+          <p-panel header="Teacher scheduler">
+            <div class="card-body table-responsive p-0">
+              <p-table [value]="timeSchedulers" dataKey="id" [autoLayout]="true" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th style="width: 200px;" pSortableColumn="start">From <p-sortIcon field="start"></p-sortIcon></th>
+                        <th style="width: 200px;" pSortableColumn="end">To <p-sortIcon field="end"></p-sortIcon></th>
+                        <th style="width: 250px;" pSortableColumn="roomName">Room <p-sortIcon field="roomName"></p-sortIcon></th>
+                        <th pSortableColumn="teacher.fullName">Teacher <p-sortIcon field="teacher.fullName"></p-sortIcon></th>
+                        <th style="width: 250px;" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-timeScheduler let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button type="button" pButton pRipple [pRowToggler]="timeScheduler" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></button>
+                        </td>
+                        <td>{{ timeScheduler.fromDate  | date:'dd-MM-yyyy hh:mm a' }}</td>                        
+                        <td>{{ timeScheduler.toDate  | date:'dd-MM-yyyy hh:mm a' }}</td>
+                        <td>{{ timeScheduler.roomName }}</td>
+                        <td>{{ timeScheduler.teacher.fullName }}</td>
+                        <td>
+                            <span [class]="'customer-badge status-' + timeScheduler.status">{{ getTextByValue(statuses,timeScheduler.status) }}</span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-timeScheduler>
+                    <tr>
+                        <td colspan="7">
+                            <div class="p-p-3">
+                                <p-table [value]="timeScheduler.timeSheetStudents" dataKey="id" styleClass="p-datatable-sm">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width: 300px;" pSortableColumn="student.fullName">Student <p-sortIcon field="student.fullName"></p-sortIcon></th>
+                                            <th style="width: 300px;" pSortableColumn="attitude">Attitude <p-sortIcon field="attitude"></p-sortIcon></th>
+                                            <th style="width: 300px;" pSortableColumn="receptiveAbility">Receptive Ability <p-sortIcon field="receptiveAbility"></p-sortIcon></th>
+                                            <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+                                            <!--TODO: Fee-->
+                                            <th style="width: 4rem"></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-timeSheetStudent>
+                                        <tr>
+                                            <td>{{timeSheetStudent.student.fullName}}</td>
+                                            <td>
+                                                <span [class]="'customer-badge attitude-' + timeSheetStudent.attitude">{{ getTextByValue(attitudes,timeSheetStudent.attitude) }}</span>
+                                            </td>
+                                            <td>
+                                                <span [class]="'customer-badge attitude-' + timeSheetStudent.receptiveAbility">{{ getTextByValue(attitudes,timeSheetStudent.receptiveAbility) }}</span>
+                                            </td>
+                                            <td>{{timeSheetStudent.description}}</td>
+                                            <!--TODO: Fee-->
+                                            <td>
+                                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="showCreateOrEditTeacherDialog(timeSheetStudent)"></button>                            
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="6">There are no student for this time scheduler yet.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
           </p-panel>
-      </div>
+        </div>
 
-      <div class="col-12 col-sm-6 col-md-6">
-        <app-student-note></app-student-note>
+        <div class="col-12 col-sm-4 col-md-4">
+          <p-panel header="Teachers">
+              <p-tabView>
+                <p-tabPanel header="This week" [selected]="true">
+                   <app-teacher-performance [period]="'THISWEEK'"></app-teacher-performance>
+                </p-tabPanel>
+                <p-tabPanel header="This month">
+                  <app-teacher-performance [period]="'THISMONTH'"></app-teacher-performance>
+                </p-tabPanel>
+              </p-tabView>
+            </p-panel>
+            <div class=" padding-top-10">
+              <app-student-note></app-student-note>
+            </div>
+        </div>
       </div>
     </div>
+    <ng-template #notAdmin>
+      <div class="row padding-top-10">
+        <div class="col-md-12">
+          <p-panel header="Teacher scheduler">
+            <div class="card-body table-responsive p-0">
+              <p-table [value]="timeSchedulers" dataKey="id" [autoLayout]="true" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th style="width: 200px;" pSortableColumn="start">From <p-sortIcon field="start"></p-sortIcon></th>
+                        <th style="width: 200px;" pSortableColumn="end">To <p-sortIcon field="end"></p-sortIcon></th>
+                        <th style="width: 250px;" pSortableColumn="roomName">Room <p-sortIcon field="roomName"></p-sortIcon></th>
+                        <th pSortableColumn="teacher.fullName">Teacher <p-sortIcon field="teacher.fullName"></p-sortIcon></th>
+                        <th style="width: 250px;" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-timeScheduler let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button type="button" pButton pRipple [pRowToggler]="timeScheduler" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></button>
+                        </td>
+                        <td>{{ timeScheduler.fromDate  | date:'dd-MM-yyyy hh:mm a' }}</td>                        
+                        <td>{{ timeScheduler.toDate  | date:'dd-MM-yyyy hh:mm a' }}</td>
+                        <td>{{ timeScheduler.roomName }}</td>
+                        <td>{{ timeScheduler.teacher.fullName }}</td>
+                        <td>
+                            <span [class]="'customer-badge status-' + timeScheduler.status">{{ getTextByValue(statuses,timeScheduler.status) }}</span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-timeScheduler>
+                    <tr>
+                        <td colspan="7">
+                            <div class="p-p-3">
+                                <p-table [value]="timeScheduler.timeSheetStudents" dataKey="id" styleClass="p-datatable-sm">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width: 300px;" pSortableColumn="student.fullName">Student <p-sortIcon field="student.fullName"></p-sortIcon></th>
+                                            <th style="width: 300px;" pSortableColumn="attitude">Attitude <p-sortIcon field="attitude"></p-sortIcon></th>
+                                            <th style="width: 300px;" pSortableColumn="receptiveAbility">Receptive Ability <p-sortIcon field="receptiveAbility"></p-sortIcon></th>
+                                            <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+                                            <!--TODO: Fee-->
+                                            <th style="width: 4rem"></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-timeSheetStudent>
+                                        <tr>
+                                            <td>{{timeSheetStudent.student.fullName}}</td>
+                                            <td>
+                                                <span [class]="'customer-badge attitude-' + timeSheetStudent.attitude">{{ getTextByValue(attitudes,timeSheetStudent.attitude) }}</span>
+                                            </td>
+                                            <td>
+                                                <span [class]="'customer-badge attitude-' + timeSheetStudent.receptiveAbility">{{ getTextByValue(attitudes,timeSheetStudent.receptiveAbility) }}</span>
+                                            </td>
+                                            <td>{{timeSheetStudent.description}}</td>
+                                            <!--TODO: Fee-->
+                                            <td>
+                                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="showCreateOrEditTeacherDialog(timeSheetStudent)"></button>                            
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="6">There are no student for this time scheduler yet.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+    </ng-template>
+    
   </div>
 </section>

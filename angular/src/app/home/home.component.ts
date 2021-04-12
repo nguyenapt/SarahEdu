@@ -8,6 +8,8 @@ import { trigger,state,style,transition,animate } from '@angular/animations';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { KeyValueItem } from '@shared/interface/keyvalue-item';
 import { TeacherSchedulerDialogComponent } from '@app/teacher/teacher-scheduler-dialog/teacher-scheduler-dialog.component';
+import { UserServiceProxy } from '@shared/service-proxies/user/user.service.proxy';
+import { UserDto } from '@shared/service-proxies/user/dto/user-dto';
 
 @Component({
   templateUrl: './home.component.html',
@@ -36,6 +38,7 @@ export class HomeComponent extends AppComponentBase {
     injector: Injector,
     private _timesheetService: TimeSheetServiceProxy,
     private _roomService: RoomServiceProxy,
+    private _userService: UserServiceProxy,
     private _modalService: BsModalService
   ) {
     super(injector);
@@ -60,6 +63,10 @@ export class HomeComponent extends AppComponentBase {
     this.loadTimeScheduler(() => {
       this.isTableLoading = false;
     });
+  }
+
+  checkRoleIsAdmin(){
+    return this.permission.isGranted("Pages.Tenants");    
   }
 
   loadTimeScheduler(finishedCallback: Function)  {

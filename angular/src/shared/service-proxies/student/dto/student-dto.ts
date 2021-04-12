@@ -1,4 +1,5 @@
 import { CourseSubjectDto } from '@shared/service-proxies/course/dto/course-dto';
+import { ProtectorDto } from '@shared/service-proxies/protector/dto/protector-dto';
 import { TeacherDto } from '@shared/service-proxies/teacher/dto/teacher-dto';
 import * as moment from 'moment';
 
@@ -105,6 +106,7 @@ export class StudentDto implements IStudentDto {
     isActive: boolean | undefined;
     description: string | undefined;
     courseSubjects: string[] | undefined;
+    protector:ProtectorDto| undefined;
     id: string;
 
     constructor(data?: IStudentDto) {
@@ -128,6 +130,7 @@ export class StudentDto implements IStudentDto {
             this.className = data["className"];
             this.description = data["description"]; 
             this.isActive = data["isActive"];
+            this.protector = data["protector"];
             if (Array.isArray(data["courseSubjects"])) {
                 this.courseSubjects = [] as any;
                 for (let item of data["courseSubjects"])
@@ -156,6 +159,7 @@ export class StudentDto implements IStudentDto {
         data["className"] = this.className;
         data["description"] = this.description;            
         data["isActive"] = this.isActive;
+        data["protector"] = this.protector;
         if (Array.isArray(this.courseSubjects)) {
             data["courseSubjects"] = [];
             for (let item of this.courseSubjects)
@@ -185,6 +189,7 @@ export interface IStudentDto {
     isActive: boolean | undefined;
     description: string | undefined;
     courseSubjects: string[] | undefined;
+    protector:ProtectorDto| undefined;
     id: string;
 }
 

@@ -4,6 +4,7 @@ using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Sarah.Education.Courses.Dto;
 using Sarah.Education.Entities;
+using Sarah.Education.Protectors.Dto;
 using Sarah.Education.Students.Dto;
 using Sarah.Education.Teachers.Dto;
 
@@ -22,6 +23,6 @@ namespace Sarah.Education.TimeSheetEntryStudents.Dto
         public int? Attitude { get; set; }
         public int? ReceptiveAbility { get; set; }
         public string Description { get; set; }
-        public StudentDto Student { get; set; }
+        public StudentDto Student { get; set; }        
     }
 }

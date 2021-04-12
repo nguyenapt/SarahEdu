@@ -139,8 +139,7 @@ namespace Sarah.Education.Email.Helper
                 }
             }
             mail.IsBodyHtml = true;
-            mail.BodyEncoding = Encoding.UTF8;
-
+            mail.BodyEncoding = Encoding.UTF8;            
             _emailSender.SendAsync(mail);       
         }
 

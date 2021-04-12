@@ -16,6 +16,7 @@ using Abp.AutoMapper;
 using Sarah.Education.Subjects.Dto;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Sarah.Education.Protectors.Dto;
 
 namespace Sarah.Education.Students
 {
@@ -25,12 +26,13 @@ namespace Sarah.Education.Students
         private readonly IRepository<StudentPayment, Guid> _studentPaymentRepository;
         private readonly IRepository<ProtectorStudentComment, Guid> _protectorStudentCommentRepository;
         private readonly IRepository<ProtectorStudent, Guid> _protectorStudentRepository;
+        private readonly IRepository<Protector, Guid> _protectorRepository;
         private readonly IRepository<CourseSubject, Guid> _courseSubjectRepository;
         private readonly IRepository<StudentCourseSubject, Guid> _studentCourseSubjectRepository;
         private readonly IRepository<TimeSheetEntry, Guid> _timeSheetRepository;
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetStudentRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<StudentPayment, Guid> studentPaymentRepository, IRepository<ProtectorStudentComment, Guid> protectorStudentCommentRepository, IRepository<ProtectorStudent, Guid> protectorStudentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
+        public StudentAppService(IRepository<Student, Guid> studentRepository, IRepository<StudentPayment, Guid> studentPaymentRepository, IRepository<ProtectorStudentComment, Guid> protectorStudentCommentRepository, IRepository<ProtectorStudent, Guid> protectorStudentRepository, IRepository<CourseSubject, Guid> courseSubjectRepository, IRepository<StudentCourseSubject, Guid> studentCourseSubjectRepository, IRepository<TimeSheetEntry, Guid> timeSheetRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetStudentRepository, IRepository<Protector, Guid> protectorRepository, IUnitOfWorkManager unitOfWorkManager) : base(studentRepository)
         {
             _studentRepository = studentRepository;
             _studentPaymentRepository = studentPaymentRepository;
@@ -40,6 +42,7 @@ namespace Sarah.Education.Students
             _studentCourseSubjectRepository = studentCourseSubjectRepository;
             _timeSheetRepository = timeSheetRepository;
             _timeSheetStudentRepository = timeSheetStudentRepository;
+            _protectorRepository = protectorRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -284,6 +287,23 @@ namespace Sarah.Education.Students
         {
             var comment = await _protectorStudentCommentRepository.GetAsync(input.Id);
             await _protectorStudentCommentRepository.DeleteAsync(comment);
+        }
+
+        public async Task<StudentDto> GetStudentAndProtector(Guid Id)
+        {
+            var student = _studentRepository.GetAllIncluding(x=>x.ProtectorStudents).Where(x=>x.Id == Id).FirstOrDefault();
+            var studentDto = ObjectMapper.Map<StudentDto>(student);
+            var protector = student.ProtectorStudents.Select(x=> new ProtectorStudentDto {
+                ProtectorId = x.ProtectorId,
+                StudentId = x.StudentId,
+                Protector = ObjectMapper.Map<ProtectorDto>(_protectorRepository.FirstOrDefault(y=>y.Id == x.ProtectorId)),
+            }).ToList().Where(x => x.Protector.IsActive == true).FirstOrDefault(); 
+            
+            if(protector != null)
+            {
+                studentDto.Protector = protector.Protector;
+            }
+            return studentDto;
         }
     }
 }

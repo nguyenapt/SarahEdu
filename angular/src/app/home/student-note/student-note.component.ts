@@ -6,7 +6,7 @@ import { trigger,state,style,transition,animate } from '@angular/animations';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { KeyValueItem } from '@shared/interface/keyvalue-item';
 import { StudentServiceProxy } from '@shared/service-proxies/student/student.service.proxy';
-import { StudentStatusDto, StudentStatusPagedResultDto } from '@shared/service-proxies/student/dto/student-dto';
+import { StudentDto, StudentStatusDto, StudentStatusPagedResultDto } from '@shared/service-proxies/student/dto/student-dto';
 
 @Component({
   selector: 'app-student-note',
@@ -23,7 +23,9 @@ export class StudentNoteComponent extends AppComponentBase implements OnInit {
   expanded = true;
 
   rowGroupMetadata: any;
-
+  student:StudentDto;
+  display = false;
+  position="right";
   constructor(
     injector: Injector,
     private _studentService: StudentServiceProxy,    
@@ -70,6 +72,11 @@ export class StudentNoteComponent extends AppComponentBase implements OnInit {
         var self = this;
         this.studentStatuses = result.items; 
       });
+  }
+
+  setSelected(student: StudentDto){
+    this.student = student;
+    this.display = true;
   }
 
   updateRowGroupMetaData() {

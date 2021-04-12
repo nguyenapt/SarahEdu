@@ -13,6 +13,7 @@ namespace Sarah.Education.Students
     {
         Task<ListResultDto<StudentDto>> GetStudents();
         Task<PagedStudentFeeDto> GetStudentFees(StudentFeeResultRequestDto input);
+        Task<StudentDto> GetStudentAndProtector(Guid input);
     }
 }
 

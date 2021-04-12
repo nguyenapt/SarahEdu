@@ -102,5 +102,12 @@ namespace Sarah.Education.Protectors
 
             return protector;
         }
+
+        public async Task<List<ProtectorDto>> GetProtectorAsync(Guid Id)
+        {
+            var protectors = _protectorStudentRepository.GetAllIncluding(x => x.Student).Where(x => x.StudentId == Id).Select(x => x.Protector).ToList();
+
+            return ObjectMapper.Map<List<ProtectorDto>>(protectors);
+        }
     }
 }

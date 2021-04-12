@@ -88,6 +88,7 @@ import { TooltipModule} from 'primeng/tooltip';
 import { OverlayPanelModule} from 'primeng/overlaypanel';
 import { PanelModule} from 'primeng/panel';
 import { TabViewModule} from 'primeng/tabview';
+import { DialogModule} from 'primeng/dialog';
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
@@ -200,6 +201,7 @@ import { SettingsComponent } from './settings/settings.component';
     OverlayPanelModule,
     PanelModule,
     TabViewModule,
+    DialogModule,
     TooltipModule,
     CollapseModule,
     TabsModule,

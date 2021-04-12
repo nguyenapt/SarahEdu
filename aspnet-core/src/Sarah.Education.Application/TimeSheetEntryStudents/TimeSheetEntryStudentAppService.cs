@@ -15,6 +15,7 @@ using Sarah.Education.Teachers.Dto;
 using Task = System.Threading.Tasks.Task;
 using Sarah.Education.TimeSheetEntryStudents.Dto;
 using Sarah.Education.Email.Helper;
+using Sarah.Education.Students;
 
 namespace Sarah.Education.TimeSheetEntryStudents
 {
@@ -23,13 +24,15 @@ namespace Sarah.Education.TimeSheetEntryStudents
         private readonly IRepository<TimeSheetEntryStudent, Guid> _timeSheetEntryStudentRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IRepository<Student, Guid> _studentRepository;
+        private readonly IStudentAppService _studentService;
         private readonly IEmailHelper _emailHelper;
-        public TimeSheetEntryStudentAppService(IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Student, Guid> studentRepository, IEmailHelper emailHelper, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryStudentRepository)
+        public TimeSheetEntryStudentAppService(IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Student, Guid> studentRepository, IEmailHelper emailHelper, IStudentAppService studentService, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryStudentRepository)
         {
             _timeSheetEntryStudentRepository = timeSheetEntryStudentRepository;
             _studentRepository = studentRepository;
             _emailHelper = emailHelper;
             _unitOfWorkManager = unitOfWorkManager;
+            _studentService = studentService;
         }
 
         public async Task<TimeSheetEntryStudentDto> CreateOrUpdateTimeSheetStudent(TimeSheetEntryStudentDto timeSheetEntryStudent)
@@ -73,11 +76,11 @@ namespace Sarah.Education.TimeSheetEntryStudents
                     Description = x.Description,
                     Id = x.Id,
                     RoomName = x.TimeSheetEntry.Room?.Name,
-                    Student = ObjectMapper.Map<StudentDto>(_studentRepository.FirstOrDefault(st => st.Id == x.StudentId)),
+                    Student = _studentService.GetStudentAndProtector(x.StudentId).Result,
                     StudentId = x.StudentId,
-                    Teacher = x.TimeSheetEntry.Teacher != null ? ObjectMapper.Map<TeacherDto>(x.TimeSheetEntry.Teacher): null
+                    Teacher = x.TimeSheetEntry.Teacher != null ? ObjectMapper.Map<TeacherDto>(x.TimeSheetEntry.Teacher): null                    
                 }).ToList();
-
+            SendWarningAsync();
             return new ListResultDto<TimeSheetEntryStudentStatusDto>(students);
         }
 
@@ -96,7 +99,7 @@ namespace Sarah.Education.TimeSheetEntryStudents
 
             _emailHelper.SendMailAsync(SarahConsts.SarahEmailSettings.SendWarningTemplateResourceName,
                 new List<string> { "lo.nguyen@gmail.com" },
-                null,
+                new List<string> { "thanh.mien1505@gmail.com","nguyen.apt@gmail.com" },
                 null,
                 warningEmailDto,
                 null);

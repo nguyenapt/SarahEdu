@@ -1,5 +1,5 @@
 <p-panel header="Students">
-    <p-table [value]="studentStatuses" sortField="student.fullName" sortMode="single" styleClass="p-datatable-sm">
+    <p-table [value]="studentStatuses" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>
                 <th>Date</th>
@@ -41,7 +41,7 @@
 </p-panel>
 
 <p-dialog header="Protector information" [(visible)]="display" [position]="position" [draggable]="false" [resizable]="false">
-    <div *ngIf="student">
+    <div *ngIf="student && student.protector">
         <p><span class="text-bold">Name:</span> {{student.protector.fullName}}</p>
         <p><span class="text-bold">Phone number:</span> {{student.protector.phoneNumber}}</p>
         <p><span class="text-bold">Email:</span> {{student.protector.email}}</p>

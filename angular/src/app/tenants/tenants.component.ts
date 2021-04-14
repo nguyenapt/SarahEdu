@@ -6,32 +6,29 @@ import {
   PagedListingComponentBase,
   PagedRequestDto,
 } from '@shared/paged-listing-component-base';
-import {
-  TenantServiceProxy,
-  TenantDto,
-  TenantDtoPagedResultDto,
-} from '@shared/service-proxies/service-proxies';
+
 import { CreateTenantDialogComponent } from './create-tenant/create-tenant-dialog.component';
 import { EditTenantDialogComponent } from './edit-tenant/edit-tenant-dialog.component';
+import { CustomTenantDto, CustomTenantDtoPagedResultDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
+import { CustomTenantServiceProxy } from '@shared/service-proxies/custom-tenant/customtenant.service.proxy';
 
 class PagedTenantsRequestDto extends PagedRequestDto {
   keyword: string;
-  isActive: boolean | null;
 }
 
 @Component({
   templateUrl: './tenants.component.html',
   animations: [appModuleAnimation()]
 })
-export class TenantsComponent extends PagedListingComponentBase<TenantDto> {
-  tenants: TenantDto[] = [];
+export class TenantsComponent extends PagedListingComponentBase<CustomTenantDto> {
+  tenants: CustomTenantDto[] = [];
   keyword = '';
   isActive: boolean | null;
   advancedFiltersVisible = false;
 
   constructor(
     injector: Injector,
-    private _tenantService: TenantServiceProxy,
+    private _tenantService: CustomTenantServiceProxy,
     private _modalService: BsModalService
   ) {
     super(injector);
@@ -43,12 +40,10 @@ export class TenantsComponent extends PagedListingComponentBase<TenantDto> {
     finishedCallback: Function
   ): void {
     request.keyword = this.keyword;
-    request.isActive = this.isActive;
 
     this._tenantService
       .getAll(
         request.keyword,
-        request.isActive,
         request.skipCount,
         request.maxResultCount
       )
@@ -57,13 +52,13 @@ export class TenantsComponent extends PagedListingComponentBase<TenantDto> {
           finishedCallback();
         })
       )
-      .subscribe((result: TenantDtoPagedResultDto) => {
+      .subscribe((result: CustomTenantDtoPagedResultDto) => {
         this.tenants = result.items;
         this.showPaging(result, pageNumber);
       });
   }
 
-  delete(tenant: TenantDto): void {
+  delete(tenant: CustomTenantDto): void {
     abp.message.confirm(
       this.l('TenantDeleteWarningMessage', tenant.name),
       undefined,
@@ -87,11 +82,11 @@ export class TenantsComponent extends PagedListingComponentBase<TenantDto> {
     this.showCreateOrEditTenantDialog();
   }
 
-  editTenant(tenant: TenantDto): void {
+  editTenant(tenant: CustomTenantDto): void {
     this.showCreateOrEditTenantDialog(tenant.id);
   }
 
-  showCreateOrEditTenantDialog(id?: number): void {
+  showCreateOrEditTenantDialog(id?: string): void {
     let createOrEditTenantDialog: BsModalRef;
     if (!id) {
       createOrEditTenantDialog = this._modalService.show(

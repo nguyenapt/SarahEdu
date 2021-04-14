@@ -8,10 +8,9 @@ import {
 import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
-import {
-  CreateTenantDto,
-  TenantServiceProxy
-} from '@shared/service-proxies/service-proxies';
+import { CreateCustomTenantDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
+import { CustomTenantServiceProxy } from '@shared/service-proxies/custom-tenant/customtenant.service.proxy';
+
 
 @Component({
   templateUrl: 'create-tenant-dialog.component.html'
@@ -19,20 +18,20 @@ import {
 export class CreateTenantDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
-  tenant: CreateTenantDto = new CreateTenantDto();
+  tenant: CreateCustomTenantDto = new CreateCustomTenantDto();
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    public _tenantService: TenantServiceProxy,
+    public _tenantService: CustomTenantServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.tenant.isActive = true;
+    
   }
 
   save(): void {

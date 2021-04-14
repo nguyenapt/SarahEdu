@@ -8,10 +8,9 @@ import {
 import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
-import {
-  TenantServiceProxy,
-  TenantDto
-} from '@shared/service-proxies/service-proxies';
+import { CustomTenantDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
+import { CustomTenantServiceProxy } from '@shared/service-proxies/custom-tenant/customtenant.service.proxy';
+
 
 @Component({
   templateUrl: 'edit-tenant-dialog.component.html'
@@ -19,21 +18,21 @@ import {
 export class EditTenantDialogComponent extends AppComponentBase
   implements OnInit {
   saving = false;
-  tenant: TenantDto = new TenantDto();
-  id: number;
+  tenant: CustomTenantDto = new CustomTenantDto();
+  id: string;
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
-    public _tenantService: TenantServiceProxy,
+    public _tenantService: CustomTenantServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this._tenantService.get(this.id).subscribe((result: TenantDto) => {
+    this._tenantService.get(this.id).subscribe((result: CustomTenantDto) => {
       this.tenant = result;
     });
   }

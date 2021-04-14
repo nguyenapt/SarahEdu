@@ -8,30 +8,7 @@
     [title]="'EditTenant' | localize"
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
-  <div class="modal-body">
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="tenancyName">
-        {{ "TenancyName" | localize }}
-      </label>
-      <div class="col-md-9">
-        <input
-          type="text"
-          class="form-control"
-          name="tenancyName"
-          id="tenancyName"
-          minlength="2"
-          maxlength="64"
-          required
-          [(ngModel)]="tenant.tenancyName"
-          #tenancyNameModel="ngModel"
-          #tenancyNameEl
-        />
-        <abp-validation-summary
-          [control]="tenancyNameModel"
-          [controlEl]="tenancyNameEl"
-        ></abp-validation-summary>
-      </div>
-    </div>
+  <div class="modal-body">    
     <div class="form-group row required">
       <label class="col-md-3 col-form-label" for="name">
         {{ "Name" | localize }}
@@ -54,21 +31,20 @@
         ></abp-validation-summary>
       </div>
     </div>
+    
     <div class="form-group row mb-0">
-      <label class="col-md-3 col-form-label">
-        {{ "IsActive" | localize }}
+      <label class="col-md-3 col-form-label" for="description">
+        {{ "Description" | localize }}
       </label>
       <div class="col-md-9">
-        <div class="custom-control custom-checkbox">
-          <input
-            type="checkbox"
-            class="custom-control-input"
-            name="isActive"
-            id="isActive"
-            [(ngModel)]="tenant.isActive"
-          />
-          <label class="custom-control-label mt-2" for="isActive"></label>
-        </div>
+        <textarea
+          type="text"
+          class="form-control"
+          name="description"
+          id="description"
+          [(ngModel)]="tenant.description"
+        >
+        </textarea>
       </div>
     </div>
   </div>

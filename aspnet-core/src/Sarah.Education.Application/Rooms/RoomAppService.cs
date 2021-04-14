@@ -35,7 +35,6 @@ namespace Sarah.Education.Rooms
 
             var room = ObjectMapper.Map<Room>(input);
 
-            room.TenantId = AbpSession.TenantId ?? 1;
 
             await _roomRepository.InsertAsync(room);
 
@@ -68,7 +67,7 @@ namespace Sarah.Education.Rooms
         public async Task<List<RoomDto>> GetRoomByCurrentTenant()
         {
             var tenantId = AbpSession.TenantId ?? 1;
-            var rooms = await _roomRepository.GetAllListAsync(x => x.TenantId == tenantId);
+            var rooms = await _roomRepository.GetAllListAsync();
             return new List<RoomDto>(ObjectMapper.Map<List<RoomDto>>(rooms));
         }
     }

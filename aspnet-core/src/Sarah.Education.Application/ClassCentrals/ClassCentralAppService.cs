@@ -33,8 +33,6 @@ namespace Sarah.Education.ClassCentrals
 
             var classCentral = ObjectMapper.Map<ClassCentral>(input);
 
-            classCentral.TenantId = AbpSession.TenantId ?? 1;
-
             var classCentralId = await _classCentralRepository.InsertAndGetIdAsync(classCentral);
 
             if (input.Students != null)
@@ -54,8 +52,6 @@ namespace Sarah.Education.ClassCentrals
             var classCentral = _classCentralRepository.FirstOrDefault(x => x.Id == input.Id);            
 
             MapToEntity(input, classCentral);
-
-            classCentral.TenantId = AbpSession.TenantId ?? 1;
 
             await _classCentralRepository.UpdateAsync(classCentral);
 
@@ -119,7 +115,7 @@ namespace Sarah.Education.ClassCentrals
         {
             var tenantId = AbpSession.TenantId ?? 1;
 
-            var classes = _classCentralRepository.GetAllIncluding(x => x.ClassStudents).Where(x => x.TenantId == tenantId)?.Select(x => new ClassWithStudentDto()
+            var classes = _classCentralRepository.GetAllIncluding(x => x.ClassStudents)?.Select(x => new ClassWithStudentDto()
             {
                 Id = x.Id,
                 Name = x.Name,

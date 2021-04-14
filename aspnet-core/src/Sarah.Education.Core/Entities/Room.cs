@@ -7,10 +7,13 @@ using System.Text;
 namespace Sarah.Education.Entities
 {
     [Table("Room")]
-    public class Room:Entity<Guid>,IMustHaveTenant
+    public class Room:Entity<Guid>
     {
         public string Name { get; set; }
-        public int TenantId { get; set; }
         public string Description { get; set; }
+        public Guid CustomTenantId { get; set; }
+
+        [ForeignKey(nameof(CustomTenantId))]
+        public virtual CustomTenant CustomTenant { get; set; }
     }
 }

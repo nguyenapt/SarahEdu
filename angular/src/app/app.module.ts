@@ -74,6 +74,11 @@ import { ProtectorComponent } from './protector/protector.component';
 import { CreateProtectorDialogComponent } from './protector/create-protector/create-protector-dialog.component'
 import { EditProtectorDialogComponent } from './protector/edit-protector/edit-protector-dialog.component';
 
+//Studytime
+import { StudyTimeComponent } from './study-time/study-time.component';
+import { CreateStudyTimeDialogComponent } from './study-time/create-study-time/create-study-time-dialog.component';
+import { EditStudyTimeDialogComponent } from './study-time/edit-study-time/edit-study-time-dialog.component';
+
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
@@ -168,6 +173,10 @@ import { StudentFeeTotalComponent } from './report/student-fee-total/student-fee
     ProtectorComponent,
     CreateProtectorDialogComponent,
     EditProtectorDialogComponent,
+    //study-time
+    StudyTimeComponent,
+    CreateStudyTimeDialogComponent,
+    EditStudyTimeDialogComponent,
     //report
     TeacherProductivityComponent,
     StudentFeeComponent,
@@ -258,7 +267,9 @@ import { StudentFeeTotalComponent } from './report/student-fee-total/student-fee
     //timesheet
     CreateTimeSheetDialogComponent,
     EditTimeSheetDialogComponent,
-    TeacherSchedulerDialogComponent
+    TeacherSchedulerDialogComponent,
+    CreateStudyTimeDialogComponent,
+    EditStudyTimeDialogComponent
   ],
 })
 export class AppModule {}

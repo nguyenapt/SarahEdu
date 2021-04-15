@@ -9,17 +9,12 @@ import { finalize } from 'rxjs/operators';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AppComponentBase } from '@shared/app-component-base';
 
-import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 
-import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
-import { CustomTenantServiceProxy } from '@shared/service-proxies/custom-tenant/customtenant.service.proxy';
-import { CustomTenantDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
-import { StudyTimeDto, StudyTimeDtoPagedResultDto } from '@shared/service-proxies/study-time/dto/studytime-dto';
+import { StudyTimeDto } from '@shared/service-proxies/study-time/dto/studytime-dto';
 import { StudyTimeServiceProxy } from '@shared/service-proxies/study-time/studytime.service.proxy';
-import { StudentDto } from '@shared/service-proxies/student/dto/student-dto';
 
 @Component({
-  templateUrl: 'edit-room-dialog.component.html'
+  templateUrl: 'edit-study-time-dialog.component.html'
 })
 export class EditStudyTimeDialogComponent extends AppComponentBase
   implements OnInit {
@@ -36,8 +31,7 @@ export class EditStudyTimeDialogComponent extends AppComponentBase
     super(injector);
   }
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {    
     this._studyTimeService.get(this.id).subscribe((result: StudyTimeDto) => {
       this.studyTime = result;
     });

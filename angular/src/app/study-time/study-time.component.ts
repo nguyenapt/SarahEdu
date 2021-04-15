@@ -19,8 +19,8 @@ class PagedUsersRequestDto extends PagedRequestDto {
 }
 
 @Component({
-  templateUrl: './room.component.html',
-  styleUrls: ['./room.component.css'],
+  templateUrl: './study-time.component.html',
+  styleUrls: ['./study-time.component.css'],
   animations: [appModuleAnimation()]
 })
 export class StudyTimeComponent extends PagedListingComponentBase<StudyTimeDto> {

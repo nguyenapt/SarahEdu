@@ -20,6 +20,7 @@ import { StudentFeeComponent } from './report/student-fee/student-fee.component'
 import { TeacherSchedulerComponent } from './teacher/teacher-scheduler/teacher-scheduler.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TeacherProductivityTotalComponent } from './report/teacher-productivity-total/teacher-productivity-total.component';
+import { StudyTimeComponent } from './study-time/study-time.component';
 
 @NgModule({
     imports: [
@@ -40,6 +41,7 @@ import { TeacherProductivityTotalComponent } from './report/teacher-productivity
                     { path: 'subject', component: SubjectComponent },
                     { path: 'student', component: StudentComponent },
                     { path: 'protector', component: ProtectorComponent },
+                    { path: 'study-time', component: StudyTimeComponent },
                     { path: 'update-password', component: ChangePasswordComponent },
                     { path: 'report/teacher-productivity', component: TeacherProductivityComponent },
                     { path: 'report/teacher-productivity-total', component: TeacherProductivityTotalComponent },

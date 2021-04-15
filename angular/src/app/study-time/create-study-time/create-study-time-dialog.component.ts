@@ -14,7 +14,7 @@ import { CreateStudyTimeDto } from '@shared/service-proxies/study-time/dto/study
 import { StudyTimeServiceProxy } from '@shared/service-proxies/study-time/studytime.service.proxy';
 
 @Component({
-  templateUrl: 'create-room-dialog.component.html'
+  templateUrl: 'create-study-time-dialog.component.html'
 })
 export class CreateStudyTimeDialogComponent extends AppComponentBase
   implements OnInit {

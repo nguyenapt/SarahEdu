@@ -1,11 +1,11 @@
 <form
   class="form-horizontal"
   autocomplete="off"
-  #createRoomForm="ngForm"
+  #createTimeForm="ngForm"
   (ngSubmit)="save()"
 >
   <abp-modal-header
-    [title]="'CreateNewRoom' | localize"
+    [title]="'Create New'"
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
   <div class="modal-body">   
@@ -22,7 +22,7 @@
             required
             minlength="2"
             maxlength="32"
-            [(ngModel)]="room.name"
+            [(ngModel)]="studyTime.name"
             #nameModel="ngModel"
             #nameEl
           />
@@ -31,30 +31,20 @@
             [controlEl]="nameEl"
           ></abp-validation-summary>
         </div>
-      </div>      
-      
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="description">
-          {{ "Tenant" | localize }}
-        </label>
-        <div class="col-md-9">
-          <p-dropdown required [options]="tenants" [style]="{'width':'100%'}" [(ngModel)]="selectedTenant" name="tenants" placeholder="Select a tenant" optionLabel="name"></p-dropdown>        
-        </div>
       </div>
       
       <div class="form-group row">
-        <label class="col-md-3 col-form-label" for="description">
-          {{ "RoomDescription" | localize }}
+        <label class="col-md-3 col-form-label" for="fromHour">
+          From hour
         </label>
-        <div class="col-md-9">
-          <textarea
-            type="text"
-            class="form-control"
-            name="description"
-            id="description"
-            [(ngModel)]="room.description"
-          >
-          </textarea>
+        <div class="col-md-3">
+          <p-inputMask [(ngModel)]="studyTime.fromHour" name="fromHour" mask="99:99"></p-inputMask>
+        </div>
+        <label class="col-md-3 col-form-label" for="toHour">
+          To hour
+        </label>
+        <div class="col-md-3">
+          <p-inputMask [(ngModel)]="studyTime.toHour" name="toHour" mask="99:99"></p-inputMask>          
         </div>
       </div>
 
@@ -68,7 +58,7 @@
             class="form-control"
             name="sortOrder"
             id="sortOrder"
-            [(ngModel)]="room.sortOrder"
+            [(ngModel)]="studyTime.sortOrder"
           />
         </div>
       </div>
@@ -76,7 +66,7 @@
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"
-    [saveDisabled]="!createRoomForm.form.valid || saving"
+    [saveDisabled]="!createTimeForm.form.valid || saving"
     (onCancelClick)="bsModalRef.hide()"
   ></abp-modal-footer>
 </form>

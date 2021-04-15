@@ -55,7 +55,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
           'Room',
           '/app/room',
           'fas fa-border-style'
-        ),        
+        ),    
+        new MenuItem(
+          'Time',
+          '/app/study-time',
+          'fas fa-clock'
+        ),     
         new MenuItem(
           'Class',
           '/app/class',

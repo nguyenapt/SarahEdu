@@ -94,6 +94,7 @@ import { OverlayPanelModule} from 'primeng/overlaypanel';
 import { PanelModule} from 'primeng/panel';
 import { TabViewModule} from 'primeng/tabview';
 import { DialogModule} from 'primeng/dialog';
+import { InputMaskModule } from 'primeng/inputmask';
 
 //report
 import { TeacherProductivityComponent } from './report/teacher-productivity/teacher-productivity.component';
@@ -215,6 +216,7 @@ import { StudentFeeTotalComponent } from './report/student-fee-total/student-fee
     PanelModule,
     TabViewModule,
     DialogModule,
+    InputMaskModule,
     TooltipModule,
     CollapseModule,
     TabsModule,

@@ -105,6 +105,8 @@ import { EditStudentPaymentDialogComponent } from './student/edit-student-paymen
 import { TeacherPerformanceComponent } from './home/teacher-performance/teacher-performance.component';
 import { StudentNoteComponent } from './home/student-note/student-note.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TeacherProductivityTotalComponent } from './report/teacher-productivity-total/teacher-productivity-total.component';
+import { StudentFeeTotalComponent } from './report/student-fee-total/student-fee-total.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +182,9 @@ import { SettingsComponent } from './settings/settings.component';
     EditStudentPaymentDialogComponent,
     TeacherPerformanceComponent,
     StudentNoteComponent,
-    SettingsComponent
+    SettingsComponent,
+    TeacherProductivityTotalComponent,
+    StudentFeeTotalComponent
   ],
   imports: [
     CommonModule,    

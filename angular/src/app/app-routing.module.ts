@@ -19,6 +19,7 @@ import { TeacherProductivityComponent } from './report/teacher-productivity/teac
 import { StudentFeeComponent } from './report/student-fee/student-fee.component';
 import { TeacherSchedulerComponent } from './teacher/teacher-scheduler/teacher-scheduler.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TeacherProductivityTotalComponent } from './report/teacher-productivity-total/teacher-productivity-total.component';
 
 @NgModule({
     imports: [
@@ -41,6 +42,7 @@ import { SettingsComponent } from './settings/settings.component';
                     { path: 'protector', component: ProtectorComponent },
                     { path: 'update-password', component: ChangePasswordComponent },
                     { path: 'report/teacher-productivity', component: TeacherProductivityComponent },
+                    { path: 'report/teacher-productivity-total', component: TeacherProductivityTotalComponent },
                     { path: 'report/student-fee', component: StudentFeeComponent },
                     { path: 'teacher/teacher-scheduler', component: TeacherSchedulerComponent },
                     { path: 'settings', component: SettingsComponent, data: { permission: 'Pages.SiteSettings' }, canActivate: [AppRouteGuard] }

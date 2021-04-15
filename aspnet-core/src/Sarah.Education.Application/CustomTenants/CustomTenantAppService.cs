@@ -46,18 +46,13 @@ namespace Sarah.Education.CustomTenants
         [UnitOfWork]
         public virtual List<CustomTenant> GetCustomTenants()
         {
-            return _customTenantRepository.GetAllList();
-        }
-
-        protected override IQueryable<CustomTenant> ApplySorting(IQueryable<CustomTenant> query, CustomTenantResultRequestDto input)
-        {
-            return query.OrderBy(r => r.Name);
+            return _customTenantRepository.GetAllList().OrderBy(x=>x.SortOrder).ToList();
         }
 
         protected override IQueryable<CustomTenant> CreateFilteredQuery(CustomTenantResultRequestDto input)
         {
             return Repository.GetAllIncluding()
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword)).OrderBy(x=>x.SortOrder);
         }
     }
 }

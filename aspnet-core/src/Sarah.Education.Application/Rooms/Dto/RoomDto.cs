@@ -15,6 +15,7 @@ namespace Sarah.Education.Rooms.Dto
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public int? SortOrder { get; set; }
         public CustomTenantDto CustomTenant { get; set; }
         public List<StudyTimeInWeekDto> StudyTimes { get; set; } = new List<StudyTimeInWeekDto>();
     }

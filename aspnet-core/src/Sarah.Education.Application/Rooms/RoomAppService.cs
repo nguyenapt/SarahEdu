@@ -56,20 +56,15 @@ namespace Sarah.Education.Rooms
             }
         }
 
-        protected override IQueryable<Room> ApplySorting(IQueryable<Room> query, RoomResultRequestDto input)
-        {
-            return query.OrderBy(r => r.Name);
-        }
-
         protected override IQueryable<Room> CreateFilteredQuery(RoomResultRequestDto input)
         {
             return Repository.GetAllIncluding(x=>x.CustomTenant)
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
+                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword)).OrderBy(x=>x.SortOrder);
         }
 
         public async Task<List<RoomDto>> GetRoomByTenant(Guid customTenantId)
         {
-            var rooms = _roomRepository.GetAllList(x=>x.CustomTenantId == customTenantId);
+            var rooms = _roomRepository.GetAllList(x=>x.CustomTenantId == customTenantId).OrderBy(x=>x.SortOrder).ToList();
             return new List<RoomDto>(ObjectMapper.Map<List<RoomDto>>(rooms));
         }
 

@@ -3,6 +3,7 @@ import * as moment from 'moment';
 export class CreateCustomTenantDto implements ICreateCustomTenantDto {
     name: string | undefined;
     description: string | undefined;
+    sortOrder:number| undefined;
 
     constructor(data?: ICreateCustomTenantDto) {
         if (data) {
@@ -17,6 +18,7 @@ export class CreateCustomTenantDto implements ICreateCustomTenantDto {
         if (data) {
             this.name = data["name"];
             this.description = data["description"];
+            this.sortOrder = data["sortOrder"];
         }
     }
 
@@ -30,7 +32,8 @@ export class CreateCustomTenantDto implements ICreateCustomTenantDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["description"] = this.description;        
+        data["description"] = this.description;
+        data["sortOrder"] = this.sortOrder;
         return data; 
     }
 
@@ -45,12 +48,14 @@ export class CreateCustomTenantDto implements ICreateCustomTenantDto {
 export interface ICreateCustomTenantDto {
     name: string | undefined;
     description: string | undefined;
+    sortOrder:number| undefined;
 }
 
 export class CustomTenantDto implements ICustomTenantDto {
     name: string | undefined;
     description: string | undefined;  
     id: string;
+    sortOrder:number| undefined;
 
     constructor(data?: ICustomTenantDto) {
         if (data) {
@@ -66,6 +71,7 @@ export class CustomTenantDto implements ICustomTenantDto {
             this.name = data["name"];
             this.description = data["description"];            
             this.id = data["id"];
+            this.sortOrder = data["sortOrder"];
         }
     }
 
@@ -81,6 +87,7 @@ export class CustomTenantDto implements ICustomTenantDto {
         data["name"] = this.name;
         data["description"] = this.description;        
         data["id"] = this.id;
+        data["sortOrder"] = this.sortOrder;
         return data; 
     }
 
@@ -96,6 +103,7 @@ export interface ICustomTenantDto {
     name: string | undefined;
     description: string | undefined;    
     id: string;
+    sortOrder:number| undefined;
 }
 
 export class CustomTenantDtoPagedResultDto implements ICustomTenantDtoPagedResultDto {

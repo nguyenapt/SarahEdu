@@ -5,7 +5,7 @@ export class CreateRoomDto implements ICreateRoomDto {
     name: string | undefined;
     description: string | undefined;
     customTenantId:string| undefined;
-
+    sortOrder:number| undefined;
     constructor(data?: ICreateRoomDto) {
         if (data) {
             for (var property in data) {
@@ -20,6 +20,7 @@ export class CreateRoomDto implements ICreateRoomDto {
             this.name = data["name"];
             this.description = data["description"];
             this.customTenantId = data["customTenantId"];
+            this.sortOrder = data["sortOrder"];
         }
     }
 
@@ -35,6 +36,7 @@ export class CreateRoomDto implements ICreateRoomDto {
         data["name"] = this.name;
         data["description"] = this.description;
         data["customTenantId"] = this.customTenantId;
+        data["sortOrder"] = this.sortOrder;
         return data; 
     }
 
@@ -50,6 +52,7 @@ export interface ICreateRoomDto {
     name: string | undefined;
     description: string | undefined;
     customTenantId:string| undefined;
+    sortOrder:number| undefined;
 }
 
 export class RoomDto implements IRoomDto {
@@ -57,6 +60,7 @@ export class RoomDto implements IRoomDto {
     description: string | undefined;  
     customTenant:CustomTenantDto| undefined;
     id: string;
+    sortOrder:number| undefined;
 
     constructor(data?: IRoomDto) {
         if (data) {
@@ -72,6 +76,7 @@ export class RoomDto implements IRoomDto {
             this.name = data["name"];
             this.description = data["description"];    
             this.customTenant = data["customTenant"];
+            this.sortOrder = data["sortOrder"];
             this.id = data["id"];
         }
     }
@@ -89,6 +94,7 @@ export class RoomDto implements IRoomDto {
         data["description"] = this.description;
         data["customTenant"] = this.customTenant;
         data["id"] = this.id;
+        data["sortOrder"] = this.sortOrder;
         return data; 
     }
 
@@ -105,6 +111,7 @@ export interface IRoomDto {
     description: string | undefined;    
     customTenant:CustomTenantDto| undefined;
     id: string;
+    sortOrder:number| undefined;
 }
 
 export class RoomDtoPagedResultDto implements IRoomDtoPagedResultDto {

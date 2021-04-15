@@ -12,6 +12,8 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { RoomServiceProxy } from '@shared/service-proxies/room/room.service.proxy';
 
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
+import { CustomTenantServiceProxy } from '@shared/service-proxies/custom-tenant/customtenant.service.proxy';
+import { CustomTenantDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
 
 @Component({
   templateUrl: 'edit-room-dialog.component.html'
@@ -21,20 +23,26 @@ export class EditRoomDialogComponent extends AppComponentBase
   saving = false;
   room: RoomDto = new RoomDto();
   id: string;
-
+  tenants: CustomTenantDto[]=[];
+  selectedTenant:CustomTenantDto;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
     injector: Injector,
     public _roomService: RoomServiceProxy,
+    private _tenantService: CustomTenantServiceProxy,
     public bsModalRef: BsModalRef
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this._tenantService.getCustomTenant().subscribe((result) => {
+      this.tenants = result.items;      
+    }); 
     this._roomService.get(this.id).subscribe((result: RoomDto) => {
       this.room = result;
+      this.selectedTenant = this.room.customTenant;
     });
   }
 

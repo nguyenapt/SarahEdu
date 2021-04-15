@@ -32,6 +32,16 @@
           ></abp-validation-summary>
         </div>
       </div>        
+      
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="description">
+          {{ "Tenant" | localize }}
+        </label>
+        <div class="col-md-9">
+          <p-dropdown required [options]="tenants" [style]="{'width':'100%'}" [(ngModel)]="selectedTenant" name="tenants" placeholder="Select a tenant" optionLabel="name"></p-dropdown>        
+        </div>
+      </div>
+
       <div class="form-group row mb-0">
         <label class="col-md-3 col-form-label" for="description">
           {{ "RoomDescription" | localize }}

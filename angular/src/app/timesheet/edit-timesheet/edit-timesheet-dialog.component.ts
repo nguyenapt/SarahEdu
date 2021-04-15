@@ -39,7 +39,7 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
   students : StudentDto[] = [];
   selectedStudent : StudentDto;
   selectedStudents : TimeSheetStudentDto[] = [];
-
+  tenantId:string;
   teachers : TeacherDto[] = [];
   selectedTeacher : TeacherDto;
   
@@ -101,7 +101,7 @@ export class EditTimeSheetDialogComponent extends AppComponentBase
       this.startHour = this.selectedStudyTime.fromHour;
       this.endHour = this.selectedStudyTime.toHour;
     });  
-    this._roomService.getRoomByCurrentTenant().subscribe((result) => {
+    this._roomService.getRoomByTenant(this.tenantId).subscribe((result) => {
       this.rooms = result.items;
       this.selectedRoom = this.rooms.find(e => e.id == this.timeSheet.roomId);
     }); 

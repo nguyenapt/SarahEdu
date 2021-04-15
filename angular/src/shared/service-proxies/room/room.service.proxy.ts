@@ -304,8 +304,12 @@ export class RoomServiceProxy {
         return _observableOf<RoomDtoPagedResultDto>(<any>null);
     }
 
-    getRoomByCurrentTenant(): Observable<RoomDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Room/GetRoomByCurrentTenant";
+    getRoomByTenant(customTenantId: string | undefined): Observable<RoomDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/Room/GetRoomByTenant?";
+        if (customTenantId === null)
+            throw new Error("The parameter 'customTenantId' cannot be null.");
+        else if (customTenantId !== undefined)
+            url_ += "customTenantId=" + encodeURIComponent("" + customTenantId) + "&";         
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -317,11 +321,11 @@ export class RoomServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRoomByCurrentTenant(response_);
+            return this.processRoomByTenant(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processRoomByCurrentTenant(<any>response_);
+                    return this.processRoomByTenant(<any>response_);
                 } catch (e) {
                     return <Observable<RoomDtoListResultDto>><any>_observableThrow(e);
                 }
@@ -330,7 +334,7 @@ export class RoomServiceProxy {
         }));
     }
 
-    protected processRoomByCurrentTenant(response: HttpResponseBase): Observable<RoomDtoListResultDto> {
+    protected processRoomByTenant(response: HttpResponseBase): Observable<RoomDtoListResultDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 

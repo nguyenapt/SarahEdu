@@ -8,7 +8,7 @@ namespace Sarah.Education.Rooms
 {
     public interface IRoomAppService : IAsyncCrudAppService<RoomDto, Guid, RoomResultRequestDto, CreateRoomDto, RoomDto>
     {
-        Task<List<RoomDto>> GetRoomByCurrentTenant();
+        Task<List<RoomDto>> GetRoomByTenant(Guid customTenantId);
     }
 }
 

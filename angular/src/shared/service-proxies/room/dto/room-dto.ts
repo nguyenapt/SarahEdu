@@ -1,8 +1,10 @@
+import { CustomTenantDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
 import * as moment from 'moment';
 
 export class CreateRoomDto implements ICreateRoomDto {
     name: string | undefined;
     description: string | undefined;
+    customTenantId:string| undefined;
 
     constructor(data?: ICreateRoomDto) {
         if (data) {
@@ -17,6 +19,7 @@ export class CreateRoomDto implements ICreateRoomDto {
         if (data) {
             this.name = data["name"];
             this.description = data["description"];
+            this.customTenantId = data["customTenantId"];
         }
     }
 
@@ -30,7 +33,8 @@ export class CreateRoomDto implements ICreateRoomDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["description"] = this.description;        
+        data["description"] = this.description;
+        data["customTenantId"] = this.customTenantId;
         return data; 
     }
 
@@ -45,11 +49,13 @@ export class CreateRoomDto implements ICreateRoomDto {
 export interface ICreateRoomDto {
     name: string | undefined;
     description: string | undefined;
+    customTenantId:string| undefined;
 }
 
 export class RoomDto implements IRoomDto {
     name: string | undefined;
     description: string | undefined;  
+    customTenant:CustomTenantDto| undefined;
     id: string;
 
     constructor(data?: IRoomDto) {
@@ -64,7 +70,8 @@ export class RoomDto implements IRoomDto {
     init(data?: any) {
         if (data) {
             this.name = data["name"];
-            this.description = data["description"];            
+            this.description = data["description"];    
+            this.customTenant = data["customTenant"];
             this.id = data["id"];
         }
     }
@@ -79,7 +86,8 @@ export class RoomDto implements IRoomDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["description"] = this.description;        
+        data["description"] = this.description;
+        data["customTenant"] = this.customTenant;
         data["id"] = this.id;
         return data; 
     }
@@ -95,6 +103,7 @@ export class RoomDto implements IRoomDto {
 export interface IRoomDto {
     name: string | undefined;
     description: string | undefined;    
+    customTenant:CustomTenantDto| undefined;
     id: string;
 }
 

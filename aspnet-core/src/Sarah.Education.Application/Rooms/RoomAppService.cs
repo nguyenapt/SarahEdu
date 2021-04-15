@@ -16,6 +16,7 @@ using Task = System.Threading.Tasks.Task;
 using Abp.Extensions;
 using Abp.Collections.Extensions;
 using Abp.Domain.Uow;
+using Sarah.Education.CustomTenants.Dto;
 
 namespace Sarah.Education.Rooms
 {
@@ -23,9 +24,11 @@ namespace Sarah.Education.Rooms
     {
         private readonly IRepository<Room, Guid> _roomRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public RoomAppService(IRepository<Room, Guid> roomRepository, IUnitOfWorkManager unitOfWorkManager) : base(roomRepository)
+        private readonly IRepository<CustomTenant, Guid> _customTenantRepository;
+        public RoomAppService(IRepository<Room, Guid> roomRepository, IRepository<CustomTenant, Guid> customTenantRepository, IUnitOfWorkManager unitOfWorkManager) : base(roomRepository)
         {
             _roomRepository = roomRepository;
+            _customTenantRepository = customTenantRepository;
             _unitOfWorkManager = unitOfWorkManager;
         }
 
@@ -60,15 +63,22 @@ namespace Sarah.Education.Rooms
 
         protected override IQueryable<Room> CreateFilteredQuery(RoomResultRequestDto input)
         {
-            return Repository.GetAllIncluding()
+            return Repository.GetAllIncluding(x=>x.CustomTenant)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword) || x.Description.Contains(input.Keyword));
         }
 
-        public async Task<List<RoomDto>> GetRoomByCurrentTenant()
+        public async Task<List<RoomDto>> GetRoomByTenant(Guid customTenantId)
         {
-            var tenantId = AbpSession.TenantId ?? 1;
-            var rooms = await _roomRepository.GetAllListAsync();
+            var rooms = _roomRepository.GetAllList(x=>x.CustomTenantId == customTenantId);
             return new List<RoomDto>(ObjectMapper.Map<List<RoomDto>>(rooms));
+        }
+
+        protected override RoomDto MapToEntityDto(Room entity)
+        {
+            var roomDto = base.MapToEntityDto(entity);
+            roomDto.CustomTenant =
+                ObjectMapper.Map<CustomTenantDto>(_customTenantRepository.Get(entity.CustomTenantId));
+            return roomDto;
         }
     }
 }

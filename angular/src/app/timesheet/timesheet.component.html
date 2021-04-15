@@ -10,6 +10,7 @@
           </span>
         </div>
         <div class="col-md-4 text-center">
+          <p-dropdown required [options]="tenants" [style]="{'width':'100%'}" [(ngModel)]="selectedTenant" name="tenants" placeholder="Select a tenant" optionLabel="name" (onChange)="changeTenant($event)"></p-dropdown>        
         </div>
         <div class="col-4 text-right">
           <p-button (click)="createScheduler()">

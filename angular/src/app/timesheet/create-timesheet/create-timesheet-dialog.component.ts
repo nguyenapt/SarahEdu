@@ -39,7 +39,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
   students : StudentDto[] = [];
   selectedStudent : StudentDto;
   selectedStudents : TimeSheetStudentDto[] = [];
-  
+  tenantId:string;
   teachers : TeacherDto[] = [];
   selectedTeacher : TeacherDto;
   
@@ -92,7 +92,7 @@ export class CreateTimeSheetDialogComponent extends AppComponentBase
     this._studyTimeService.getStudyTimes().subscribe((result) => {
       this.studyTimes = result.items;
     });  
-    this._roomService.getRoomByCurrentTenant().subscribe((result) => {
+    this._roomService.getRoomByTenant(this.tenantId).subscribe((result) => {
       this.rooms = result.items;
     }); 
     this._classService.getClassWithStudents().subscribe((result) => {

@@ -20,6 +20,8 @@ import {
 
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { RoomDto } from '@shared/service-proxies/room/dto/room-dto';
+import { CustomTenantDto } from '@shared/service-proxies/custom-tenant/dto/customtenant-dto';
+import { CustomTenantServiceProxy } from '@shared/service-proxies/custom-tenant/customtenant.service.proxy';
 
 moment.updateLocale('en', {
   week: {
@@ -46,11 +48,14 @@ export class TimeSheetComponent extends AppComponentBase
   rowGroupMetadata: any;
   loading: boolean;
   students: TimeSheetStudentDto[]
+  tenants:CustomTenantDto[]=[];
+  selectedTenant:CustomTenantDto;
 
   constructor(
     injector: Injector,
     private _timesheetService: TimeSheetServiceProxy,
     private _roomService: RoomServiceProxy,
+    private _tenantService: CustomTenantServiceProxy,
     private _modalService: BsModalService
   ) {
     super(injector);
@@ -58,7 +63,21 @@ export class TimeSheetComponent extends AppComponentBase
 
   ngOnInit(): void {
     this.loading = true;
-    this._roomService.getRoomByCurrentTenant().subscribe((result) => {
+    this._tenantService.getCustomTenant().subscribe((result)=>{
+      this.tenants = result.items;
+      this.selectedTenant = this.tenants[0];
+      this.bindingData();
+    });         
+  }
+
+  changeTenant($event){
+    if($event != null){      
+      this.bindingData();
+    }
+  }
+
+  bindingData(){
+    this._roomService.getRoomByTenant(this.selectedTenant.id).subscribe((result) => {
       this.rooms = result.items;
       this.selectedRoom = this.rooms[0];
       this.currentDate = moment().format('YYYY-MM-DD');
@@ -66,7 +85,7 @@ export class TimeSheetComponent extends AppComponentBase
       this.list(this.fromDate, () => {
         this.updateRowGroupMetaData();
       });
-    });      
+    }); 
   }
 
 
@@ -164,7 +183,10 @@ export class TimeSheetComponent extends AppComponentBase
       createOrEditTimeSheetDialog = this._modalService.show(
         CreateTimeSheetDialogComponent,
         {
-          class: 'modal-xlg'          
+          class: 'modal-xlg',
+          initialState: {            
+            tenantId: this.selectedTenant.id,
+          },
         }
       );
     } 
@@ -175,6 +197,7 @@ export class TimeSheetComponent extends AppComponentBase
           class: 'modal-xlg',
           initialState: {            
             timeSheet: timeSheet,
+            tenantId: this.selectedTenant.id
           },
         }
       );

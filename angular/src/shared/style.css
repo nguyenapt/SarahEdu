@@ -31,35 +31,35 @@ label:not(.form-check-label):not(.custom-file-label) {
   letter-spacing: .3px;
 }
 
-.customer-badge.attitude-1 {
+.customer-badge.attitude-1,.customer-badge.attitude-High {
   background-color: #ffcdd2;
   color: #c63737;
 }
 
-.customer-badge.attitude-2 {
+.customer-badge.attitude-2,.customer-badge.attitude-Normal {
   background-color: #eccfff;
   color: #694382;
 }
 
-.customer-badge.attitude-3 {
+.customer-badge.attitude-3,.customer-badge.attitude-Low {
   background-color: #c8e6c9;
   color: #17641c;
 }
 
 
-.customer-badge.status-1 {
+.customer-badge.status-1,.customer-badge.status-High {
   background-color: #ffd8b2;
-  color: #805b36;
-}
-
-.customer-badge.status-2 {
-  background-color: #c8e6c9;
-  color: #17641c;  
-}
-
-.customer-badge.status-3 {
-  background-color: #ffcdd2;
   color: #c63737;
+}
+
+.customer-badge.status-2,.customer-badge.status-Normal {
+  background-color: #c8e6c9;
+  color: #694382;  
+}
+
+.customer-badge.status-3,.customer-badge.status-Low {
+  background-color: #ffcdd2;
+  color: #17641c;
 }
 
 .modal-xlg, .modal-xxl {

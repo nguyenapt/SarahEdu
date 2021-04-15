@@ -10,6 +10,7 @@ import { KeyValueItem } from '@shared/interface/keyvalue-item';
 import { TeacherSchedulerDialogComponent } from '@app/teacher/teacher-scheduler-dialog/teacher-scheduler-dialog.component';
 import { UserServiceProxy } from '@shared/service-proxies/user/user.service.proxy';
 import { UserDto } from '@shared/service-proxies/user/dto/user-dto';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: './home.component.html',
@@ -54,9 +55,9 @@ export class HomeComponent extends AppComponentBase {
 
   attitudes = [
     {name: '- Select -', code: 0},
-    {name: 'High impotant', code: 1},
+    {name: 'High important', code: 1},
     {name: 'Normal', code: 2},
-    {name: 'Low impotant', code: 3}
+    {name: 'Low important', code: 3}
   ];
 
   ngOnInit(): void {
@@ -67,6 +68,25 @@ export class HomeComponent extends AppComponentBase {
 
   checkRoleIsAdmin(){
     return this.permission.isGranted("Pages.Tenants");    
+  }
+
+  searchData(){
+    this.loadTimeScheduler(() => {
+      this.isTableLoading = false;
+    });
+  }
+
+  getStatus(timeScheduler:TimeSheetDto){
+    let normalStatus = 3;
+    for (var i=0; i < timeScheduler.timeSheetStudents.length; i++) {
+      if (timeScheduler.timeSheetStudents[i].attitude != null && timeScheduler.timeSheetStudents[i].attitude <= normalStatus) {
+        normalStatus = timeScheduler.timeSheetStudents[i].attitude;
+      }
+      if (timeScheduler.timeSheetStudents[i].receptiveAbility !=null && timeScheduler.timeSheetStudents[i].receptiveAbility <= normalStatus) {
+        normalStatus = timeScheduler.timeSheetStudents[i].receptiveAbility;
+      }
+    }
+    return this.attitudes.find(x=>x.code == normalStatus).name;
   }
 
   loadTimeScheduler(finishedCallback: Function)  {

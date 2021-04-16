@@ -33,7 +33,9 @@ implements OnInit {
   }
 
   ngOnInit(): void {
-    this._studentService.getFees(this.studentId,undefined,undefined,0,10).subscribe((result) => {
+    let fromDate = moment().startOf('month').format('YYYY-MM-DD');
+    let toDate = moment().endOf('month').format('YYYY-MM-DD');
+    this._studentService.getFees(this.studentId,fromDate,toDate,0,10).subscribe((result) => {
         this.studentFees = result.items;
         this.calculateTotal();
     });

@@ -26,8 +26,10 @@ export class StudentFeeComponent extends AppComponentBase
   keyword = '';
   curentDate = new Date();
   selectedReportType: any;
-  startDate: Date;
-  endDate: Date;
+
+  fromDate: string;
+  toDate: string;
+
   student : StudentDto;
   studentFees: StudentFeeDto[] = [];
   total:number;
@@ -38,37 +40,43 @@ export class StudentFeeComponent extends AppComponentBase
   loading: boolean;
   
   reportTypes = [] = [
-    {
-      name: 'This month',
-      value: 0,
-      fromDate: moment().startOf('month'),
-      toDate: moment().endOf('month')
-    },
-    {
-      name: 'Last month',
-      value: 1,
-      fromDate: moment().subtract(1,'months').startOf('month'),
-      toDate: moment().subtract(1,'months').endOf('month')
-    },
-    {
-      name: 'This year',
-      value: 2,
-      fromDate: moment().startOf('month'),
-      toDate: moment().endOf('month')
-    },
-    {
-      name: 'Last year',
-      value: 3,
-      fromDate: moment().subtract(1,'year').startOf('year'),
-      toDate: moment().subtract(1,'year').endOf('year')
-    },
-    {
-      name: 'Custom',
-      value: 4,
-      fromDate: moment().subtract(1,'year').startOf('year'),
-      toDate: moment().subtract(1,'year').endOf('year')
-    },
-  ];
+  {
+    name: 'This week',
+    value: 0,
+    fromDate: moment().startOf('week'),
+    toDate: moment().endOf('week')
+  },
+  {
+    name: 'This month',
+    value: 1,
+    fromDate: moment().startOf('month'),
+    toDate: moment().endOf('month')
+  },
+  {
+    name: 'Last month',
+    value: 2,
+    fromDate: moment().subtract(1,'months').startOf('month'),
+    toDate: moment().subtract(1,'months').endOf('month')
+  },
+  {
+    name: 'This year',
+    value: 3,
+    fromDate: moment().startOf('year'),
+    toDate: moment().endOf('year')
+  },
+  {
+    name: 'Last year',
+    value: 4,
+    fromDate: moment().subtract(1,'year').startOf('year'),
+    toDate: moment().subtract(1,'year').endOf('year')
+  },
+  {
+    name: 'Custom',
+    value: 5,
+    fromDate: moment(),
+    toDate: moment()
+  },
+];
 
 
   constructor(
@@ -79,18 +87,29 @@ export class StudentFeeComponent extends AppComponentBase
     super(injector);
   }
   ngOnInit(): void {
+    this.fromDate = moment().startOf('week').format('YYYY-MM-DD');
+    this.toDate = moment().endOf('week').format('YYYY-MM-DD');       
     this._studentService
       .getStudents()            
       .subscribe((result) => {
         this.students = result.items;        
     });
   }
+
+  changeReportType($event){
+    if($event != null){      
+      this.fromDate = $event.value.fromDate.format('YYYY-MM-DD');
+      this.toDate = $event.value.toDate.format('YYYY-MM-DD');      
+    }
+  }
   
   searchData(    
   ): void {    
     this._studentService
       .getFees(        
-        this.student.id,
+        this.student?.id,
+        this.fromDate,
+        this.toDate,
         0,
         this.rows
       )      
@@ -106,7 +125,7 @@ export class StudentFeeComponent extends AppComponentBase
     if(this.student != null){
       this.loading = true;
       setTimeout(() => {
-        this._studentService.getFees(this.student.id, event.first ,event.rows).subscribe((result) => {
+        this._studentService.getFees(this.student?.id,this.fromDate,this.toDate, event.first ,event.rows).subscribe((result) => {
           this.studentFees = result.items;
           this.totalRecords = result.totalCount;
           this.total = result.totalFee;

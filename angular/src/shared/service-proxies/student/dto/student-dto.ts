@@ -258,7 +258,7 @@ export class StudentFeeDto implements IStudentFeeDto {
     courseName: string | undefined;
     subjectName: string | undefined;
     teacherName: string | undefined;
-
+    name: string | undefined;
     constructor(data?: IStudentFeeDto) {
         if (data) {
             for (var property in data) {
@@ -278,6 +278,7 @@ export class StudentFeeDto implements IStudentFeeDto {
             this.courseName = data["courseName"];
             this.subjectName = data["subjectName"];
             this.teacherName = data["teacherName"];
+            this.name = data["name"];
         }
     }
 
@@ -298,6 +299,7 @@ export class StudentFeeDto implements IStudentFeeDto {
         data["courseName"] = this.courseName;
         data["subjectName"] = this.subjectName;
         data["teacherName"] = this.teacherName;
+        data["name"] = this.name;
         return data; 
     }
 
@@ -319,6 +321,7 @@ export interface IStudentFeeDto {
     courseName: string | undefined;
     subjectName: string | undefined;
     teacherName: string | undefined;
+    name: string | undefined;
 }
 
 export class StudentFeeListResultDto implements IStudentFeeListResultDto {

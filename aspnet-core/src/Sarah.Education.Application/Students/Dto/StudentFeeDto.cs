@@ -8,6 +8,7 @@ namespace Sarah.Education.Students.Dto
 {
     public class StudentFeeDto
     {
+        public string Name { get; set; }
         public double Fee { get; set; }
         public bool? IsSingle { get; set; }
         public  DateTime StartDate { get; set; }

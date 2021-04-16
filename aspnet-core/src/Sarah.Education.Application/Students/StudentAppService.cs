@@ -136,7 +136,7 @@ namespace Sarah.Education.Students
                 x => x.Student.StudentPayments,
                 x => x.TimeSheetEntry.CourseSubject.Course,
                 x => x.TimeSheetEntry.CourseSubject.Subject)
-                .Where(x => x.StudentId == input.StudentId)
+                .WhereIf(input.StudentId != Guid.Empty, x => x.StudentId == input.StudentId)
                 .WhereIf(input.FromDate.HasValue, x => x.TimeSheetEntry.FromDate >= input.FromDate)
                 .WhereIf(input.ToDate.HasValue, x => x.TimeSheetEntry.ToDate <= input.ToDate).ToList();
 
@@ -150,6 +150,7 @@ namespace Sarah.Education.Students
             .Take(input.MaxResultCount)
             .Select(d => new StudentFeeDto
             {
+                Name = d.Student.FullName,
                 SubjectName = d.TimeSheetEntry.CourseSubject.Subject.Name,
                 CourseName = d.TimeSheetEntry.CourseSubject.Course.Name,
                 RoomName = d.TimeSheetEntry.Room.Name,

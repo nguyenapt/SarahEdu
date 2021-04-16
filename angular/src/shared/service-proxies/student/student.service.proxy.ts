@@ -353,14 +353,18 @@ export class StudentServiceProxy {
         return _observableOf<StudentDtoPagedResultDto>(<any>null);
     }
 
-    getFees(studentId: string, skipCount: number | undefined, maxResultCount: number | undefined): Observable<StudentFeeListResultDto> {
+    getFees(studentId: string,fromDate: string | undefined, toDate: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<StudentFeeListResultDto> {
         let url_ = this.baseUrl + "/api/services/app/Student/GetStudentFees?";
 
-        if (studentId === null)
-            throw new Error("The parameter 'studentId' cannot be null.");
-        else if (studentId !== undefined)
+        if (studentId !== undefined)
             url_ += "studentId=" + encodeURIComponent("" + studentId) + "&";   
-        if (skipCount === null)
+        
+        if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&"; 
+        if (toDate !== undefined)
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&"; 
+        
+            if (skipCount === null)
             throw new Error("The parameter 'skipCount' cannot be null.");
         else if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 

@@ -33,7 +33,7 @@ implements OnInit {
   }
 
   ngOnInit(): void {
-    this._studentService.getFees(this.studentId,0,10).subscribe((result) => {
+    this._studentService.getFees(this.studentId,undefined,undefined,0,10).subscribe((result) => {
         this.studentFees = result.items;
         this.calculateTotal();
     });

@@ -3,22 +3,22 @@
       <div class="container-fluid">
         <div class="form-group row">
             <div class="col-2">
-                <p-dropdown [options]="reportTypes" [style]="{'width':'100%'}" [(ngModel)]="selectedReportType" optionLabel="name" optionValue="value"></p-dropdown>
+                <p-dropdown [options]="reportTypes" [style]="{'width':'100%'}" [(ngModel)]="selectedReportType" optionLabel="name" (onChange)="changeReportType($event)"></p-dropdown>
             </div>
             <div class="col-2">
                 <input class="form-control" 
-                    type="date" 
-                    name="startDate" 
-                    style="height: 42px;"
-                    [(ngModel)]="startDate" 
-                />
+                type="date" 
+                name="fromDate" 
+                style="height: 42px;"
+                [(ngModel)]="fromDate" 
+            />
             </div>
             <div class="col-2">                
                 <input class="form-control" 
                     type="date" 
-                    name="startDate" 
+                    name="toDate" 
                     style="height: 42px;"
-                    [(ngModel)]="endDate" 
+                    [(ngModel)]="toDate" 
                 />
             </div>
             <div class="col-5">
@@ -48,6 +48,7 @@
                     [paginator]="true" [rows]="rows" [totalRecords]="totalRecords" [loading]="loading">    
                         <ng-template pTemplate="header">
                             <tr>
+                                <th>Student Name</th>
                                 <th style="width: 200px;">Start date</th>
                                 <th style="width: 200px;">End date</th>
                                 <th style="width: 100px;">Room</th>
@@ -60,6 +61,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-fee>
                             <tr>
+                                <td>{{fee.name}}</td>
                                 <td>{{fee.startDate | date:'dd-MM-yyyy hh:mm a' }}</td>
                                 <td>{{fee.endDate | date:'dd-MM-yyyy hh:mm a' }}</td>
                                 <td>{{fee.roomName}}</td>
@@ -82,7 +84,7 @@
                         </ng-template>
                         <ng-template pTemplate="footer">
                             <tr>                                
-                                <td colspan="8" class="text-right">Total <span class="badge badge-success">{{total | currency: 'VND'}}</span><br />
+                                <td colspan="9" class="text-right">Total <span class="badge badge-success">{{total | currency: 'VND'}}</span><br />
                                     Paid <span class="badge badge-danger">{{totalPayment | currency: 'VND'}}</span><br />
                                     Un-paid <span class="badge badge-danger">{{unpaid | currency: 'VND'}}</span>
                                 </td>                                

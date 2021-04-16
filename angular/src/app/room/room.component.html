@@ -44,6 +44,7 @@
                 <tr>
                   <th>{{ "Tenant" | localize }}</th>
                   <th>{{ "Name" | localize }}</th>
+                  <th>Is special room (Online)</th>
                   <th>{{ "Description" | localize }}</th>
                   <th style="width: 200px;">{{ "Actions" | localize }}</th>
                 </tr>
@@ -63,6 +64,17 @@
                 >
                   <td>{{ room.customTenant.name }}</td>
                   <td>{{ room.name }}</td>
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        disabled
+                        [checked]="room.isSpecialRoom"
+                      />
+                      <label class="custom-control-label"></label>
+                    </div>
+                  </td>
                   <td>{{ room.description }}</td>
                   <td>
                     <button

@@ -218,7 +218,7 @@ export class TimeSheetComponent extends AppComponentBase
     var dateString = day.toLocaleString().split(',')[0];
     var event =  this.events.filter(p => p.weekDay == dateString && p.id == studyTimeId)[0]
     if(event !=null && event.timeSheetEntries.length >0){
-      var scheduler = event.timeSheetEntries.filter(p => p.roomId == room.id)[0]
+      var scheduler = event.timeSheetEntries.filter(p => p.roomId == room.id)
       if(scheduler !=null) return scheduler;
     }      
     return null;

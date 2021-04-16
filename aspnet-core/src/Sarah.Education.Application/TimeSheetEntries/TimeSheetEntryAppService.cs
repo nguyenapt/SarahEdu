@@ -30,17 +30,17 @@ namespace Sarah.Education.TimeSheetEntries
         private readonly IRepository<Student, Guid> _studentRepository;
         private readonly IRepository<Teacher, Guid> _teacherRepository;
         private readonly IRepository<StudyTime, Guid> _studyTimeRepository;
-        private readonly RoomAppService _roomService;
+        private readonly IRepository<Room, Guid> _roomRepository;
         private readonly UserManager _userManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        public TimeSheetEntryAppService(IRepository<TimeSheetEntry, Guid> timeSheetEntryRepository, IRepository<StudyTime, Guid> studyTimeRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, RoomAppService roomService, IRepository<Student, Guid> studentRepository, IRepository<Teacher, Guid> teacherRepository, UserManager userManager, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryRepository)
+        public TimeSheetEntryAppService(IRepository<TimeSheetEntry, Guid> timeSheetEntryRepository, IRepository<StudyTime, Guid> studyTimeRepository, IRepository<TimeSheetEntryStudent, Guid> timeSheetEntryStudentRepository, IRepository<Room, Guid> roomRepository, IRepository<Student, Guid> studentRepository, IRepository<Teacher, Guid> teacherRepository, UserManager userManager, IUnitOfWorkManager unitOfWorkManager) : base(timeSheetEntryRepository)
         {
             _timeSheetEntryRepository = timeSheetEntryRepository;
             _timeSheetEntryStudentRepository = timeSheetEntryStudentRepository;
             _studentRepository = studentRepository;
             _teacherRepository = teacherRepository;
             _studyTimeRepository = studyTimeRepository;
-            _roomService = roomService;
+            _roomRepository = roomRepository;
             _userManager = userManager;
             _unitOfWorkManager = unitOfWorkManager;
         }
@@ -124,13 +124,22 @@ namespace Sarah.Education.TimeSheetEntries
 
         protected Task<bool> CheckAvailable(Guid roomId, DateTime fromDate, Guid studytimeId, Guid timeSheetId)
         {
+            var room = _roomRepository.Get(roomId);
+            if (room.IsSpecialRoom.HasValue && room.IsSpecialRoom.Value == true)
+            {
+                return Task.FromResult(true);
+            }
+
             var timeScheduled = Repository.GetAllIncluding()
-                .Where(x => x.RoomId == roomId && (x.FromDate.Year == fromDate.Year && x.FromDate.Month == fromDate.Month && x.FromDate.Day == fromDate.Day) && x.StudyTimeId == studytimeId)
+                .Where(x => x.RoomId == roomId &&
+                            (x.FromDate.Year == fromDate.Year && x.FromDate.Month == fromDate.Month &&
+                             x.FromDate.Day == fromDate.Day) && x.StudyTimeId == studytimeId)
                 .WhereIf(timeSheetId != Guid.Empty, x => x.Id != timeSheetId).FirstOrDefault();
             if (timeScheduled != null)
             {
                 return Task.FromResult(false);
             }
+
             return Task.FromResult(true);
         }
 
@@ -210,7 +219,7 @@ namespace Sarah.Education.TimeSheetEntries
                     TimeSheetEntryId = k.TimeSheetEntryId,
                     Student = ObjectMapper.Map<StudentDto>(_studentRepository.FirstOrDefault(st => st.Id == k.StudentId))
                 }).ToArray()
-            }).ToList();
+            }).OrderByDescending(x=>x.FromDate).ToList();
 
             return new ListResultDto<TimeSheetEntryDto>(timesheetEntries);
         }

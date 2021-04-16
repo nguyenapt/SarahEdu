@@ -352,13 +352,17 @@ export class TeacherServiceProxy {
         return _observableOf<TeacherDtoPagedResultDto>(<any>null);
     }
 
-    getProductivities(teacherId: string, skipCount: number | undefined, maxResultCount: number | undefined): Observable<TeacherProductivityListResultDto> {
+    getProductivities(teacherId: string,fromDate: string | undefined, toDate: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<TeacherProductivityListResultDto> {
         let url_ = this.baseUrl + "/api/services/app/Teacher/GetTeacherProductivity?";
 
-        if (teacherId === null)
-            throw new Error("The parameter 'teacherId' cannot be null.");
-        else if (teacherId !== undefined)
+        if (teacherId !== undefined)
             url_ += "teacherId=" + encodeURIComponent("" + teacherId) + "&";   
+
+        if (fromDate !== undefined)
+            url_ += "fromDate=" + encodeURIComponent("" + fromDate) + "&"; 
+        if (toDate !== undefined)
+            url_ += "toDate=" + encodeURIComponent("" + toDate) + "&"; 
+
         if (skipCount === null)
             throw new Error("The parameter 'skipCount' cannot be null.");
         else if (skipCount !== undefined)

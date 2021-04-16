@@ -10,6 +10,7 @@ namespace Sarah.Education.Rooms.Dto
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool? IsSpecialRoom { get; set; }
         public int? SortOrder { get; set; }
         public Guid CustomTenantId { get; set; }
     }

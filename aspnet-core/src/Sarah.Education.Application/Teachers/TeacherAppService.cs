@@ -73,9 +73,9 @@ namespace Sarah.Education.Teachers
                 x => x.CourseSubject.Course,
                 x => x.CourseSubject.Subject,
                 x => x.TimeSheetEntryStudents)
-                .Where(x => x.TeacherId == input.TeacherId)
+                .WhereIf(input.TeacherId != Guid.Empty, x=> x.TeacherId == input.TeacherId)
                 .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate)
-                .WhereIf(input.FromDate.HasValue, x => x.FromDate >= input.FromDate).ToList();
+                .WhereIf(input.ToDate.HasValue, x => x.ToDate <= input.ToDate).ToList();
 
             var returnList = list
             .Skip(input.SkipCount)
@@ -89,7 +89,7 @@ namespace Sarah.Education.Teachers
                 EndDate = d.ToDate,
                 Fee = d.TimeSheetEntryStudents.Sum(x=>x.Fee),
                 Hour = (d.ToDate.Subtract(d.FromDate)).TotalHours
-            }).ToList();
+            }).OrderByDescending(x=>x.StartDate).ToList();
 
             return new PagedTeacherProductivityDto() { TotalCount = list.Count, TotalFee = list.Sum(x => x.TimeSheetEntryStudents.Sum(k=>k.Fee)), TotalHour = list.Sum(x => (x.ToDate.Subtract(x.FromDate)).TotalHours), Items = returnList };
         }

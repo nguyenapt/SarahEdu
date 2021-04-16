@@ -32,7 +32,7 @@ namespace Sarah.Education.Rooms
             _unitOfWorkManager = unitOfWorkManager;
         }
 
-        public async override Task<RoomDto> CreateAsync(CreateRoomDto input)
+        public override async Task<RoomDto> CreateAsync(CreateRoomDto input)
         {
             CheckCreatePermission();
 

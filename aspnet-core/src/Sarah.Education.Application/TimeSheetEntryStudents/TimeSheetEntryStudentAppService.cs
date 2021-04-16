@@ -79,7 +79,7 @@ namespace Sarah.Education.TimeSheetEntryStudents
                     Student = _studentService.GetStudentAndProtector(x.StudentId).Result,
                     StudentId = x.StudentId,
                     Teacher = x.TimeSheetEntry.Teacher != null ? ObjectMapper.Map<TeacherDto>(x.TimeSheetEntry.Teacher): null                    
-                }).ToList();
+                }).OrderBy(x=>x.StudentId).ToList();
             return new ListResultDto<TimeSheetEntryStudentStatusDto>(students);
         }
 

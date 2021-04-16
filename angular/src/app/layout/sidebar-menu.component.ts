@@ -112,7 +112,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         new MenuItem(
           this.l('Teacher-Productivity-Total'),
           '/app/report/teacher-productivity-total',
-          'fas fa-dollar-sign'
+          'fas fa-hand-holding-usd'
         ), 
         new MenuItem(
           this.l('Teacher-Productivity'),

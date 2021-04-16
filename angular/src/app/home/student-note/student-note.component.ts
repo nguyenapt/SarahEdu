@@ -56,6 +56,10 @@ export class StudentNoteComponent extends AppComponentBase implements OnInit {
     });
   }
 
+  onSort() {
+    this.updateRowGroupMetaData();
+  }
+
   loadTimeScheduler(finishedCallback: Function)  {
     this._studentService
       .getGetStudentStatusFromDateToDate(
@@ -85,14 +89,14 @@ export class StudentNoteComponent extends AppComponentBase implements OnInit {
     if (this.studentStatuses) {
         for (let i = 0; i < this.studentStatuses.length; i++) {
             let rowData = this.studentStatuses[i];
-            let representativeName = rowData.student.fullName;
+            let representativeName = rowData.student.id;
             
             if (i == 0) {
                 this.rowGroupMetadata[representativeName] = { index: 0, size: 1 };
             }
             else {
                 let previousRowData = this.studentStatuses[i - 1];
-                let previousRowGroup = previousRowData.student.fullName;
+                let previousRowGroup = previousRowData.student.id;
                 if (representativeName === previousRowGroup)
                     this.rowGroupMetadata[representativeName].size++;
                 else

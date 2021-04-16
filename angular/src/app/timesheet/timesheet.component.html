@@ -50,34 +50,36 @@
                     <td style="padding: 0;color: whitesmoke;font-size: 10px;height: 70px;">
                       <ng-container *ngTemplateOutlet="memberTemplate; context:{o: getTimeScheduler(event.weekDay,event.id,room) }">
                       </ng-container>
-                      <ng-template #memberTemplate let-scheduler="o">
-                        <ng-container *ngIf="scheduler">
-                          <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100,'padding.px':1,'cursor':'pointer','position':'relative'}">
-                            <div (click)="editScheduler(scheduler);">
-                              <span style="float: left;">{{scheduler.teacher.fullName}}</span>
-                              <span style="float: right;font-size: 12px;">
-                                <i class="fas fa-edit"></i>
-                              </span>
-                            </div>                          
-                            <div style="border-bottom: 1px solid white;clear: both;">{{scheduler.courseSubject.courseName}} - {{scheduler.courseSubject.subjectName}}</div>
-                            <ng-template *ngIf="scheduler.timeSheetStudents.length < 4;then showBlock; else notShowBlock">
-                            </ng-template>
-                            <ng-template #showBlock>
-                              <div *ngFor="let studentTime of scheduler.timeSheetStudents;index as i" style="font-size: 9px;">                                
-                                  {{studentTime.student.fullName}}
-                              </div>
-                            </ng-template>
-                            <ng-template #notShowBlock>
-                              <div *ngFor="let studentTime of scheduler.timeSheetStudents;index as i" style="font-size: 9px;">  
-                                <div *ngIf="i<4">
-                                  {{studentTime.student.fullName}}
+                      <ng-template #memberTemplate let-schedulers="o">
+                        <ng-container *ngIf="schedulers">
+                          <div *ngFor="let scheduler of schedulers">
+                            <div [ngStyle]="{'background-color': scheduler.teacher.color ? scheduler.teacher.color : 'gray','height.px':100,'padding.px':1,'cursor':'pointer','position':'relative'}">
+                              <div (click)="editScheduler(scheduler);">
+                                <span style="float: left;">{{scheduler.teacher.fullName}}</span>
+                                <span style="float: right;font-size: 12px;">
+                                  <i class="fas fa-edit"></i>
+                                </span>
+                              </div>                          
+                              <div style="border-bottom: 1px solid white;clear: both;">{{scheduler.courseSubject.courseName}} - {{scheduler.courseSubject.subjectName}}</div>
+                              <ng-template *ngIf="scheduler.timeSheetStudents.length < 4;then showBlock; else notShowBlock">
+                              </ng-template>
+                              <ng-template #showBlock>
+                                <div *ngFor="let studentTime of scheduler.timeSheetStudents;index as i" style="font-size: 9px;">                                
+                                    {{studentTime.student.fullName}}
                                 </div>
-                              </div> 
-                              ...                             
-                            </ng-template>
-                            <span style="position:absolute; bottom:2px; right:2px;">
-                              <i class="fas fa-user-friends" (click)="setSelected(scheduler.timeSheetStudents);op.toggle($event)"></i>                              
-                            </span>
+                              </ng-template>
+                              <ng-template #notShowBlock>
+                                <div *ngFor="let studentTime of scheduler.timeSheetStudents;index as i" style="font-size: 9px;">  
+                                  <div *ngIf="i<4">
+                                    {{studentTime.student.fullName}}
+                                  </div>
+                                </div> 
+                                ...                             
+                              </ng-template>
+                              <span style="position:absolute; bottom:2px; right:2px;">
+                                <i class="fas fa-user-friends" (click)="setSelected(scheduler.timeSheetStudents);op.toggle($event)"></i>                              
+                              </span>
+                            </div>
                           </div>
                         </ng-container>
                       </ng-template>
